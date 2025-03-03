@@ -1,0 +1,66 @@
+name: dl-tt
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.10  # More stable for TF
+  - pip
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scipy
+  - statsmodels
+  - scikit-learn
+  - h5py
+  - jupyterlab
+  - pillow
+  - grpcio
+  - protobuf
+  - typing-extensions
+  - six
+  - traitlets
+  - tornado
+  - sympy
+  - mpmath
+  - numexpr
+  - networkx
+  - cmake
+  - numba
+  - dask
+  - xarray
+  - tqdm
+  - psutil
+  - pytest
+  - plotly
+  - altair
+  - black
+  - flake8
+  - pylint
+  - jupytext
+  - pytorch
+  - torchvision
+  - torchaudio
+  - autograd
+  - category_encoders
+  - fancyimpute
+  - ipywidgets
+  - flask
+  - optuna
+  - pip:
+      - tensorflow-macos  # Apple Silicon optimized TF
+      - tensorflow-metal  # Metal backend for GPU acceleration
+      - tensorboard
+      - tensorflow-addons
+      - tensorflow-probability
+      - absl-py
+      - opt-einsum
+      - rich
+      - termcolor
+      - tfds-nightly
+      - gin-config
+      - opencv-python-headless
+      - np
+      - pymc3
+      - pgmpy

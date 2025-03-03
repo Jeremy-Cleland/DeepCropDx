@@ -1,0 +1,42 @@
+{
+    "healthy": {
+        "description": "The plant appears healthy with no visible signs of disease. Healthy plants typically have vibrant green leaves without spots, yellowing, or wilting.",
+        "treatment": "Continue with regular care practices: appropriate watering, fertilization, and pest monitoring. Maintain good air circulation and appropriate spacing between plants."
+    },
+    "bacterial_leaf_blight": {
+        "description": "Bacterial leaf blight is characterized by water-soaked lesions that turn yellow to white as they mature. The disease typically starts at leaf margins and can spread throughout the plant.",
+        "treatment": "Remove and destroy infected plant parts. Avoid overhead irrigation as wet foliage promotes disease spread. Apply copper-based bactericides as a preventative measure. Practice crop rotation and use resistant varieties when available."
+    },
+    "leaf_spot": {
+        "description": "Leaf spot diseases are characterized by small, circular spots on leaves that may be brown, black, tan, or red. As the disease progresses, spots may enlarge and merge, causing leaves to yellow and drop prematurely.",
+        "treatment": "Remove and destroy infected leaves. Improve air circulation around plants by appropriate spacing and pruning. Apply fungicides containing chlorothalonil or copper compounds when symptoms first appear. Water at the base of plants rather than overhead."
+    },
+    "rust": {
+        "description": "Rust appears as orange, yellow, or brown pustules (raised spots) on the undersides of leaves. The disease can cause defoliation if severe, weakening the plant.",
+        "treatment": "Remove and destroy infected plant parts. Apply fungicides containing myclobutanil, tebuconazole, or sulfur at first sign of infection. Avoid wetting leaves when watering and maintain good air circulation. Plant resistant varieties when available."
+    },
+    "powdery_mildew": {
+        "description": "Powdery mildew appears as white to gray powdery spots or patches on leaf surfaces, stems, and sometimes flowers. Severely infected leaves may yellow, curl, and drop prematurely.",
+        "treatment": "Improve air circulation by proper spacing and pruning. Apply fungicides containing sulfur, potassium bicarbonate, or neem oil. Remove and destroy infected plant parts. Use resistant varieties when available and avoid overhead watering."
+    },
+    "downy_mildew": {
+        "description": "Downy mildew causes pale yellow to bright yellow spots on the upper leaf surfaces with fuzzy gray to purple growth on the undersides of leaves. The disease thrives in cool, humid conditions.",
+        "treatment": "Water plants at the base to keep foliage dry. Apply fungicides containing mancozeb, chlorothalonil, or copper compounds. Remove and destroy infected plant parts. Improve air circulation and light penetration by proper spacing and pruning."
+    },
+    "anthracnose": {
+        "description": "Anthracnose causes dark, sunken lesions on leaves, stems, flowers, and fruits. Leaf symptoms typically begin as small, irregular yellow or brown spots that enlarge and may merge.",
+        "treatment": "Remove and destroy infected plant parts. Apply fungicides containing chlorothalonil, mancozeb, or copper compounds. Avoid overhead irrigation and ensure good air circulation. Practice crop rotation and use disease-free seeds or transplants."
+    },
+    "fusarium_wilt": {
+        "description": "Fusarium wilt is a soil-borne fungal disease that causes yellowing and wilting of leaves, often starting on one side of the plant. Infected plants may become stunted and eventually die.",
+        "treatment": "Remove and destroy infected plants, including the root system. Fusarium persists in soil, so practice crop rotation with non-susceptible plants for 3-4 years. Use disease-resistant varieties when available. Sterilize garden tools to prevent spread."
+    },
+    "late_blight": {
+        "description": "Late blight causes dark, water-soaked lesions on leaves, stems, and fruits. White fungal growth may be visible on the undersides of leaves during humid conditions. The disease spreads rapidly during cool, wet weather.",
+        "treatment": "Remove and destroy infected plant parts immediately to prevent spread. Apply fungicides containing chlorothalonil, mancozeb, or copper compounds preventatively before symptoms appear. Plant resistant varieties when available and provide good air circulation."
+    },
+    "mosaic_virus": {
+        "description": "Mosaic viruses cause mottled patterns of yellow and green on leaves, often accompanied by leaf curling, distortion, and stunted growth. The disease is typically spread by insects, particularly aphids.",
+        "treatment": "There is no cure for viral diseases. Remove and destroy infected plants to prevent spread. Control insect vectors such as aphids using appropriate insecticides or insecticidal soaps. Clean tools with a 10% bleach solution between plants. Plant virus-resistant varieties when available."
+    }
+}

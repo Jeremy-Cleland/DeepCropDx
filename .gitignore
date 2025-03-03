@@ -1,0 +1,65 @@
+# Ignore entire data folder
+data/
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Thumbnails and metadata (Time Machine, etc.)
+.Spotlight-V100
+.Trashes
+
+# Python cache and compiled files
+*.pyc
+*.__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments (adjust folder names as needed)
+env/
+venv/
+ENV/
+.venv/
+
+# Distribution/build directories
+build/
+dist/
+.eggs/
+*.egg-info/
+
+# Test and coverage reports
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE/editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Models
+*.pth
+
+# Code Markdown File
+
+# MISC
+
+project_code.md
+
+# Uncomment the next line if you ever decide to ignore your large model files
+# (Keep these tracked if you’re using Git LFS)
+# models/efficientnet_b3/models/efficientnet_b3/*.pth

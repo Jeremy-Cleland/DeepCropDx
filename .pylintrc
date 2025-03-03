@@ -1,0 +1,27 @@
+[MASTER]
+# Files and directories to ignore when running pylint.
+ignore = 
+    .git,
+    __pycache__,
+    build,
+    dist,
+    venv,
+    logs,
+    models,              # Ignore root models directory outputs
+    notebooks,
+    docs,
+    reports,
+    src/app/static,      # Static assets (non-Python files)
+    *.pyc
+
+# Maximum number of characters on a single line.
+max-line-length=79
+
+[MESSAGES CONTROL]
+# Optionally disable some messages (adjust as needed)
+disable=C0114,  ; missing-module-docstring
+        C0115,  ; missing-class-docstring
+        C0116   ; missing-function-docstring
+
+[REPORTS]
+reports=no
