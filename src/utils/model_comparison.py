@@ -124,10 +124,14 @@ class ModelComparisonReport:
         data = []
 
         for model_name, model_data in self.models_data.items():
-            row = {"Model": model_name}
+            row = {
+                "Model": model_name
+            }  # Changed from "model_name" to "Model" to match the melt function
 
+            # Add each metric with capitalized keys
             for metric in self.metrics:
                 if metric in model_data["metrics"]:
+                    # Capitalize the metric name for the column header
                     row[metric.capitalize()] = model_data["metrics"][metric]
 
             data.append(row)
