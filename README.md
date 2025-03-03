@@ -1,12 +1,12 @@
 ![Crop Disease Detection Banner](.github/assets/crop_disease_detection_01.jpg)
 
-# **Advanced Plant Disease Recognition System with Interactive Web Diagnostic Portal**
+# **DeepCropDX | Deep Neural Network Plan Disease Diganostic System**
 
 This repository presents a deep neural network pipeline combining EfficientNet, MobileNet, and ResNet variants with bespoke attention mechanisms, designed to accurately diagnose plant diseases from images. The integrated Flask-based web interface allows users to submit crop images and instantly receive diagnostic feedback.
 
 ## 📋 Table of Contents
 
-- [**Advanced Plant Disease Recognition System with Interactive Web Diagnostic Portal**](#advanced-plant-disease-recognition-system-with-interactive-web-diagnostic-portal)
+- [**DeepCropDX | Deep Neural Network Plan Disease Diganostic System**](#deepcropdx--deep-neural-network-plan-disease-diganostic-system)
   - [📋 Table of Contents](#-table-of-contents)
   - [✨ Features](#-features)
   - [🚀 Installation](#-installation)

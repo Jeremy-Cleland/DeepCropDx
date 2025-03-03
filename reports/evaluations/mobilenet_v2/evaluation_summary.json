@@ -1,0 +1,11 @@
+{
+  "model_path": "models/mobilenet_v2_v1/models/mobilenet_v2_v1_best.pth",
+  "model_name": "mobilenet v2 (best)",
+  "evaluated_at": "2025-03-03T00:27:02.470133",
+  "metrics": {
+    "accuracy": 0.8761023354976257,
+    "precision": 0.8791687221728898,
+    "recall": 0.8761023354976257,
+    "f1": 0.8761021333145121
+  }
+}
