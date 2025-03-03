@@ -1,7 +1,7 @@
 {
   "model_path": "models/efficientnet_b0_v1/models/efficientnet_b0_v1_best.pth",
   "model_name": "efficientnet_b0 v1 (best)",
-  "evaluated_at": "2025-03-03T00:06:09.984166",
+  "evaluated_at": "2025-03-03T00:59:32.731463",
   "metrics": {
     "accuracy": 0.8600639596860161,
     "precision": 0.8724422864928918,

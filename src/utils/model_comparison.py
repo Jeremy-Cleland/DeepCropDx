@@ -148,14 +148,26 @@ class ModelComparisonReport:
         # Update this line to use lowercase metric names to match self.metrics
         melted_df = pd.melt(
             comparison_df,
-            id_vars=["model_name"],
-            value_vars=self.metrics,  # Use self.metrics directly instead of hardcoded capitalized names
+            id_vars=["Model"],
+            value_vars=[m.capitalize() for m in self.metrics],
             var_name="Metric",
             value_name="Value",
         )
 
-        # Rest of the function remains the same
-        # ...
+        # Create figure
+        fig, ax = plt.subplots(figsize=(12, 8))
+
+        # Create grouped bar plot
+        sns.barplot(x="Model", y="Value", hue="Metric", data=melted_df, ax=ax)
+
+        # Customize plot
+        plt.title("Model Performance Comparison", fontsize=16)
+        plt.ylabel("Score", fontsize=12)
+        plt.xticks(rotation=45, ha="right")
+        plt.legend(title="Metric")
+        plt.tight_layout()
+
+        return fig
 
     def get_best_model(self, metric="f1"):
         """
