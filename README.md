@@ -325,7 +325,7 @@ python -m src.training.evaluate \
 Batch evaluate multiple models:
 
 ```bash
-python -m src.utils.batch_evaluate \
+python -m src.scripts.batch_evaluate \
   --models_dir models \
   --data_dir data/raw \
   --output_dir reports/evaluations \
@@ -450,7 +450,7 @@ The evaluation script provides comprehensive model assessment with:
 ### Running the Model Evaluation Pipeline
 
 ```bash
-python -m src.utils.batch_evaluate \
+python -m src.scripts.batch_evaluate \
   --models_dir models \
   --data_dir data/raw \
   --output_dir reports/evaluations \
@@ -660,7 +660,7 @@ python -m src.training.evaluate --model_path models/best_model.pth --data_dir da
 The project supports batch evaluation of multiple models with enhanced comparison features:
 
 ```bash
-python -m src.utils.batch_evaluate \
+python -m src.scripts.batch_evaluate \
   --models_dir models \
   --data_dir data/raw \
   --output_dir reports/evaluations \

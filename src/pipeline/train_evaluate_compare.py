@@ -382,7 +382,7 @@ def evaluate_all_models(models_dir, data_dir, args):
     cmd = [
         "python",
         "-m",
-        "src.utils.batch_evaluate",
+        "src.scripts.batch_evaluate",
         "--models_dir",
         models_dir,
         "--data_dir",

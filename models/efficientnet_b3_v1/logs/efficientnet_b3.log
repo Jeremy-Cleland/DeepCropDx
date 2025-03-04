@@ -1,0 +1,1541 @@
+2025-03-03 22:57:31,728 - INFO - Starting experiment: efficientnet_b3
+2025-03-03 22:57:31,728 - INFO - Command line arguments: Namespace(data_dir='data/raw', output_dir='models/efficientnet_b3_v1', model='efficientnet_b3', img_size=224, batch_size=32, num_workers=16, epochs=30, lr=0.001, weight_decay=0.0001, use_weights=True, freeze_backbone=True, no_cuda=False, no_mps=False, use_mps=True, use_amp=False, memory_efficient=True, cache_dataset=True, mps_graph=True, mps_fallback=False, pin_memory=False, optimize_for_m_series=True, patience=10, keep_top_k=3, version=None, find_lr=False, experiment_name='efficientnet_b3', resnet_version=50)
+2025-03-03 22:57:31,728 - INFO - Processing dataset...
+2025-03-03 22:57:31,801 - INFO - Class distribution:
+2025-03-03 22:57:31,801 - INFO -   Tomato_healthy: 1591 images
+2025-03-03 22:57:31,801 - INFO -   Potato___Early_blight: 1000 images
+2025-03-03 22:57:31,801 - INFO -   Tomato__Tomato_YellowLeaf__Curl_Virus: 3208 images
+2025-03-03 22:57:31,801 - INFO -   Tomato_Early_blight: 1000 images
+2025-03-03 22:57:31,801 - INFO -   Tomato__Target_Spot: 1404 images
+2025-03-03 22:57:31,801 - INFO -   Potato___Late_blight: 1000 images
+2025-03-03 22:57:31,801 - INFO -   Tomato_Leaf_Mold: 952 images
+2025-03-03 22:57:31,801 - INFO -   Tomato_Spider_mites_Two_spotted_spider_mite: 1676 images
+2025-03-03 22:57:31,801 - INFO -   Tomato_Septoria_leaf_spot: 1771 images
+2025-03-03 22:57:31,801 - INFO -   Tomato__Tomato_mosaic_virus: 373 images
+2025-03-03 22:57:31,801 - INFO -   Pepper__bell___Bacterial_spot: 997 images
+2025-03-03 22:57:31,801 - INFO -   Tomato_Bacterial_spot: 2127 images
+2025-03-03 22:57:31,801 - INFO -   Tomato_Late_blight: 1909 images
+2025-03-03 22:57:31,801 - INFO -   Pepper__bell___healthy: 1478 images
+2025-03-03 22:57:31,801 - INFO -   Potato___healthy: 152 images
+2025-03-03 22:57:31,801 - INFO - Creating model: efficientnet_b3 with 15 classes
+2025-03-03 22:57:32,023 - INFO - Model architecture:
+EfficientNet(
+  (features): Sequential(
+    (0): Conv2dNormActivation(
+      (0): Conv2d(3, 40, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): SiLU(inplace=True)
+    )
+    (1): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=40, bias=False)
+            (1): BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(40, 10, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(10, 40, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (2): Conv2dNormActivation(
+            (0): Conv2d(40, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.0, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(24, 24, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=24, bias=False)
+            (1): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(24, 6, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(6, 24, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (2): Conv2dNormActivation(
+            (0): Conv2d(24, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.007692307692307693, mode=row)
+      )
+    )
+    (2): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(24, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(144, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=144, bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(144, 6, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(6, 144, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(144, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.015384615384615385, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(192, 8, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(8, 192, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(192, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.02307692307692308, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(192, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=192, bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(192, 8, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(8, 192, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(192, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.03076923076923077, mode=row)
+      )
+    )
+    (3): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(192, 192, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), groups=192, bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(192, 8, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(8, 192, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.038461538461538464, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(288, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(288, 288, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=288, bias=False)
+            (1): BatchNorm2d(288, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.04615384615384616, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(288, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(288, 288, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=288, bias=False)
+            (1): BatchNorm2d(288, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(48, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.05384615384615385, mode=row)
+      )
+    )
+    (4): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(288, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(288, 288, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=288, bias=False)
+            (1): BatchNorm2d(288, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(288, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.06153846153846154, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(576, 24, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(24, 576, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(576, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.06923076923076923, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(576, 24, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(24, 576, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(576, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.07692307692307693, mode=row)
+      )
+      (3): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(576, 24, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(24, 576, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(576, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.08461538461538462, mode=row)
+      )
+      (4): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(576, 576, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=576, bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(576, 24, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(24, 576, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(576, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.09230769230769233, mode=row)
+      )
+    )
+    (5): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(96, 576, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(576, 576, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=576, bias=False)
+            (1): BatchNorm2d(576, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(576, 24, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(24, 576, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(576, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(136, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(136, 816, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(816, 816, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=816, bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(816, 34, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(34, 816, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(816, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(136, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1076923076923077, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(136, 816, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(816, 816, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=816, bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(816, 34, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(34, 816, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(816, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(136, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.11538461538461539, mode=row)
+      )
+      (3): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(136, 816, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(816, 816, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=816, bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(816, 34, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(34, 816, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(816, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(136, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.12307692307692308, mode=row)
+      )
+      (4): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(136, 816, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(816, 816, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=816, bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(816, 34, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(34, 816, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(816, 136, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(136, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.13076923076923078, mode=row)
+      )
+    )
+    (6): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(136, 816, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(816, 816, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), groups=816, bias=False)
+            (1): BatchNorm2d(816, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(816, 34, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(34, 816, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(816, 232, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(232, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.13846153846153847, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(232, 1392, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1392, 1392, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1392, bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1392, 58, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(58, 1392, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1392, 232, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(232, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.14615384615384616, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(232, 1392, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1392, 1392, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1392, bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1392, 58, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(58, 1392, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1392, 232, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(232, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.15384615384615385, mode=row)
+      )
+      (3): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(232, 1392, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1392, 1392, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1392, bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1392, 58, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(58, 1392, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1392, 232, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(232, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.16153846153846155, mode=row)
+      )
+      (4): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(232, 1392, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1392, 1392, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1392, bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1392, 58, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(58, 1392, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1392, 232, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(232, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.16923076923076924, mode=row)
+      )
+      (5): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(232, 1392, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1392, 1392, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1392, bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1392, 58, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(58, 1392, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1392, 232, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(232, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.17692307692307693, mode=row)
+      )
+    )
+    (7): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(232, 1392, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1392, 1392, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1392, bias=False)
+            (1): BatchNorm2d(1392, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1392, 58, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(58, 1392, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1392, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.18461538461538465, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(2304, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(2304, 2304, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2304, bias=False)
+            (1): BatchNorm2d(2304, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.19230769230769232, mode=row)
+      )
+    )
+    (8): Conv2dNormActivation(
+      (0): Conv2d(384, 1536, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): BatchNorm2d(1536, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): SiLU(inplace=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=1)
+  (classifier): Sequential(
+    (0): Dropout(p=0.3, inplace=False)
+    (1): Linear(in_features=1536, out_features=512, bias=True)
+    (2): ReLU()
+    (3): Dropout(p=0.2, inplace=False)
+    (4): Linear(in_features=512, out_features=15, bias=True)
+  )
+)
+2025-03-03 22:57:32,025 - INFO - Using class weights: [0.5015516  0.7979687  0.24874336 0.7979687  0.5683538  0.7979687
+ 0.8382024  0.47611496 0.4505752  2.1393263  0.8003698  0.3751616
+ 0.4180035  0.5398976  5.249794  ]
+2025-03-03 22:57:32,025 - INFO - Training only 4 parameters (classifier)
+2025-03-03 22:57:32,026 - INFO - Starting training for 30 epochs
+2025-03-03 22:57:32,026 - INFO - Using Automatic Mixed Precision: False
+2025-03-03 22:57:32,026 - INFO - Early stopping patience: 10
+2025-03-03 22:57:32,026 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:57:32,026 - INFO - Starting training: efficientnet_b3
+2025-03-03 22:57:32,026 - INFO - Total epochs: 30
+2025-03-03 22:57:32,026 - INFO - Training batches per epoch: 452
+2025-03-03 22:57:32,026 - INFO - Validation batches per epoch: 97
+2025-03-03 22:57:32,026 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:57:32,027 - INFO - Training model: efficientnet_b3_v1
+2025-03-03 22:57:32,027 - INFO - Epoch 1/30
+2025-03-03 22:57:32,027 - INFO - ----------------------------------------
+2025-03-03 22:58:02,057 - INFO - [TRAIN] Epoch: 1/30 | Batch: 0/452 (0.2%) | Loss: 2.7236 | Batch time: 0.70s
+2025-03-03 22:58:04,112 - INFO - [TRAIN] Epoch: 1/30 | Batch: 45/452 (10.2%) | Loss: 2.0043 | Batch time: 0.04s
+2025-03-03 22:58:06,125 - INFO - [TRAIN] Epoch: 1/30 | Batch: 90/452 (20.1%) | Loss: 1.7268 | Batch time: 0.04s
+2025-03-03 22:58:08,151 - INFO - [TRAIN] Epoch: 1/30 | Batch: 135/452 (30.1%) | Loss: 1.3063 | Batch time: 0.04s
+2025-03-03 22:58:10,176 - INFO - [TRAIN] Epoch: 1/30 | Batch: 180/452 (40.0%) | Loss: 1.3307 | Batch time: 0.04s
+2025-03-03 22:58:12,231 - INFO - [TRAIN] Epoch: 1/30 | Batch: 225/452 (50.0%) | Loss: 1.3189 | Batch time: 0.04s
+2025-03-03 22:58:14,289 - INFO - [TRAIN] Epoch: 1/30 | Batch: 270/452 (60.0%) | Loss: 1.5259 | Batch time: 0.04s
+2025-03-03 22:58:16,362 - INFO - [TRAIN] Epoch: 1/30 | Batch: 315/452 (69.9%) | Loss: 1.2193 | Batch time: 0.04s
+2025-03-03 22:58:18,440 - INFO - [TRAIN] Epoch: 1/30 | Batch: 360/452 (79.9%) | Loss: 0.8376 | Batch time: 0.04s
+2025-03-03 22:58:20,501 - INFO - [TRAIN] Epoch: 1/30 | Batch: 405/452 (89.8%) | Loss: 1.2119 | Batch time: 0.05s
+2025-03-03 22:58:22,527 - INFO - [TRAIN] Epoch: 1/30 | Batch: 450/452 (99.8%) | Loss: 1.6800 | Batch time: 0.04s
+2025-03-03 22:58:22,957 - INFO - [TRAIN] Epoch: 1/30 | Batch: 451/452 (100.0%) | Loss: 3.1166 | Batch time: 0.43s
+2025-03-03 22:58:54,750 - INFO - [VAL] Epoch: 1/30 | Batch: 0/97 (1.0%) | Loss: 0.7043 | Batch time: 0.41s
+2025-03-03 22:58:55,067 - INFO - [VAL] Epoch: 1/30 | Batch: 9/97 (10.3%) | Loss: 1.1172 | Batch time: 0.03s
+2025-03-03 22:58:55,383 - INFO - [VAL] Epoch: 1/30 | Batch: 18/97 (19.6%) | Loss: 0.9437 | Batch time: 0.03s
+2025-03-03 22:58:55,698 - INFO - [VAL] Epoch: 1/30 | Batch: 27/97 (28.9%) | Loss: 0.9436 | Batch time: 0.03s
+2025-03-03 22:58:56,018 - INFO - [VAL] Epoch: 1/30 | Batch: 36/97 (38.1%) | Loss: 0.8647 | Batch time: 0.03s
+2025-03-03 22:58:56,342 - INFO - [VAL] Epoch: 1/30 | Batch: 45/97 (47.4%) | Loss: 0.7964 | Batch time: 0.03s
+2025-03-03 22:58:56,659 - INFO - [VAL] Epoch: 1/30 | Batch: 54/97 (56.7%) | Loss: 1.6495 | Batch time: 0.03s
+2025-03-03 22:58:56,979 - INFO - [VAL] Epoch: 1/30 | Batch: 63/97 (66.0%) | Loss: 0.7856 | Batch time: 0.03s
+2025-03-03 22:58:57,294 - INFO - [VAL] Epoch: 1/30 | Batch: 72/97 (75.3%) | Loss: 0.9702 | Batch time: 0.03s
+2025-03-03 22:58:57,608 - INFO - [VAL] Epoch: 1/30 | Batch: 81/97 (84.5%) | Loss: 0.7891 | Batch time: 0.03s
+2025-03-03 22:58:57,920 - INFO - [VAL] Epoch: 1/30 | Batch: 90/97 (93.8%) | Loss: 0.8309 | Batch time: 0.03s
+2025-03-03 22:58:58,411 - INFO - [VAL] Epoch: 1/30 | Batch: 96/97 (100.0%) | Loss: 1.0157 | Batch time: 0.31s
+2025-03-03 22:58:58,764 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 1)
+2025-03-03 22:58:58,764 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:58:58,764 - INFO - Epoch 1/30 completed in 86.74s
+2025-03-03 22:58:58,764 - INFO - Training   - Loss: 1.4843, Accuracy: 0.5424, F1: 0.5491
+2025-03-03 22:58:58,764 - INFO - Validation - Loss: 0.9306, Accuracy: 0.7161, F1: 0.7185
+2025-03-03 22:58:58,764 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:58:58,765 - INFO - Epoch 2/30
+2025-03-03 22:58:58,765 - INFO - ----------------------------------------
+2025-03-03 22:58:59,042 - INFO - [TRAIN] Epoch: 2/30 | Batch: 0/452 (0.2%) | Loss: 1.6695 | Batch time: 0.06s
+2025-03-03 22:59:01,166 - INFO - [TRAIN] Epoch: 2/30 | Batch: 45/452 (10.2%) | Loss: 1.0343 | Batch time: 0.04s
+2025-03-03 22:59:03,186 - INFO - [TRAIN] Epoch: 2/30 | Batch: 90/452 (20.1%) | Loss: 0.8376 | Batch time: 0.04s
+2025-03-03 22:59:05,237 - INFO - [TRAIN] Epoch: 2/30 | Batch: 135/452 (30.1%) | Loss: 0.7688 | Batch time: 0.04s
+2025-03-03 22:59:07,279 - INFO - [TRAIN] Epoch: 2/30 | Batch: 180/452 (40.0%) | Loss: 1.1304 | Batch time: 0.04s
+2025-03-03 22:59:09,335 - INFO - [TRAIN] Epoch: 2/30 | Batch: 225/452 (50.0%) | Loss: 1.0511 | Batch time: 0.05s
+2025-03-03 22:59:11,411 - INFO - [TRAIN] Epoch: 2/30 | Batch: 270/452 (60.0%) | Loss: 1.0604 | Batch time: 0.05s
+2025-03-03 22:59:13,526 - INFO - [TRAIN] Epoch: 2/30 | Batch: 315/452 (69.9%) | Loss: 1.7272 | Batch time: 0.05s
+2025-03-03 22:59:15,653 - INFO - [TRAIN] Epoch: 2/30 | Batch: 360/452 (79.9%) | Loss: 1.2604 | Batch time: 0.05s
+2025-03-03 22:59:17,774 - INFO - [TRAIN] Epoch: 2/30 | Batch: 405/452 (89.8%) | Loss: 0.9450 | Batch time: 0.05s
+2025-03-03 22:59:19,820 - INFO - [TRAIN] Epoch: 2/30 | Batch: 450/452 (99.8%) | Loss: 1.5453 | Batch time: 0.04s
+2025-03-03 22:59:19,848 - INFO - [TRAIN] Epoch: 2/30 | Batch: 451/452 (100.0%) | Loss: 1.0328 | Batch time: 0.03s
+2025-03-03 22:59:19,965 - INFO - [VAL] Epoch: 2/30 | Batch: 0/97 (1.0%) | Loss: 0.6712 | Batch time: 0.05s
+2025-03-03 22:59:20,287 - INFO - [VAL] Epoch: 2/30 | Batch: 9/97 (10.3%) | Loss: 0.9508 | Batch time: 0.04s
+2025-03-03 22:59:20,613 - INFO - [VAL] Epoch: 2/30 | Batch: 18/97 (19.6%) | Loss: 0.9038 | Batch time: 0.04s
+2025-03-03 22:59:20,939 - INFO - [VAL] Epoch: 2/30 | Batch: 27/97 (28.9%) | Loss: 0.8355 | Batch time: 0.04s
+2025-03-03 22:59:21,268 - INFO - [VAL] Epoch: 2/30 | Batch: 36/97 (38.1%) | Loss: 0.7322 | Batch time: 0.04s
+2025-03-03 22:59:21,603 - INFO - [VAL] Epoch: 2/30 | Batch: 45/97 (47.4%) | Loss: 0.7510 | Batch time: 0.04s
+2025-03-03 22:59:21,939 - INFO - [VAL] Epoch: 2/30 | Batch: 54/97 (56.7%) | Loss: 1.3585 | Batch time: 0.04s
+2025-03-03 22:59:22,272 - INFO - [VAL] Epoch: 2/30 | Batch: 63/97 (66.0%) | Loss: 0.4027 | Batch time: 0.04s
+2025-03-03 22:59:22,610 - INFO - [VAL] Epoch: 2/30 | Batch: 72/97 (75.3%) | Loss: 0.8408 | Batch time: 0.04s
+2025-03-03 22:59:22,945 - INFO - [VAL] Epoch: 2/30 | Batch: 81/97 (84.5%) | Loss: 0.5204 | Batch time: 0.04s
+2025-03-03 22:59:23,277 - INFO - [VAL] Epoch: 2/30 | Batch: 90/97 (93.8%) | Loss: 0.6038 | Batch time: 0.04s
+2025-03-03 22:59:23,489 - INFO - [VAL] Epoch: 2/30 | Batch: 96/97 (100.0%) | Loss: 0.7863 | Batch time: 0.03s
+2025-03-03 22:59:23,778 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 2)
+2025-03-03 22:59:23,778 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:59:23,778 - INFO - Epoch 2/30 completed in 25.01s
+2025-03-03 22:59:23,778 - INFO - Training   - Loss: 1.1473, Accuracy: 0.6251, F1: 0.6302
+2025-03-03 22:59:23,778 - INFO - Validation - Loss: 0.8159, Accuracy: 0.7403, F1: 0.7408
+2025-03-03 22:59:23,778 - INFO - Validation F1 improved from 0.7185 to 0.7408
+2025-03-03 22:59:23,778 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:59:23,778 - INFO - Epoch 3/30
+2025-03-03 22:59:23,778 - INFO - ----------------------------------------
+2025-03-03 22:59:24,076 - INFO - [TRAIN] Epoch: 3/30 | Batch: 0/452 (0.2%) | Loss: 1.1898 | Batch time: 0.06s
+2025-03-03 22:59:26,188 - INFO - [TRAIN] Epoch: 3/30 | Batch: 45/452 (10.2%) | Loss: 1.2170 | Batch time: 0.05s
+2025-03-03 22:59:28,299 - INFO - [TRAIN] Epoch: 3/30 | Batch: 90/452 (20.1%) | Loss: 1.3353 | Batch time: 0.05s
+2025-03-03 22:59:30,424 - INFO - [TRAIN] Epoch: 3/30 | Batch: 135/452 (30.1%) | Loss: 0.9854 | Batch time: 0.05s
+2025-03-03 22:59:32,554 - INFO - [TRAIN] Epoch: 3/30 | Batch: 180/452 (40.0%) | Loss: 1.3454 | Batch time: 0.05s
+2025-03-03 22:59:34,722 - INFO - [TRAIN] Epoch: 3/30 | Batch: 225/452 (50.0%) | Loss: 1.2239 | Batch time: 0.05s
+2025-03-03 22:59:36,870 - INFO - [TRAIN] Epoch: 3/30 | Batch: 270/452 (60.0%) | Loss: 1.1810 | Batch time: 0.05s
+2025-03-03 22:59:39,014 - INFO - [TRAIN] Epoch: 3/30 | Batch: 315/452 (69.9%) | Loss: 0.7874 | Batch time: 0.05s
+2025-03-03 22:59:41,165 - INFO - [TRAIN] Epoch: 3/30 | Batch: 360/452 (79.9%) | Loss: 0.8277 | Batch time: 0.05s
+2025-03-03 22:59:43,319 - INFO - [TRAIN] Epoch: 3/30 | Batch: 405/452 (89.8%) | Loss: 1.1932 | Batch time: 0.05s
+2025-03-03 22:59:45,420 - INFO - [TRAIN] Epoch: 3/30 | Batch: 450/452 (99.8%) | Loss: 1.1426 | Batch time: 0.04s
+2025-03-03 22:59:45,443 - INFO - [TRAIN] Epoch: 3/30 | Batch: 451/452 (100.0%) | Loss: 1.1704 | Batch time: 0.02s
+2025-03-03 22:59:45,551 - INFO - [VAL] Epoch: 3/30 | Batch: 0/97 (1.0%) | Loss: 0.8093 | Batch time: 0.05s
+2025-03-03 22:59:45,897 - INFO - [VAL] Epoch: 3/30 | Batch: 9/97 (10.3%) | Loss: 0.9350 | Batch time: 0.04s
+2025-03-03 22:59:46,243 - INFO - [VAL] Epoch: 3/30 | Batch: 18/97 (19.6%) | Loss: 0.7898 | Batch time: 0.04s
+2025-03-03 22:59:46,581 - INFO - [VAL] Epoch: 3/30 | Batch: 27/97 (28.9%) | Loss: 0.7796 | Batch time: 0.04s
+2025-03-03 22:59:46,923 - INFO - [VAL] Epoch: 3/30 | Batch: 36/97 (38.1%) | Loss: 0.7378 | Batch time: 0.04s
+2025-03-03 22:59:47,270 - INFO - [VAL] Epoch: 3/30 | Batch: 45/97 (47.4%) | Loss: 0.7444 | Batch time: 0.04s
+2025-03-03 22:59:47,616 - INFO - [VAL] Epoch: 3/30 | Batch: 54/97 (56.7%) | Loss: 1.4108 | Batch time: 0.04s
+2025-03-03 22:59:47,960 - INFO - [VAL] Epoch: 3/30 | Batch: 63/97 (66.0%) | Loss: 1.0695 | Batch time: 0.04s
+2025-03-03 22:59:48,297 - INFO - [VAL] Epoch: 3/30 | Batch: 72/97 (75.3%) | Loss: 0.7115 | Batch time: 0.04s
+2025-03-03 22:59:48,633 - INFO - [VAL] Epoch: 3/30 | Batch: 81/97 (84.5%) | Loss: 0.5075 | Batch time: 0.04s
+2025-03-03 22:59:48,970 - INFO - [VAL] Epoch: 3/30 | Batch: 90/97 (93.8%) | Loss: 0.6726 | Batch time: 0.04s
+2025-03-03 22:59:49,184 - INFO - [VAL] Epoch: 3/30 | Batch: 96/97 (100.0%) | Loss: 1.0055 | Batch time: 0.03s
+2025-03-03 22:59:49,187 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:59:49,187 - INFO - Epoch 3/30 completed in 25.41s
+2025-03-03 22:59:49,187 - INFO - Training   - Loss: 1.1076, Accuracy: 0.6400, F1: 0.6453
+2025-03-03 22:59:49,187 - INFO - Validation - Loss: 0.8931, Accuracy: 0.7342, F1: 0.7407
+2025-03-03 22:59:49,187 - INFO - --------------------------------------------------------------------------------
+2025-03-03 22:59:49,187 - INFO - Epoch 4/30
+2025-03-03 22:59:49,187 - INFO - ----------------------------------------
+2025-03-03 22:59:49,474 - INFO - [TRAIN] Epoch: 4/30 | Batch: 0/452 (0.2%) | Loss: 1.1025 | Batch time: 0.06s
+2025-03-03 22:59:51,618 - INFO - [TRAIN] Epoch: 4/30 | Batch: 45/452 (10.2%) | Loss: 1.2057 | Batch time: 0.05s
+2025-03-03 22:59:53,759 - INFO - [TRAIN] Epoch: 4/30 | Batch: 90/452 (20.1%) | Loss: 1.0129 | Batch time: 0.05s
+2025-03-03 22:59:55,896 - INFO - [TRAIN] Epoch: 4/30 | Batch: 135/452 (30.1%) | Loss: 1.0854 | Batch time: 0.05s
+2025-03-03 22:59:58,004 - INFO - [TRAIN] Epoch: 4/30 | Batch: 180/452 (40.0%) | Loss: 1.1056 | Batch time: 0.05s
+2025-03-03 23:00:00,089 - INFO - [TRAIN] Epoch: 4/30 | Batch: 225/452 (50.0%) | Loss: 0.9037 | Batch time: 0.05s
+2025-03-03 23:00:02,197 - INFO - [TRAIN] Epoch: 4/30 | Batch: 270/452 (60.0%) | Loss: 0.8879 | Batch time: 0.05s
+2025-03-03 23:00:04,275 - INFO - [TRAIN] Epoch: 4/30 | Batch: 315/452 (69.9%) | Loss: 1.4624 | Batch time: 0.04s
+2025-03-03 23:00:06,363 - INFO - [TRAIN] Epoch: 4/30 | Batch: 360/452 (79.9%) | Loss: 1.2751 | Batch time: 0.05s
+2025-03-03 23:00:08,415 - INFO - [TRAIN] Epoch: 4/30 | Batch: 405/452 (89.8%) | Loss: 1.2649 | Batch time: 0.04s
+2025-03-03 23:00:10,440 - INFO - [TRAIN] Epoch: 4/30 | Batch: 450/452 (99.8%) | Loss: 0.9478 | Batch time: 0.04s
+2025-03-03 23:00:10,465 - INFO - [TRAIN] Epoch: 4/30 | Batch: 451/452 (100.0%) | Loss: 2.2749 | Batch time: 0.02s
+2025-03-03 23:00:10,570 - INFO - [VAL] Epoch: 4/30 | Batch: 0/97 (1.0%) | Loss: 0.8085 | Batch time: 0.04s
+2025-03-03 23:00:10,893 - INFO - [VAL] Epoch: 4/30 | Batch: 9/97 (10.3%) | Loss: 0.9182 | Batch time: 0.03s
+2025-03-03 23:00:11,213 - INFO - [VAL] Epoch: 4/30 | Batch: 18/97 (19.6%) | Loss: 0.6722 | Batch time: 0.04s
+2025-03-03 23:00:11,531 - INFO - [VAL] Epoch: 4/30 | Batch: 27/97 (28.9%) | Loss: 1.0624 | Batch time: 0.04s
+2025-03-03 23:00:11,852 - INFO - [VAL] Epoch: 4/30 | Batch: 36/97 (38.1%) | Loss: 0.6592 | Batch time: 0.04s
+2025-03-03 23:00:12,174 - INFO - [VAL] Epoch: 4/30 | Batch: 45/97 (47.4%) | Loss: 0.6877 | Batch time: 0.04s
+2025-03-03 23:00:12,493 - INFO - [VAL] Epoch: 4/30 | Batch: 54/97 (56.7%) | Loss: 1.3169 | Batch time: 0.03s
+2025-03-03 23:00:12,813 - INFO - [VAL] Epoch: 4/30 | Batch: 63/97 (66.0%) | Loss: 0.6566 | Batch time: 0.04s
+2025-03-03 23:00:13,140 - INFO - [VAL] Epoch: 4/30 | Batch: 72/97 (75.3%) | Loss: 0.5711 | Batch time: 0.04s
+2025-03-03 23:00:13,459 - INFO - [VAL] Epoch: 4/30 | Batch: 81/97 (84.5%) | Loss: 0.5332 | Batch time: 0.03s
+2025-03-03 23:00:13,777 - INFO - [VAL] Epoch: 4/30 | Batch: 90/97 (93.8%) | Loss: 0.8379 | Batch time: 0.03s
+2025-03-03 23:00:13,982 - INFO - [VAL] Epoch: 4/30 | Batch: 96/97 (100.0%) | Loss: 0.7339 | Batch time: 0.03s
+2025-03-03 23:00:14,266 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 4)
+2025-03-03 23:00:14,266 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:00:14,266 - INFO - Epoch 4/30 completed in 25.08s
+2025-03-03 23:00:14,266 - INFO - Training   - Loss: 1.0618, Accuracy: 0.6546, F1: 0.6601
+2025-03-03 23:00:14,266 - INFO - Validation - Loss: 0.7845, Accuracy: 0.7461, F1: 0.7473
+2025-03-03 23:00:14,266 - INFO - Validation F1 improved from 0.7408 to 0.7473
+2025-03-03 23:00:14,266 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:00:14,266 - INFO - Epoch 5/30
+2025-03-03 23:00:14,266 - INFO - ----------------------------------------
+2025-03-03 23:00:14,549 - INFO - [TRAIN] Epoch: 5/30 | Batch: 0/452 (0.2%) | Loss: 0.9799 | Batch time: 0.06s
+2025-03-03 23:00:16,692 - INFO - [TRAIN] Epoch: 5/30 | Batch: 45/452 (10.2%) | Loss: 1.2519 | Batch time: 0.04s
+2025-03-03 23:00:18,773 - INFO - [TRAIN] Epoch: 5/30 | Batch: 90/452 (20.1%) | Loss: 0.6784 | Batch time: 0.05s
+2025-03-03 23:00:20,887 - INFO - [TRAIN] Epoch: 5/30 | Batch: 135/452 (30.1%) | Loss: 0.9755 | Batch time: 0.05s
+2025-03-03 23:00:23,065 - INFO - [TRAIN] Epoch: 5/30 | Batch: 180/452 (40.0%) | Loss: 1.2329 | Batch time: 0.05s
+2025-03-03 23:00:25,149 - INFO - [TRAIN] Epoch: 5/30 | Batch: 225/452 (50.0%) | Loss: 0.8729 | Batch time: 0.05s
+2025-03-03 23:00:27,210 - INFO - [TRAIN] Epoch: 5/30 | Batch: 270/452 (60.0%) | Loss: 0.7567 | Batch time: 0.05s
+2025-03-03 23:00:29,405 - INFO - [TRAIN] Epoch: 5/30 | Batch: 315/452 (69.9%) | Loss: 0.8253 | Batch time: 0.04s
+2025-03-03 23:00:31,500 - INFO - [TRAIN] Epoch: 5/30 | Batch: 360/452 (79.9%) | Loss: 0.7201 | Batch time: 0.05s
+2025-03-03 23:00:33,598 - INFO - [TRAIN] Epoch: 5/30 | Batch: 405/452 (89.8%) | Loss: 1.5880 | Batch time: 0.04s
+2025-03-03 23:00:35,610 - INFO - [TRAIN] Epoch: 5/30 | Batch: 450/452 (99.8%) | Loss: 0.9097 | Batch time: 0.04s
+2025-03-03 23:00:35,634 - INFO - [TRAIN] Epoch: 5/30 | Batch: 451/452 (100.0%) | Loss: 0.5737 | Batch time: 0.02s
+2025-03-03 23:00:35,743 - INFO - [VAL] Epoch: 5/30 | Batch: 0/97 (1.0%) | Loss: 0.7595 | Batch time: 0.05s
+2025-03-03 23:00:36,047 - INFO - [VAL] Epoch: 5/30 | Batch: 9/97 (10.3%) | Loss: 0.8828 | Batch time: 0.03s
+2025-03-03 23:00:36,354 - INFO - [VAL] Epoch: 5/30 | Batch: 18/97 (19.6%) | Loss: 0.6948 | Batch time: 0.03s
+2025-03-03 23:00:36,663 - INFO - [VAL] Epoch: 5/30 | Batch: 27/97 (28.9%) | Loss: 0.6945 | Batch time: 0.03s
+2025-03-03 23:00:36,974 - INFO - [VAL] Epoch: 5/30 | Batch: 36/97 (38.1%) | Loss: 0.6689 | Batch time: 0.03s
+2025-03-03 23:00:37,288 - INFO - [VAL] Epoch: 5/30 | Batch: 45/97 (47.4%) | Loss: 0.6622 | Batch time: 0.03s
+2025-03-03 23:00:37,604 - INFO - [VAL] Epoch: 5/30 | Batch: 54/97 (56.7%) | Loss: 0.9849 | Batch time: 0.03s
+2025-03-03 23:00:37,921 - INFO - [VAL] Epoch: 5/30 | Batch: 63/97 (66.0%) | Loss: 0.3189 | Batch time: 0.03s
+2025-03-03 23:00:38,240 - INFO - [VAL] Epoch: 5/30 | Batch: 72/97 (75.3%) | Loss: 0.8596 | Batch time: 0.03s
+2025-03-03 23:00:38,558 - INFO - [VAL] Epoch: 5/30 | Batch: 81/97 (84.5%) | Loss: 0.3390 | Batch time: 0.03s
+2025-03-03 23:00:38,874 - INFO - [VAL] Epoch: 5/30 | Batch: 90/97 (93.8%) | Loss: 0.5599 | Batch time: 0.03s
+2025-03-03 23:00:39,077 - INFO - [VAL] Epoch: 5/30 | Batch: 96/97 (100.0%) | Loss: 0.6023 | Batch time: 0.03s
+2025-03-03 23:00:39,350 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 5)
+2025-03-03 23:00:39,350 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:00:39,350 - INFO - Epoch 5/30 completed in 25.08s
+2025-03-03 23:00:39,350 - INFO - Training   - Loss: 1.0574, Accuracy: 0.6563, F1: 0.6612
+2025-03-03 23:00:39,350 - INFO - Validation - Loss: 0.6655, Accuracy: 0.7846, F1: 0.7882
+2025-03-03 23:00:39,350 - INFO - Validation F1 improved from 0.7473 to 0.7882
+2025-03-03 23:00:39,350 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:00:39,504 - INFO - Checkpoint saved: checkpoint_epoch_5.pth (Epoch 5)
+2025-03-03 23:00:39,504 - INFO - Epoch 6/30
+2025-03-03 23:00:39,504 - INFO - ----------------------------------------
+2025-03-03 23:00:39,777 - INFO - [TRAIN] Epoch: 6/30 | Batch: 0/452 (0.2%) | Loss: 0.5781 | Batch time: 0.08s
+2025-03-03 23:00:41,784 - INFO - [TRAIN] Epoch: 6/30 | Batch: 45/452 (10.2%) | Loss: 0.9878 | Batch time: 0.04s
+2025-03-03 23:00:43,860 - INFO - [TRAIN] Epoch: 6/30 | Batch: 90/452 (20.1%) | Loss: 0.9099 | Batch time: 0.05s
+2025-03-03 23:00:46,046 - INFO - [TRAIN] Epoch: 6/30 | Batch: 135/452 (30.1%) | Loss: 1.0388 | Batch time: 0.05s
+2025-03-03 23:00:48,249 - INFO - [TRAIN] Epoch: 6/30 | Batch: 180/452 (40.0%) | Loss: 0.9732 | Batch time: 0.05s
+2025-03-03 23:00:50,669 - INFO - [TRAIN] Epoch: 6/30 | Batch: 225/452 (50.0%) | Loss: 0.9727 | Batch time: 0.06s
+2025-03-03 23:00:53,277 - INFO - [TRAIN] Epoch: 6/30 | Batch: 270/452 (60.0%) | Loss: 1.0663 | Batch time: 0.05s
+2025-03-03 23:00:55,576 - INFO - [TRAIN] Epoch: 6/30 | Batch: 315/452 (69.9%) | Loss: 0.7985 | Batch time: 0.06s
+2025-03-03 23:00:57,910 - INFO - [TRAIN] Epoch: 6/30 | Batch: 360/452 (79.9%) | Loss: 0.6413 | Batch time: 0.05s
+2025-03-03 23:01:00,244 - INFO - [TRAIN] Epoch: 6/30 | Batch: 405/452 (89.8%) | Loss: 1.6575 | Batch time: 0.05s
+2025-03-03 23:01:02,367 - INFO - [TRAIN] Epoch: 6/30 | Batch: 450/452 (99.8%) | Loss: 0.9667 | Batch time: 0.04s
+2025-03-03 23:01:02,392 - INFO - [TRAIN] Epoch: 6/30 | Batch: 451/452 (100.0%) | Loss: 0.7432 | Batch time: 0.02s
+2025-03-03 23:01:02,513 - INFO - [VAL] Epoch: 6/30 | Batch: 0/97 (1.0%) | Loss: 0.5688 | Batch time: 0.05s
+2025-03-03 23:01:02,819 - INFO - [VAL] Epoch: 6/30 | Batch: 9/97 (10.3%) | Loss: 0.7062 | Batch time: 0.03s
+2025-03-03 23:01:03,137 - INFO - [VAL] Epoch: 6/30 | Batch: 18/97 (19.6%) | Loss: 0.6432 | Batch time: 0.04s
+2025-03-03 23:01:03,460 - INFO - [VAL] Epoch: 6/30 | Batch: 27/97 (28.9%) | Loss: 0.6685 | Batch time: 0.04s
+2025-03-03 23:01:03,785 - INFO - [VAL] Epoch: 6/30 | Batch: 36/97 (38.1%) | Loss: 0.7455 | Batch time: 0.04s
+2025-03-03 23:01:04,112 - INFO - [VAL] Epoch: 6/30 | Batch: 45/97 (47.4%) | Loss: 0.6628 | Batch time: 0.04s
+2025-03-03 23:01:04,438 - INFO - [VAL] Epoch: 6/30 | Batch: 54/97 (56.7%) | Loss: 1.2402 | Batch time: 0.04s
+2025-03-03 23:01:04,768 - INFO - [VAL] Epoch: 6/30 | Batch: 63/97 (66.0%) | Loss: 0.2455 | Batch time: 0.04s
+2025-03-03 23:01:05,098 - INFO - [VAL] Epoch: 6/30 | Batch: 72/97 (75.3%) | Loss: 0.6644 | Batch time: 0.04s
+2025-03-03 23:01:05,426 - INFO - [VAL] Epoch: 6/30 | Batch: 81/97 (84.5%) | Loss: 0.5510 | Batch time: 0.04s
+2025-03-03 23:01:05,753 - INFO - [VAL] Epoch: 6/30 | Batch: 90/97 (93.8%) | Loss: 0.4297 | Batch time: 0.04s
+2025-03-03 23:01:05,962 - INFO - [VAL] Epoch: 6/30 | Batch: 96/97 (100.0%) | Loss: 0.7537 | Batch time: 0.03s
+2025-03-03 23:01:05,966 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:01:05,966 - INFO - Epoch 6/30 completed in 26.46s
+2025-03-03 23:01:05,966 - INFO - Training   - Loss: 1.0327, Accuracy: 0.6674, F1: 0.6718
+2025-03-03 23:01:05,966 - INFO - Validation - Loss: 0.7048, Accuracy: 0.7745, F1: 0.7709
+2025-03-03 23:01:05,966 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:01:05,966 - INFO - Epoch 7/30
+2025-03-03 23:01:05,966 - INFO - ----------------------------------------
+2025-03-03 23:01:06,236 - INFO - [TRAIN] Epoch: 7/30 | Batch: 0/452 (0.2%) | Loss: 0.8410 | Batch time: 0.07s
+2025-03-03 23:01:08,823 - INFO - [TRAIN] Epoch: 7/30 | Batch: 45/452 (10.2%) | Loss: 0.7395 | Batch time: 0.05s
+2025-03-03 23:01:11,404 - INFO - [TRAIN] Epoch: 7/30 | Batch: 90/452 (20.1%) | Loss: 0.6350 | Batch time: 0.06s
+2025-03-03 23:01:14,023 - INFO - [TRAIN] Epoch: 7/30 | Batch: 135/452 (30.1%) | Loss: 1.3405 | Batch time: 0.06s
+2025-03-03 23:01:16,697 - INFO - [TRAIN] Epoch: 7/30 | Batch: 180/452 (40.0%) | Loss: 0.9729 | Batch time: 0.06s
+2025-03-03 23:01:19,306 - INFO - [TRAIN] Epoch: 7/30 | Batch: 225/452 (50.0%) | Loss: 0.9334 | Batch time: 0.05s
+2025-03-03 23:01:22,118 - INFO - [TRAIN] Epoch: 7/30 | Batch: 270/452 (60.0%) | Loss: 0.7272 | Batch time: 0.05s
+2025-03-03 23:01:24,860 - INFO - [TRAIN] Epoch: 7/30 | Batch: 315/452 (69.9%) | Loss: 0.7341 | Batch time: 0.06s
+2025-03-03 23:01:27,643 - INFO - [TRAIN] Epoch: 7/30 | Batch: 360/452 (79.9%) | Loss: 1.3856 | Batch time: 0.06s
+2025-03-03 23:01:30,771 - INFO - [TRAIN] Epoch: 7/30 | Batch: 405/452 (89.8%) | Loss: 0.9338 | Batch time: 0.06s
+2025-03-03 23:01:33,021 - INFO - [TRAIN] Epoch: 7/30 | Batch: 450/452 (99.8%) | Loss: 1.3337 | Batch time: 0.05s
+2025-03-03 23:01:33,049 - INFO - [TRAIN] Epoch: 7/30 | Batch: 451/452 (100.0%) | Loss: 0.8600 | Batch time: 0.03s
+2025-03-03 23:01:33,168 - INFO - [VAL] Epoch: 7/30 | Batch: 0/97 (1.0%) | Loss: 0.6393 | Batch time: 0.04s
+2025-03-03 23:01:33,512 - INFO - [VAL] Epoch: 7/30 | Batch: 9/97 (10.3%) | Loss: 0.6827 | Batch time: 0.04s
+2025-03-03 23:01:33,858 - INFO - [VAL] Epoch: 7/30 | Batch: 18/97 (19.6%) | Loss: 0.6042 | Batch time: 0.04s
+2025-03-03 23:01:34,206 - INFO - [VAL] Epoch: 7/30 | Batch: 27/97 (28.9%) | Loss: 0.6612 | Batch time: 0.04s
+2025-03-03 23:01:34,544 - INFO - [VAL] Epoch: 7/30 | Batch: 36/97 (38.1%) | Loss: 0.7126 | Batch time: 0.04s
+2025-03-03 23:01:34,888 - INFO - [VAL] Epoch: 7/30 | Batch: 45/97 (47.4%) | Loss: 0.5578 | Batch time: 0.04s
+2025-03-03 23:01:35,227 - INFO - [VAL] Epoch: 7/30 | Batch: 54/97 (56.7%) | Loss: 1.2550 | Batch time: 0.04s
+2025-03-03 23:01:35,561 - INFO - [VAL] Epoch: 7/30 | Batch: 63/97 (66.0%) | Loss: 0.3972 | Batch time: 0.04s
+2025-03-03 23:01:35,894 - INFO - [VAL] Epoch: 7/30 | Batch: 72/97 (75.3%) | Loss: 0.5421 | Batch time: 0.04s
+2025-03-03 23:01:36,223 - INFO - [VAL] Epoch: 7/30 | Batch: 81/97 (84.5%) | Loss: 0.5636 | Batch time: 0.04s
+2025-03-03 23:01:36,551 - INFO - [VAL] Epoch: 7/30 | Batch: 90/97 (93.8%) | Loss: 0.5318 | Batch time: 0.04s
+2025-03-03 23:01:36,760 - INFO - [VAL] Epoch: 7/30 | Batch: 96/97 (100.0%) | Loss: 0.6880 | Batch time: 0.03s
+2025-03-03 23:01:36,763 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:01:36,764 - INFO - Epoch 7/30 completed in 30.80s
+2025-03-03 23:01:36,764 - INFO - Training   - Loss: 0.9986, Accuracy: 0.6713, F1: 0.6756
+2025-03-03 23:01:36,764 - INFO - Validation - Loss: 0.6860, Accuracy: 0.7739, F1: 0.7723
+2025-03-03 23:01:36,764 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:01:36,764 - INFO - Epoch 8/30
+2025-03-03 23:01:36,764 - INFO - ----------------------------------------
+2025-03-03 23:01:37,018 - INFO - [TRAIN] Epoch: 8/30 | Batch: 0/452 (0.2%) | Loss: 0.9794 | Batch time: 0.06s
+2025-03-03 23:01:39,908 - INFO - [TRAIN] Epoch: 8/30 | Batch: 45/452 (10.2%) | Loss: 1.2988 | Batch time: 0.06s
+2025-03-03 23:01:42,629 - INFO - [TRAIN] Epoch: 8/30 | Batch: 90/452 (20.1%) | Loss: 0.5768 | Batch time: 0.06s
+2025-03-03 23:01:45,163 - INFO - [TRAIN] Epoch: 8/30 | Batch: 135/452 (30.1%) | Loss: 0.6344 | Batch time: 0.06s
+2025-03-03 23:01:47,951 - INFO - [TRAIN] Epoch: 8/30 | Batch: 180/452 (40.0%) | Loss: 1.0297 | Batch time: 0.07s
+2025-03-03 23:01:50,740 - INFO - [TRAIN] Epoch: 8/30 | Batch: 225/452 (50.0%) | Loss: 1.1042 | Batch time: 0.07s
+2025-03-03 23:01:53,512 - INFO - [TRAIN] Epoch: 8/30 | Batch: 270/452 (60.0%) | Loss: 1.1003 | Batch time: 0.05s
+2025-03-03 23:01:56,369 - INFO - [TRAIN] Epoch: 8/30 | Batch: 315/452 (69.9%) | Loss: 1.0889 | Batch time: 0.06s
+2025-03-03 23:01:59,494 - INFO - [TRAIN] Epoch: 8/30 | Batch: 360/452 (79.9%) | Loss: 1.5981 | Batch time: 0.06s
+2025-03-03 23:02:02,337 - INFO - [TRAIN] Epoch: 8/30 | Batch: 405/452 (89.8%) | Loss: 1.0125 | Batch time: 0.06s
+2025-03-03 23:02:04,782 - INFO - [TRAIN] Epoch: 8/30 | Batch: 450/452 (99.8%) | Loss: 1.1725 | Batch time: 0.05s
+2025-03-03 23:02:04,823 - INFO - [TRAIN] Epoch: 8/30 | Batch: 451/452 (100.0%) | Loss: 1.0724 | Batch time: 0.04s
+2025-03-03 23:02:04,969 - INFO - [VAL] Epoch: 8/30 | Batch: 0/97 (1.0%) | Loss: 0.5940 | Batch time: 0.06s
+2025-03-03 23:02:05,300 - INFO - [VAL] Epoch: 8/30 | Batch: 9/97 (10.3%) | Loss: 0.8240 | Batch time: 0.04s
+2025-03-03 23:02:05,644 - INFO - [VAL] Epoch: 8/30 | Batch: 18/97 (19.6%) | Loss: 0.6189 | Batch time: 0.04s
+2025-03-03 23:02:05,993 - INFO - [VAL] Epoch: 8/30 | Batch: 27/97 (28.9%) | Loss: 0.7348 | Batch time: 0.04s
+2025-03-03 23:02:06,363 - INFO - [VAL] Epoch: 8/30 | Batch: 36/97 (38.1%) | Loss: 0.5914 | Batch time: 0.04s
+2025-03-03 23:02:06,747 - INFO - [VAL] Epoch: 8/30 | Batch: 45/97 (47.4%) | Loss: 0.6484 | Batch time: 0.04s
+2025-03-03 23:02:07,110 - INFO - [VAL] Epoch: 8/30 | Batch: 54/97 (56.7%) | Loss: 1.3167 | Batch time: 0.04s
+2025-03-03 23:02:07,464 - INFO - [VAL] Epoch: 8/30 | Batch: 63/97 (66.0%) | Loss: 0.3375 | Batch time: 0.04s
+2025-03-03 23:02:07,814 - INFO - [VAL] Epoch: 8/30 | Batch: 72/97 (75.3%) | Loss: 0.5826 | Batch time: 0.04s
+2025-03-03 23:02:08,165 - INFO - [VAL] Epoch: 8/30 | Batch: 81/97 (84.5%) | Loss: 0.5575 | Batch time: 0.04s
+2025-03-03 23:02:08,502 - INFO - [VAL] Epoch: 8/30 | Batch: 90/97 (93.8%) | Loss: 0.6272 | Batch time: 0.04s
+2025-03-03 23:02:08,718 - INFO - [VAL] Epoch: 8/30 | Batch: 96/97 (100.0%) | Loss: 0.7572 | Batch time: 0.03s
+2025-03-03 23:02:08,723 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:02:08,723 - INFO - Epoch 8/30 completed in 31.96s
+2025-03-03 23:02:08,723 - INFO - Training   - Loss: 0.9506, Accuracy: 0.6913, F1: 0.6951
+2025-03-03 23:02:08,723 - INFO - Validation - Loss: 0.7038, Accuracy: 0.7678, F1: 0.7683
+2025-03-03 23:02:08,723 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:02:08,723 - INFO - Epoch 9/30
+2025-03-03 23:02:08,723 - INFO - ----------------------------------------
+2025-03-03 23:02:09,022 - INFO - [TRAIN] Epoch: 9/30 | Batch: 0/452 (0.2%) | Loss: 1.0032 | Batch time: 0.06s
+2025-03-03 23:02:12,488 - INFO - [TRAIN] Epoch: 9/30 | Batch: 45/452 (10.2%) | Loss: 0.9053 | Batch time: 0.06s
+2025-03-03 23:02:15,749 - INFO - [TRAIN] Epoch: 9/30 | Batch: 90/452 (20.1%) | Loss: 0.8264 | Batch time: 0.09s
+2025-03-03 23:02:18,522 - INFO - [TRAIN] Epoch: 9/30 | Batch: 135/452 (30.1%) | Loss: 0.8968 | Batch time: 0.05s
+2025-03-03 23:02:21,166 - INFO - [TRAIN] Epoch: 9/30 | Batch: 180/452 (40.0%) | Loss: 1.2132 | Batch time: 0.07s
+2025-03-03 23:02:23,796 - INFO - [TRAIN] Epoch: 9/30 | Batch: 225/452 (50.0%) | Loss: 0.8717 | Batch time: 0.06s
+2025-03-03 23:02:26,381 - INFO - [TRAIN] Epoch: 9/30 | Batch: 270/452 (60.0%) | Loss: 1.1479 | Batch time: 0.06s
+2025-03-03 23:02:28,982 - INFO - [TRAIN] Epoch: 9/30 | Batch: 315/452 (69.9%) | Loss: 1.1419 | Batch time: 0.05s
+2025-03-03 23:02:31,564 - INFO - [TRAIN] Epoch: 9/30 | Batch: 360/452 (79.9%) | Loss: 1.1329 | Batch time: 0.05s
+2025-03-03 23:02:34,167 - INFO - [TRAIN] Epoch: 9/30 | Batch: 405/452 (89.8%) | Loss: 1.4724 | Batch time: 0.05s
+2025-03-03 23:02:36,571 - INFO - [TRAIN] Epoch: 9/30 | Batch: 450/452 (99.8%) | Loss: 0.8493 | Batch time: 0.04s
+2025-03-03 23:02:36,602 - INFO - [TRAIN] Epoch: 9/30 | Batch: 451/452 (100.0%) | Loss: 0.7613 | Batch time: 0.03s
+2025-03-03 23:02:36,732 - INFO - [VAL] Epoch: 9/30 | Batch: 0/97 (1.0%) | Loss: 0.6178 | Batch time: 0.04s
+2025-03-03 23:02:37,063 - INFO - [VAL] Epoch: 9/30 | Batch: 9/97 (10.3%) | Loss: 0.8157 | Batch time: 0.04s
+2025-03-03 23:02:37,393 - INFO - [VAL] Epoch: 9/30 | Batch: 18/97 (19.6%) | Loss: 0.6138 | Batch time: 0.04s
+2025-03-03 23:02:37,727 - INFO - [VAL] Epoch: 9/30 | Batch: 27/97 (28.9%) | Loss: 0.6869 | Batch time: 0.04s
+2025-03-03 23:02:38,070 - INFO - [VAL] Epoch: 9/30 | Batch: 36/97 (38.1%) | Loss: 0.6126 | Batch time: 0.04s
+2025-03-03 23:02:38,414 - INFO - [VAL] Epoch: 9/30 | Batch: 45/97 (47.4%) | Loss: 0.5868 | Batch time: 0.04s
+2025-03-03 23:02:38,758 - INFO - [VAL] Epoch: 9/30 | Batch: 54/97 (56.7%) | Loss: 1.3515 | Batch time: 0.04s
+2025-03-03 23:02:39,106 - INFO - [VAL] Epoch: 9/30 | Batch: 63/97 (66.0%) | Loss: 0.3139 | Batch time: 0.04s
+2025-03-03 23:02:39,450 - INFO - [VAL] Epoch: 9/30 | Batch: 72/97 (75.3%) | Loss: 0.5305 | Batch time: 0.04s
+2025-03-03 23:02:39,794 - INFO - [VAL] Epoch: 9/30 | Batch: 81/97 (84.5%) | Loss: 0.5111 | Batch time: 0.04s
+2025-03-03 23:02:40,134 - INFO - [VAL] Epoch: 9/30 | Batch: 90/97 (93.8%) | Loss: 0.4281 | Batch time: 0.04s
+2025-03-03 23:02:40,351 - INFO - [VAL] Epoch: 9/30 | Batch: 96/97 (100.0%) | Loss: 0.6369 | Batch time: 0.03s
+2025-03-03 23:02:40,355 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:02:40,355 - INFO - Epoch 9/30 completed in 31.63s
+2025-03-03 23:02:40,355 - INFO - Training   - Loss: 0.9171, Accuracy: 0.6959, F1: 0.6995
+2025-03-03 23:02:40,355 - INFO - Validation - Loss: 0.6700, Accuracy: 0.7784, F1: 0.7779
+2025-03-03 23:02:40,355 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:02:40,355 - INFO - Epoch 10/30
+2025-03-03 23:02:40,355 - INFO - ----------------------------------------
+2025-03-03 23:02:40,606 - INFO - [TRAIN] Epoch: 10/30 | Batch: 0/452 (0.2%) | Loss: 0.6646 | Batch time: 0.05s
+2025-03-03 23:02:43,515 - INFO - [TRAIN] Epoch: 10/30 | Batch: 45/452 (10.2%) | Loss: 1.1093 | Batch time: 0.05s
+2025-03-03 23:02:46,207 - INFO - [TRAIN] Epoch: 10/30 | Batch: 90/452 (20.1%) | Loss: 0.9736 | Batch time: 0.06s
+2025-03-03 23:02:48,844 - INFO - [TRAIN] Epoch: 10/30 | Batch: 135/452 (30.1%) | Loss: 0.9833 | Batch time: 0.05s
+2025-03-03 23:02:51,590 - INFO - [TRAIN] Epoch: 10/30 | Batch: 180/452 (40.0%) | Loss: 1.0740 | Batch time: 0.06s
+2025-03-03 23:02:54,363 - INFO - [TRAIN] Epoch: 10/30 | Batch: 225/452 (50.0%) | Loss: 1.0222 | Batch time: 0.05s
+2025-03-03 23:02:56,991 - INFO - [TRAIN] Epoch: 10/30 | Batch: 270/452 (60.0%) | Loss: 1.1247 | Batch time: 0.06s
+2025-03-03 23:02:59,670 - INFO - [TRAIN] Epoch: 10/30 | Batch: 315/452 (69.9%) | Loss: 0.6005 | Batch time: 0.07s
+2025-03-03 23:03:02,296 - INFO - [TRAIN] Epoch: 10/30 | Batch: 360/452 (79.9%) | Loss: 1.0472 | Batch time: 0.05s
+2025-03-03 23:03:04,980 - INFO - [TRAIN] Epoch: 10/30 | Batch: 405/452 (89.8%) | Loss: 1.3434 | Batch time: 0.05s
+2025-03-03 23:03:07,234 - INFO - [TRAIN] Epoch: 10/30 | Batch: 450/452 (99.8%) | Loss: 1.0793 | Batch time: 0.05s
+2025-03-03 23:03:07,265 - INFO - [TRAIN] Epoch: 10/30 | Batch: 451/452 (100.0%) | Loss: 1.2748 | Batch time: 0.03s
+2025-03-03 23:03:07,381 - INFO - [VAL] Epoch: 10/30 | Batch: 0/97 (1.0%) | Loss: 0.7546 | Batch time: 0.04s
+2025-03-03 23:03:07,714 - INFO - [VAL] Epoch: 10/30 | Batch: 9/97 (10.3%) | Loss: 0.8279 | Batch time: 0.04s
+2025-03-03 23:03:08,052 - INFO - [VAL] Epoch: 10/30 | Batch: 18/97 (19.6%) | Loss: 0.5513 | Batch time: 0.04s
+2025-03-03 23:03:08,398 - INFO - [VAL] Epoch: 10/30 | Batch: 27/97 (28.9%) | Loss: 0.8083 | Batch time: 0.04s
+2025-03-03 23:03:08,740 - INFO - [VAL] Epoch: 10/30 | Batch: 36/97 (38.1%) | Loss: 0.6442 | Batch time: 0.04s
+2025-03-03 23:03:09,084 - INFO - [VAL] Epoch: 10/30 | Batch: 45/97 (47.4%) | Loss: 0.5828 | Batch time: 0.04s
+2025-03-03 23:03:09,433 - INFO - [VAL] Epoch: 10/30 | Batch: 54/97 (56.7%) | Loss: 1.3729 | Batch time: 0.04s
+2025-03-03 23:03:09,783 - INFO - [VAL] Epoch: 10/30 | Batch: 63/97 (66.0%) | Loss: 0.8877 | Batch time: 0.04s
+2025-03-03 23:03:10,127 - INFO - [VAL] Epoch: 10/30 | Batch: 72/97 (75.3%) | Loss: 0.6404 | Batch time: 0.04s
+2025-03-03 23:03:10,470 - INFO - [VAL] Epoch: 10/30 | Batch: 81/97 (84.5%) | Loss: 0.5342 | Batch time: 0.04s
+2025-03-03 23:03:10,808 - INFO - [VAL] Epoch: 10/30 | Batch: 90/97 (93.8%) | Loss: 0.6108 | Batch time: 0.04s
+2025-03-03 23:03:11,024 - INFO - [VAL] Epoch: 10/30 | Batch: 96/97 (100.0%) | Loss: 0.6863 | Batch time: 0.03s
+2025-03-03 23:03:11,028 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:03:11,028 - INFO - Epoch 10/30 completed in 30.67s
+2025-03-03 23:03:11,028 - INFO - Training   - Loss: 0.9297, Accuracy: 0.6967, F1: 0.7003
+2025-03-03 23:03:11,028 - INFO - Validation - Loss: 0.7114, Accuracy: 0.7703, F1: 0.7718
+2025-03-03 23:03:11,028 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:03:11,196 - INFO - Checkpoint saved: checkpoint_epoch_10.pth (Epoch 10)
+2025-03-03 23:03:11,196 - INFO - Epoch 11/30
+2025-03-03 23:03:11,197 - INFO - ----------------------------------------
+2025-03-03 23:03:11,469 - INFO - [TRAIN] Epoch: 11/30 | Batch: 0/452 (0.2%) | Loss: 0.6086 | Batch time: 0.05s
+2025-03-03 23:03:14,359 - INFO - [TRAIN] Epoch: 11/30 | Batch: 45/452 (10.2%) | Loss: 0.6648 | Batch time: 0.06s
+2025-03-03 23:03:17,099 - INFO - [TRAIN] Epoch: 11/30 | Batch: 90/452 (20.1%) | Loss: 0.7995 | Batch time: 0.06s
+2025-03-03 23:03:19,846 - INFO - [TRAIN] Epoch: 11/30 | Batch: 135/452 (30.1%) | Loss: 0.9253 | Batch time: 0.10s
+2025-03-03 23:03:22,696 - INFO - [TRAIN] Epoch: 11/30 | Batch: 180/452 (40.0%) | Loss: 0.9891 | Batch time: 0.06s
+2025-03-03 23:03:25,561 - INFO - [TRAIN] Epoch: 11/30 | Batch: 225/452 (50.0%) | Loss: 0.8442 | Batch time: 0.06s
+2025-03-03 23:03:28,412 - INFO - [TRAIN] Epoch: 11/30 | Batch: 270/452 (60.0%) | Loss: 1.0746 | Batch time: 0.07s
+2025-03-03 23:03:31,579 - INFO - [TRAIN] Epoch: 11/30 | Batch: 315/452 (69.9%) | Loss: 0.9155 | Batch time: 0.05s
+2025-03-03 23:03:34,387 - INFO - [TRAIN] Epoch: 11/30 | Batch: 360/452 (79.9%) | Loss: 0.9145 | Batch time: 0.06s
+2025-03-03 23:03:37,204 - INFO - [TRAIN] Epoch: 11/30 | Batch: 405/452 (89.8%) | Loss: 1.1359 | Batch time: 0.06s
+2025-03-03 23:03:39,601 - INFO - [TRAIN] Epoch: 11/30 | Batch: 450/452 (99.8%) | Loss: 0.8903 | Batch time: 0.05s
+2025-03-03 23:03:39,630 - INFO - [TRAIN] Epoch: 11/30 | Batch: 451/452 (100.0%) | Loss: 0.7766 | Batch time: 0.03s
+2025-03-03 23:03:39,743 - INFO - [VAL] Epoch: 11/30 | Batch: 0/97 (1.0%) | Loss: 0.5422 | Batch time: 0.04s
+2025-03-03 23:03:40,083 - INFO - [VAL] Epoch: 11/30 | Batch: 9/97 (10.3%) | Loss: 0.7983 | Batch time: 0.04s
+2025-03-03 23:03:40,419 - INFO - [VAL] Epoch: 11/30 | Batch: 18/97 (19.6%) | Loss: 0.5889 | Batch time: 0.04s
+2025-03-03 23:03:40,768 - INFO - [VAL] Epoch: 11/30 | Batch: 27/97 (28.9%) | Loss: 0.7026 | Batch time: 0.04s
+2025-03-03 23:03:41,124 - INFO - [VAL] Epoch: 11/30 | Batch: 36/97 (38.1%) | Loss: 0.5464 | Batch time: 0.04s
+2025-03-03 23:03:41,477 - INFO - [VAL] Epoch: 11/30 | Batch: 45/97 (47.4%) | Loss: 0.6015 | Batch time: 0.04s
+2025-03-03 23:03:41,827 - INFO - [VAL] Epoch: 11/30 | Batch: 54/97 (56.7%) | Loss: 1.2263 | Batch time: 0.04s
+2025-03-03 23:03:42,176 - INFO - [VAL] Epoch: 11/30 | Batch: 63/97 (66.0%) | Loss: 0.6259 | Batch time: 0.04s
+2025-03-03 23:03:42,521 - INFO - [VAL] Epoch: 11/30 | Batch: 72/97 (75.3%) | Loss: 0.6113 | Batch time: 0.04s
+2025-03-03 23:03:42,870 - INFO - [VAL] Epoch: 11/30 | Batch: 81/97 (84.5%) | Loss: 0.4666 | Batch time: 0.04s
+2025-03-03 23:03:43,206 - INFO - [VAL] Epoch: 11/30 | Batch: 90/97 (93.8%) | Loss: 0.5246 | Batch time: 0.04s
+2025-03-03 23:03:43,420 - INFO - [VAL] Epoch: 11/30 | Batch: 96/97 (100.0%) | Loss: 0.6609 | Batch time: 0.03s
+2025-03-03 23:03:43,423 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:03:43,423 - INFO - Epoch 11/30 completed in 32.23s
+2025-03-03 23:03:43,423 - INFO - Training   - Loss: 0.9238, Accuracy: 0.7003, F1: 0.7049
+2025-03-03 23:03:43,423 - INFO - Validation - Loss: 0.6664, Accuracy: 0.7807, F1: 0.7811
+2025-03-03 23:03:43,423 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:03:43,423 - INFO - Epoch 12/30
+2025-03-03 23:03:43,423 - INFO - ----------------------------------------
+2025-03-03 23:03:43,657 - INFO - [TRAIN] Epoch: 12/30 | Batch: 0/452 (0.2%) | Loss: 0.7135 | Batch time: 0.05s
+2025-03-03 23:03:46,614 - INFO - [TRAIN] Epoch: 12/30 | Batch: 45/452 (10.2%) | Loss: 0.8517 | Batch time: 0.06s
+2025-03-03 23:03:49,248 - INFO - [TRAIN] Epoch: 12/30 | Batch: 90/452 (20.1%) | Loss: 1.3352 | Batch time: 0.06s
+2025-03-03 23:03:51,817 - INFO - [TRAIN] Epoch: 12/30 | Batch: 135/452 (30.1%) | Loss: 1.4197 | Batch time: 0.06s
+2025-03-03 23:03:54,476 - INFO - [TRAIN] Epoch: 12/30 | Batch: 180/452 (40.0%) | Loss: 1.2568 | Batch time: 0.06s
+2025-03-03 23:03:57,096 - INFO - [TRAIN] Epoch: 12/30 | Batch: 225/452 (50.0%) | Loss: 0.8109 | Batch time: 0.06s
+2025-03-03 23:03:59,696 - INFO - [TRAIN] Epoch: 12/30 | Batch: 270/452 (60.0%) | Loss: 0.7661 | Batch time: 0.06s
+2025-03-03 23:04:02,404 - INFO - [TRAIN] Epoch: 12/30 | Batch: 315/452 (69.9%) | Loss: 0.8953 | Batch time: 0.05s
+2025-03-03 23:04:05,117 - INFO - [TRAIN] Epoch: 12/30 | Batch: 360/452 (79.9%) | Loss: 0.8258 | Batch time: 0.06s
+2025-03-03 23:04:07,754 - INFO - [TRAIN] Epoch: 12/30 | Batch: 405/452 (89.8%) | Loss: 1.1013 | Batch time: 0.06s
+2025-03-03 23:04:10,009 - INFO - [TRAIN] Epoch: 12/30 | Batch: 450/452 (99.8%) | Loss: 0.7865 | Batch time: 0.04s
+2025-03-03 23:04:10,038 - INFO - [TRAIN] Epoch: 12/30 | Batch: 451/452 (100.0%) | Loss: 1.0570 | Batch time: 0.03s
+2025-03-03 23:04:10,146 - INFO - [VAL] Epoch: 12/30 | Batch: 0/97 (1.0%) | Loss: 0.5839 | Batch time: 0.05s
+2025-03-03 23:04:10,470 - INFO - [VAL] Epoch: 12/30 | Batch: 9/97 (10.3%) | Loss: 0.8693 | Batch time: 0.04s
+2025-03-03 23:04:10,796 - INFO - [VAL] Epoch: 12/30 | Batch: 18/97 (19.6%) | Loss: 0.5480 | Batch time: 0.04s
+2025-03-03 23:04:11,125 - INFO - [VAL] Epoch: 12/30 | Batch: 27/97 (28.9%) | Loss: 0.7523 | Batch time: 0.04s
+2025-03-03 23:04:11,457 - INFO - [VAL] Epoch: 12/30 | Batch: 36/97 (38.1%) | Loss: 0.6616 | Batch time: 0.04s
+2025-03-03 23:04:11,791 - INFO - [VAL] Epoch: 12/30 | Batch: 45/97 (47.4%) | Loss: 0.5458 | Batch time: 0.04s
+2025-03-03 23:04:12,126 - INFO - [VAL] Epoch: 12/30 | Batch: 54/97 (56.7%) | Loss: 1.1985 | Batch time: 0.04s
+2025-03-03 23:04:12,462 - INFO - [VAL] Epoch: 12/30 | Batch: 63/97 (66.0%) | Loss: 0.3677 | Batch time: 0.04s
+2025-03-03 23:04:12,801 - INFO - [VAL] Epoch: 12/30 | Batch: 72/97 (75.3%) | Loss: 0.4997 | Batch time: 0.04s
+2025-03-03 23:04:13,135 - INFO - [VAL] Epoch: 12/30 | Batch: 81/97 (84.5%) | Loss: 0.3950 | Batch time: 0.04s
+2025-03-03 23:04:13,466 - INFO - [VAL] Epoch: 12/30 | Batch: 90/97 (93.8%) | Loss: 0.5414 | Batch time: 0.04s
+2025-03-03 23:04:13,678 - INFO - [VAL] Epoch: 12/30 | Batch: 96/97 (100.0%) | Loss: 0.7022 | Batch time: 0.03s
+2025-03-03 23:04:13,938 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 12)
+2025-03-03 23:04:13,938 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:04:13,938 - INFO - Epoch 12/30 completed in 30.51s
+2025-03-03 23:04:13,938 - INFO - Training   - Loss: 0.9154, Accuracy: 0.6981, F1: 0.7022
+2025-03-03 23:04:13,938 - INFO - Validation - Loss: 0.6556, Accuracy: 0.7930, F1: 0.7928
+2025-03-03 23:04:13,938 - INFO - Validation F1 improved from 0.7882 to 0.7928
+2025-03-03 23:04:13,938 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:04:13,938 - INFO - Epoch 13/30
+2025-03-03 23:04:13,938 - INFO - ----------------------------------------
+2025-03-03 23:04:14,178 - INFO - [TRAIN] Epoch: 13/30 | Batch: 0/452 (0.2%) | Loss: 0.7790 | Batch time: 0.05s
+2025-03-03 23:04:16,778 - INFO - [TRAIN] Epoch: 13/30 | Batch: 45/452 (10.2%) | Loss: 0.5004 | Batch time: 0.05s
+2025-03-03 23:04:19,346 - INFO - [TRAIN] Epoch: 13/30 | Batch: 90/452 (20.1%) | Loss: 0.6456 | Batch time: 0.05s
+2025-03-03 23:04:22,041 - INFO - [TRAIN] Epoch: 13/30 | Batch: 135/452 (30.1%) | Loss: 1.1993 | Batch time: 0.06s
+2025-03-03 23:04:24,767 - INFO - [TRAIN] Epoch: 13/30 | Batch: 180/452 (40.0%) | Loss: 0.9356 | Batch time: 0.07s
+2025-03-03 23:04:27,500 - INFO - [TRAIN] Epoch: 13/30 | Batch: 225/452 (50.0%) | Loss: 0.7295 | Batch time: 0.06s
+2025-03-03 23:04:30,122 - INFO - [TRAIN] Epoch: 13/30 | Batch: 270/452 (60.0%) | Loss: 0.7023 | Batch time: 0.05s
+2025-03-03 23:04:32,768 - INFO - [TRAIN] Epoch: 13/30 | Batch: 315/452 (69.9%) | Loss: 0.5858 | Batch time: 0.05s
+2025-03-03 23:04:35,452 - INFO - [TRAIN] Epoch: 13/30 | Batch: 360/452 (79.9%) | Loss: 0.6983 | Batch time: 0.06s
+2025-03-03 23:04:38,502 - INFO - [TRAIN] Epoch: 13/30 | Batch: 405/452 (89.8%) | Loss: 0.6732 | Batch time: 0.12s
+2025-03-03 23:04:40,723 - INFO - [TRAIN] Epoch: 13/30 | Batch: 450/452 (99.8%) | Loss: 0.5717 | Batch time: 0.04s
+2025-03-03 23:04:40,750 - INFO - [TRAIN] Epoch: 13/30 | Batch: 451/452 (100.0%) | Loss: 1.0483 | Batch time: 0.03s
+2025-03-03 23:04:40,862 - INFO - [VAL] Epoch: 13/30 | Batch: 0/97 (1.0%) | Loss: 0.4942 | Batch time: 0.04s
+2025-03-03 23:04:41,207 - INFO - [VAL] Epoch: 13/30 | Batch: 9/97 (10.3%) | Loss: 0.8187 | Batch time: 0.04s
+2025-03-03 23:04:41,539 - INFO - [VAL] Epoch: 13/30 | Batch: 18/97 (19.6%) | Loss: 0.5685 | Batch time: 0.04s
+2025-03-03 23:04:41,877 - INFO - [VAL] Epoch: 13/30 | Batch: 27/97 (28.9%) | Loss: 0.6118 | Batch time: 0.04s
+2025-03-03 23:04:42,218 - INFO - [VAL] Epoch: 13/30 | Batch: 36/97 (38.1%) | Loss: 0.6545 | Batch time: 0.04s
+2025-03-03 23:04:42,557 - INFO - [VAL] Epoch: 13/30 | Batch: 45/97 (47.4%) | Loss: 0.5033 | Batch time: 0.04s
+2025-03-03 23:04:42,899 - INFO - [VAL] Epoch: 13/30 | Batch: 54/97 (56.7%) | Loss: 1.0865 | Batch time: 0.04s
+2025-03-03 23:04:43,239 - INFO - [VAL] Epoch: 13/30 | Batch: 63/97 (66.0%) | Loss: 0.2930 | Batch time: 0.04s
+2025-03-03 23:04:43,577 - INFO - [VAL] Epoch: 13/30 | Batch: 72/97 (75.3%) | Loss: 0.5124 | Batch time: 0.04s
+2025-03-03 23:04:43,914 - INFO - [VAL] Epoch: 13/30 | Batch: 81/97 (84.5%) | Loss: 0.4204 | Batch time: 0.04s
+2025-03-03 23:04:44,245 - INFO - [VAL] Epoch: 13/30 | Batch: 90/97 (93.8%) | Loss: 0.3362 | Batch time: 0.04s
+2025-03-03 23:04:44,457 - INFO - [VAL] Epoch: 13/30 | Batch: 96/97 (100.0%) | Loss: 0.6035 | Batch time: 0.03s
+2025-03-03 23:04:44,725 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 13)
+2025-03-03 23:04:44,725 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:04:44,725 - INFO - Epoch 13/30 completed in 30.79s
+2025-03-03 23:04:44,725 - INFO - Training   - Loss: 0.9065, Accuracy: 0.7037, F1: 0.7072
+2025-03-03 23:04:44,725 - INFO - Validation - Loss: 0.6041, Accuracy: 0.7943, F1: 0.7948
+2025-03-03 23:04:44,725 - INFO - Validation F1 improved from 0.7928 to 0.7948
+2025-03-03 23:04:44,725 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:04:44,725 - INFO - Epoch 14/30
+2025-03-03 23:04:44,725 - INFO - ----------------------------------------
+2025-03-03 23:04:44,979 - INFO - [TRAIN] Epoch: 14/30 | Batch: 0/452 (0.2%) | Loss: 0.9470 | Batch time: 0.06s
+2025-03-03 23:04:47,510 - INFO - [TRAIN] Epoch: 14/30 | Batch: 45/452 (10.2%) | Loss: 0.3965 | Batch time: 0.06s
+2025-03-03 23:04:50,081 - INFO - [TRAIN] Epoch: 14/30 | Batch: 90/452 (20.1%) | Loss: 0.6567 | Batch time: 0.06s
+2025-03-03 23:04:52,712 - INFO - [TRAIN] Epoch: 14/30 | Batch: 135/452 (30.1%) | Loss: 0.9218 | Batch time: 0.05s
+2025-03-03 23:04:55,337 - INFO - [TRAIN] Epoch: 14/30 | Batch: 180/452 (40.0%) | Loss: 0.7590 | Batch time: 0.05s
+2025-03-03 23:04:57,993 - INFO - [TRAIN] Epoch: 14/30 | Batch: 225/452 (50.0%) | Loss: 0.9504 | Batch time: 0.06s
+2025-03-03 23:05:00,625 - INFO - [TRAIN] Epoch: 14/30 | Batch: 270/452 (60.0%) | Loss: 1.1381 | Batch time: 0.06s
+2025-03-03 23:05:03,242 - INFO - [TRAIN] Epoch: 14/30 | Batch: 315/452 (69.9%) | Loss: 0.4781 | Batch time: 0.05s
+2025-03-03 23:05:05,881 - INFO - [TRAIN] Epoch: 14/30 | Batch: 360/452 (79.9%) | Loss: 0.7903 | Batch time: 0.05s
+2025-03-03 23:05:08,535 - INFO - [TRAIN] Epoch: 14/30 | Batch: 405/452 (89.8%) | Loss: 0.7697 | Batch time: 0.06s
+2025-03-03 23:05:10,880 - INFO - [TRAIN] Epoch: 14/30 | Batch: 450/452 (99.8%) | Loss: 0.8983 | Batch time: 0.04s
+2025-03-03 23:05:10,908 - INFO - [TRAIN] Epoch: 14/30 | Batch: 451/452 (100.0%) | Loss: 0.5257 | Batch time: 0.03s
+2025-03-03 23:05:11,024 - INFO - [VAL] Epoch: 14/30 | Batch: 0/97 (1.0%) | Loss: 0.8119 | Batch time: 0.04s
+2025-03-03 23:05:11,350 - INFO - [VAL] Epoch: 14/30 | Batch: 9/97 (10.3%) | Loss: 0.8749 | Batch time: 0.04s
+2025-03-03 23:05:11,681 - INFO - [VAL] Epoch: 14/30 | Batch: 18/97 (19.6%) | Loss: 0.6589 | Batch time: 0.04s
+2025-03-03 23:05:12,021 - INFO - [VAL] Epoch: 14/30 | Batch: 27/97 (28.9%) | Loss: 0.7999 | Batch time: 0.04s
+2025-03-03 23:05:12,354 - INFO - [VAL] Epoch: 14/30 | Batch: 36/97 (38.1%) | Loss: 0.5578 | Batch time: 0.04s
+2025-03-03 23:05:12,695 - INFO - [VAL] Epoch: 14/30 | Batch: 45/97 (47.4%) | Loss: 0.6165 | Batch time: 0.04s
+2025-03-03 23:05:13,035 - INFO - [VAL] Epoch: 14/30 | Batch: 54/97 (56.7%) | Loss: 1.3215 | Batch time: 0.04s
+2025-03-03 23:05:13,376 - INFO - [VAL] Epoch: 14/30 | Batch: 63/97 (66.0%) | Loss: 1.1114 | Batch time: 0.04s
+2025-03-03 23:05:13,711 - INFO - [VAL] Epoch: 14/30 | Batch: 72/97 (75.3%) | Loss: 0.5815 | Batch time: 0.04s
+2025-03-03 23:05:14,044 - INFO - [VAL] Epoch: 14/30 | Batch: 81/97 (84.5%) | Loss: 0.4916 | Batch time: 0.04s
+2025-03-03 23:05:14,377 - INFO - [VAL] Epoch: 14/30 | Batch: 90/97 (93.8%) | Loss: 0.4808 | Batch time: 0.04s
+2025-03-03 23:05:14,589 - INFO - [VAL] Epoch: 14/30 | Batch: 96/97 (100.0%) | Loss: 0.7401 | Batch time: 0.03s
+2025-03-03 23:05:14,592 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:05:14,592 - INFO - Epoch 14/30 completed in 29.87s
+2025-03-03 23:05:14,592 - INFO - Training   - Loss: 0.8975, Accuracy: 0.7091, F1: 0.7127
+2025-03-03 23:05:14,592 - INFO - Validation - Loss: 0.7025, Accuracy: 0.7768, F1: 0.7779
+2025-03-03 23:05:14,592 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:05:14,592 - INFO - Epoch 15/30
+2025-03-03 23:05:14,592 - INFO - ----------------------------------------
+2025-03-03 23:05:14,848 - INFO - [TRAIN] Epoch: 15/30 | Batch: 0/452 (0.2%) | Loss: 0.9872 | Batch time: 0.06s
+2025-03-03 23:05:17,725 - INFO - [TRAIN] Epoch: 15/30 | Batch: 45/452 (10.2%) | Loss: 0.9907 | Batch time: 0.06s
+2025-03-03 23:05:20,794 - INFO - [TRAIN] Epoch: 15/30 | Batch: 90/452 (20.1%) | Loss: 1.0559 | Batch time: 0.09s
+2025-03-03 23:05:23,842 - INFO - [TRAIN] Epoch: 15/30 | Batch: 135/452 (30.1%) | Loss: 1.3417 | Batch time: 0.05s
+2025-03-03 23:05:26,359 - INFO - [TRAIN] Epoch: 15/30 | Batch: 180/452 (40.0%) | Loss: 0.7967 | Batch time: 0.06s
+2025-03-03 23:05:28,895 - INFO - [TRAIN] Epoch: 15/30 | Batch: 225/452 (50.0%) | Loss: 0.7763 | Batch time: 0.06s
+2025-03-03 23:05:31,349 - INFO - [TRAIN] Epoch: 15/30 | Batch: 270/452 (60.0%) | Loss: 0.9295 | Batch time: 0.05s
+2025-03-03 23:05:33,831 - INFO - [TRAIN] Epoch: 15/30 | Batch: 315/452 (69.9%) | Loss: 0.7187 | Batch time: 0.06s
+2025-03-03 23:05:36,390 - INFO - [TRAIN] Epoch: 15/30 | Batch: 360/452 (79.9%) | Loss: 1.1558 | Batch time: 0.06s
+2025-03-03 23:05:38,948 - INFO - [TRAIN] Epoch: 15/30 | Batch: 405/452 (89.8%) | Loss: 1.6426 | Batch time: 0.06s
+2025-03-03 23:05:41,246 - INFO - [TRAIN] Epoch: 15/30 | Batch: 450/452 (99.8%) | Loss: 0.8380 | Batch time: 0.05s
+2025-03-03 23:05:41,273 - INFO - [TRAIN] Epoch: 15/30 | Batch: 451/452 (100.0%) | Loss: 1.7123 | Batch time: 0.03s
+2025-03-03 23:05:41,386 - INFO - [VAL] Epoch: 15/30 | Batch: 0/97 (1.0%) | Loss: 0.4597 | Batch time: 0.04s
+2025-03-03 23:05:41,707 - INFO - [VAL] Epoch: 15/30 | Batch: 9/97 (10.3%) | Loss: 0.7121 | Batch time: 0.03s
+2025-03-03 23:05:42,043 - INFO - [VAL] Epoch: 15/30 | Batch: 18/97 (19.6%) | Loss: 0.5281 | Batch time: 0.04s
+2025-03-03 23:05:42,372 - INFO - [VAL] Epoch: 15/30 | Batch: 27/97 (28.9%) | Loss: 0.5153 | Batch time: 0.04s
+2025-03-03 23:05:42,710 - INFO - [VAL] Epoch: 15/30 | Batch: 36/97 (38.1%) | Loss: 0.6082 | Batch time: 0.04s
+2025-03-03 23:05:43,044 - INFO - [VAL] Epoch: 15/30 | Batch: 45/97 (47.4%) | Loss: 0.4360 | Batch time: 0.04s
+2025-03-03 23:05:43,387 - INFO - [VAL] Epoch: 15/30 | Batch: 54/97 (56.7%) | Loss: 0.9147 | Batch time: 0.04s
+2025-03-03 23:05:43,722 - INFO - [VAL] Epoch: 15/30 | Batch: 63/97 (66.0%) | Loss: 0.2326 | Batch time: 0.04s
+2025-03-03 23:05:44,057 - INFO - [VAL] Epoch: 15/30 | Batch: 72/97 (75.3%) | Loss: 0.5821 | Batch time: 0.04s
+2025-03-03 23:05:44,398 - INFO - [VAL] Epoch: 15/30 | Batch: 81/97 (84.5%) | Loss: 0.3196 | Batch time: 0.04s
+2025-03-03 23:05:44,735 - INFO - [VAL] Epoch: 15/30 | Batch: 90/97 (93.8%) | Loss: 0.3240 | Batch time: 0.04s
+2025-03-03 23:05:44,948 - INFO - [VAL] Epoch: 15/30 | Batch: 96/97 (100.0%) | Loss: 0.5524 | Batch time: 0.03s
+2025-03-03 23:05:45,273 - INFO - Checkpoint saved: efficientnet_b3_v1_best.pth (Epoch 15)
+2025-03-03 23:05:45,273 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:05:45,273 - INFO - Epoch 15/30 completed in 30.68s
+2025-03-03 23:05:45,273 - INFO - Training   - Loss: 0.9103, Accuracy: 0.7022, F1: 0.7061
+2025-03-03 23:05:45,273 - INFO - Validation - Loss: 0.5557, Accuracy: 0.8220, F1: 0.8222
+2025-03-03 23:05:45,273 - INFO - Validation F1 improved from 0.7948 to 0.8222
+2025-03-03 23:05:45,273 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:05:45,440 - INFO - Checkpoint saved: checkpoint_epoch_15.pth (Epoch 15)
+2025-03-03 23:05:45,440 - INFO - Epoch 16/30
+2025-03-03 23:05:45,440 - INFO - ----------------------------------------
+2025-03-03 23:05:45,691 - INFO - [TRAIN] Epoch: 16/30 | Batch: 0/452 (0.2%) | Loss: 1.1654 | Batch time: 0.06s
+2025-03-03 23:05:48,302 - INFO - [TRAIN] Epoch: 16/30 | Batch: 45/452 (10.2%) | Loss: 1.1170 | Batch time: 0.06s
+2025-03-03 23:05:50,937 - INFO - [TRAIN] Epoch: 16/30 | Batch: 90/452 (20.1%) | Loss: 0.9546 | Batch time: 0.06s
+2025-03-03 23:05:53,398 - INFO - [TRAIN] Epoch: 16/30 | Batch: 135/452 (30.1%) | Loss: 0.7087 | Batch time: 0.05s
+2025-03-03 23:05:55,811 - INFO - [TRAIN] Epoch: 16/30 | Batch: 180/452 (40.0%) | Loss: 0.7735 | Batch time: 0.06s
+2025-03-03 23:05:58,363 - INFO - [TRAIN] Epoch: 16/30 | Batch: 225/452 (50.0%) | Loss: 1.0419 | Batch time: 0.05s
+2025-03-03 23:06:01,038 - INFO - [TRAIN] Epoch: 16/30 | Batch: 270/452 (60.0%) | Loss: 0.7106 | Batch time: 0.06s
+2025-03-03 23:06:03,572 - INFO - [TRAIN] Epoch: 16/30 | Batch: 315/452 (69.9%) | Loss: 0.6230 | Batch time: 0.05s
+2025-03-03 23:06:06,196 - INFO - [TRAIN] Epoch: 16/30 | Batch: 360/452 (79.9%) | Loss: 0.8032 | Batch time: 0.06s
+2025-03-03 23:06:08,844 - INFO - [TRAIN] Epoch: 16/30 | Batch: 405/452 (89.8%) | Loss: 0.6742 | Batch time: 0.06s
+2025-03-03 23:06:11,092 - INFO - [TRAIN] Epoch: 16/30 | Batch: 450/452 (99.8%) | Loss: 0.6898 | Batch time: 0.04s
+2025-03-03 23:06:11,120 - INFO - [TRAIN] Epoch: 16/30 | Batch: 451/452 (100.0%) | Loss: 0.6996 | Batch time: 0.03s
+2025-03-03 23:06:11,237 - INFO - [VAL] Epoch: 16/30 | Batch: 0/97 (1.0%) | Loss: 0.6289 | Batch time: 0.04s
+2025-03-03 23:06:11,554 - INFO - [VAL] Epoch: 16/30 | Batch: 9/97 (10.3%) | Loss: 0.6985 | Batch time: 0.03s
+2025-03-03 23:06:11,875 - INFO - [VAL] Epoch: 16/30 | Batch: 18/97 (19.6%) | Loss: 0.5631 | Batch time: 0.04s
+2025-03-03 23:06:12,201 - INFO - [VAL] Epoch: 16/30 | Batch: 27/97 (28.9%) | Loss: 0.6713 | Batch time: 0.04s
+2025-03-03 23:06:12,528 - INFO - [VAL] Epoch: 16/30 | Batch: 36/97 (38.1%) | Loss: 0.5361 | Batch time: 0.04s
+2025-03-03 23:06:12,857 - INFO - [VAL] Epoch: 16/30 | Batch: 45/97 (47.4%) | Loss: 0.5394 | Batch time: 0.04s
+2025-03-03 23:06:13,186 - INFO - [VAL] Epoch: 16/30 | Batch: 54/97 (56.7%) | Loss: 1.1780 | Batch time: 0.04s
+2025-03-03 23:06:13,516 - INFO - [VAL] Epoch: 16/30 | Batch: 63/97 (66.0%) | Loss: 0.3224 | Batch time: 0.04s
+2025-03-03 23:06:13,846 - INFO - [VAL] Epoch: 16/30 | Batch: 72/97 (75.3%) | Loss: 0.5197 | Batch time: 0.04s
+2025-03-03 23:06:14,177 - INFO - [VAL] Epoch: 16/30 | Batch: 81/97 (84.5%) | Loss: 0.4315 | Batch time: 0.04s
+2025-03-03 23:06:14,512 - INFO - [VAL] Epoch: 16/30 | Batch: 90/97 (93.8%) | Loss: 0.3984 | Batch time: 0.04s
+2025-03-03 23:06:14,729 - INFO - [VAL] Epoch: 16/30 | Batch: 96/97 (100.0%) | Loss: 0.6615 | Batch time: 0.03s
+2025-03-03 23:06:14,733 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:06:14,733 - INFO - Epoch 16/30 completed in 29.29s
+2025-03-03 23:06:14,733 - INFO - Training   - Loss: 0.8936, Accuracy: 0.7100, F1: 0.7136
+2025-03-03 23:06:14,733 - INFO - Validation - Loss: 0.6317, Accuracy: 0.7939, F1: 0.7954
+2025-03-03 23:06:14,733 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:06:14,733 - INFO - Epoch 17/30
+2025-03-03 23:06:14,733 - INFO - ----------------------------------------
+2025-03-03 23:06:14,962 - INFO - [TRAIN] Epoch: 17/30 | Batch: 0/452 (0.2%) | Loss: 1.0890 | Batch time: 0.06s
+2025-03-03 23:06:17,820 - INFO - [TRAIN] Epoch: 17/30 | Batch: 45/452 (10.2%) | Loss: 1.1240 | Batch time: 0.05s
+2025-03-03 23:06:20,327 - INFO - [TRAIN] Epoch: 17/30 | Batch: 90/452 (20.1%) | Loss: 0.9281 | Batch time: 0.05s
+2025-03-03 23:06:23,074 - INFO - [TRAIN] Epoch: 17/30 | Batch: 135/452 (30.1%) | Loss: 0.5552 | Batch time: 0.07s
+2025-03-03 23:06:25,853 - INFO - [TRAIN] Epoch: 17/30 | Batch: 180/452 (40.0%) | Loss: 1.0797 | Batch time: 0.06s
+2025-03-03 23:06:28,541 - INFO - [TRAIN] Epoch: 17/30 | Batch: 225/452 (50.0%) | Loss: 0.8916 | Batch time: 0.06s
+2025-03-03 23:06:31,164 - INFO - [TRAIN] Epoch: 17/30 | Batch: 270/452 (60.0%) | Loss: 0.9163 | Batch time: 0.06s
+2025-03-03 23:06:33,729 - INFO - [TRAIN] Epoch: 17/30 | Batch: 315/452 (69.9%) | Loss: 0.6308 | Batch time: 0.06s
+2025-03-03 23:06:36,496 - INFO - [TRAIN] Epoch: 17/30 | Batch: 360/452 (79.9%) | Loss: 0.8891 | Batch time: 0.11s
+2025-03-03 23:06:39,233 - INFO - [TRAIN] Epoch: 17/30 | Batch: 405/452 (89.8%) | Loss: 0.9721 | Batch time: 0.06s
+2025-03-03 23:06:41,518 - INFO - [TRAIN] Epoch: 17/30 | Batch: 450/452 (99.8%) | Loss: 1.0162 | Batch time: 0.05s
+2025-03-03 23:06:41,549 - INFO - [TRAIN] Epoch: 17/30 | Batch: 451/452 (100.0%) | Loss: 0.5225 | Batch time: 0.03s
+2025-03-03 23:06:41,676 - INFO - [VAL] Epoch: 17/30 | Batch: 0/97 (1.0%) | Loss: 0.5581 | Batch time: 0.05s
+2025-03-03 23:06:42,005 - INFO - [VAL] Epoch: 17/30 | Batch: 9/97 (10.3%) | Loss: 0.7190 | Batch time: 0.04s
+2025-03-03 23:06:42,338 - INFO - [VAL] Epoch: 17/30 | Batch: 18/97 (19.6%) | Loss: 0.5514 | Batch time: 0.04s
+2025-03-03 23:06:42,668 - INFO - [VAL] Epoch: 17/30 | Batch: 27/97 (28.9%) | Loss: 0.6057 | Batch time: 0.04s
+2025-03-03 23:06:43,005 - INFO - [VAL] Epoch: 17/30 | Batch: 36/97 (38.1%) | Loss: 0.6472 | Batch time: 0.04s
+2025-03-03 23:06:43,346 - INFO - [VAL] Epoch: 17/30 | Batch: 45/97 (47.4%) | Loss: 0.4524 | Batch time: 0.04s
+2025-03-03 23:06:43,684 - INFO - [VAL] Epoch: 17/30 | Batch: 54/97 (56.7%) | Loss: 1.0689 | Batch time: 0.04s
+2025-03-03 23:06:44,018 - INFO - [VAL] Epoch: 17/30 | Batch: 63/97 (66.0%) | Loss: 0.1891 | Batch time: 0.04s
+2025-03-03 23:06:44,357 - INFO - [VAL] Epoch: 17/30 | Batch: 72/97 (75.3%) | Loss: 0.4971 | Batch time: 0.04s
+2025-03-03 23:06:44,696 - INFO - [VAL] Epoch: 17/30 | Batch: 81/97 (84.5%) | Loss: 0.3985 | Batch time: 0.04s
+2025-03-03 23:06:45,029 - INFO - [VAL] Epoch: 17/30 | Batch: 90/97 (93.8%) | Loss: 0.3761 | Batch time: 0.04s
+2025-03-03 23:06:45,243 - INFO - [VAL] Epoch: 17/30 | Batch: 96/97 (100.0%) | Loss: 0.5721 | Batch time: 0.03s
+2025-03-03 23:06:45,246 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:06:45,246 - INFO - Epoch 17/30 completed in 30.51s
+2025-03-03 23:06:45,246 - INFO - Training   - Loss: 0.8975, Accuracy: 0.7066, F1: 0.7105
+2025-03-03 23:06:45,246 - INFO - Validation - Loss: 0.5936, Accuracy: 0.8033, F1: 0.8042
+2025-03-03 23:06:45,246 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:06:45,246 - INFO - Epoch 18/30
+2025-03-03 23:06:45,246 - INFO - ----------------------------------------
+2025-03-03 23:06:45,505 - INFO - [TRAIN] Epoch: 18/30 | Batch: 0/452 (0.2%) | Loss: 0.9067 | Batch time: 0.05s
+2025-03-03 23:06:48,495 - INFO - [TRAIN] Epoch: 18/30 | Batch: 45/452 (10.2%) | Loss: 0.8117 | Batch time: 0.06s
+2025-03-03 23:06:51,131 - INFO - [TRAIN] Epoch: 18/30 | Batch: 90/452 (20.1%) | Loss: 0.5558 | Batch time: 0.07s
+2025-03-03 23:06:53,835 - INFO - [TRAIN] Epoch: 18/30 | Batch: 135/452 (30.1%) | Loss: 0.8408 | Batch time: 0.06s
+2025-03-03 23:06:56,431 - INFO - [TRAIN] Epoch: 18/30 | Batch: 180/452 (40.0%) | Loss: 0.8219 | Batch time: 0.06s
+2025-03-03 23:06:59,033 - INFO - [TRAIN] Epoch: 18/30 | Batch: 225/452 (50.0%) | Loss: 0.5703 | Batch time: 0.06s
+2025-03-03 23:07:01,840 - INFO - [TRAIN] Epoch: 18/30 | Batch: 270/452 (60.0%) | Loss: 0.6055 | Batch time: 0.08s
+2025-03-03 23:07:04,901 - INFO - [TRAIN] Epoch: 18/30 | Batch: 315/452 (69.9%) | Loss: 0.6894 | Batch time: 0.06s
+2025-03-03 23:07:07,607 - INFO - [TRAIN] Epoch: 18/30 | Batch: 360/452 (79.9%) | Loss: 1.3430 | Batch time: 0.06s
+2025-03-03 23:07:10,463 - INFO - [TRAIN] Epoch: 18/30 | Batch: 405/452 (89.8%) | Loss: 0.8398 | Batch time: 0.06s
+2025-03-03 23:07:12,706 - INFO - [TRAIN] Epoch: 18/30 | Batch: 450/452 (99.8%) | Loss: 0.8751 | Batch time: 0.04s
+2025-03-03 23:07:12,732 - INFO - [TRAIN] Epoch: 18/30 | Batch: 451/452 (100.0%) | Loss: 1.1616 | Batch time: 0.03s
+2025-03-03 23:07:12,838 - INFO - [VAL] Epoch: 18/30 | Batch: 0/97 (1.0%) | Loss: 0.5011 | Batch time: 0.04s
+2025-03-03 23:07:13,164 - INFO - [VAL] Epoch: 18/30 | Batch: 9/97 (10.3%) | Loss: 0.7518 | Batch time: 0.04s
+2025-03-03 23:07:13,499 - INFO - [VAL] Epoch: 18/30 | Batch: 18/97 (19.6%) | Loss: 0.4816 | Batch time: 0.04s
+2025-03-03 23:07:13,835 - INFO - [VAL] Epoch: 18/30 | Batch: 27/97 (28.9%) | Loss: 0.6295 | Batch time: 0.04s
+2025-03-03 23:07:14,171 - INFO - [VAL] Epoch: 18/30 | Batch: 36/97 (38.1%) | Loss: 0.6812 | Batch time: 0.04s
+2025-03-03 23:07:14,507 - INFO - [VAL] Epoch: 18/30 | Batch: 45/97 (47.4%) | Loss: 0.4620 | Batch time: 0.04s
+2025-03-03 23:07:14,844 - INFO - [VAL] Epoch: 18/30 | Batch: 54/97 (56.7%) | Loss: 0.9914 | Batch time: 0.04s
+2025-03-03 23:07:15,181 - INFO - [VAL] Epoch: 18/30 | Batch: 63/97 (66.0%) | Loss: 0.1625 | Batch time: 0.04s
+2025-03-03 23:07:15,525 - INFO - [VAL] Epoch: 18/30 | Batch: 72/97 (75.3%) | Loss: 0.5823 | Batch time: 0.04s
+2025-03-03 23:07:15,866 - INFO - [VAL] Epoch: 18/30 | Batch: 81/97 (84.5%) | Loss: 0.3918 | Batch time: 0.04s
+2025-03-03 23:07:16,207 - INFO - [VAL] Epoch: 18/30 | Batch: 90/97 (93.8%) | Loss: 0.3864 | Batch time: 0.04s
+2025-03-03 23:07:16,427 - INFO - [VAL] Epoch: 18/30 | Batch: 96/97 (100.0%) | Loss: 0.5953 | Batch time: 0.03s
+2025-03-03 23:07:16,431 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:07:16,431 - INFO - Epoch 18/30 completed in 31.18s
+2025-03-03 23:07:16,431 - INFO - Training   - Loss: 0.8950, Accuracy: 0.7046, F1: 0.7080
+2025-03-03 23:07:16,431 - INFO - Validation - Loss: 0.5889, Accuracy: 0.8049, F1: 0.8048
+2025-03-03 23:07:16,431 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:07:16,431 - INFO - Epoch 19/30
+2025-03-03 23:07:16,431 - INFO - ----------------------------------------
+2025-03-03 23:07:16,721 - INFO - [TRAIN] Epoch: 19/30 | Batch: 0/452 (0.2%) | Loss: 0.9794 | Batch time: 0.06s
+2025-03-03 23:07:19,578 - INFO - [TRAIN] Epoch: 19/30 | Batch: 45/452 (10.2%) | Loss: 0.6771 | Batch time: 0.06s
+2025-03-03 23:07:22,388 - INFO - [TRAIN] Epoch: 19/30 | Batch: 90/452 (20.1%) | Loss: 0.7185 | Batch time: 0.06s
+2025-03-03 23:07:25,099 - INFO - [TRAIN] Epoch: 19/30 | Batch: 135/452 (30.1%) | Loss: 0.7178 | Batch time: 0.06s
+2025-03-03 23:07:27,908 - INFO - [TRAIN] Epoch: 19/30 | Batch: 180/452 (40.0%) | Loss: 0.9094 | Batch time: 0.05s
+2025-03-03 23:07:30,576 - INFO - [TRAIN] Epoch: 19/30 | Batch: 225/452 (50.0%) | Loss: 0.7270 | Batch time: 0.06s
+2025-03-03 23:07:33,693 - INFO - [TRAIN] Epoch: 19/30 | Batch: 270/452 (60.0%) | Loss: 0.9138 | Batch time: 0.06s
+2025-03-03 23:07:36,622 - INFO - [TRAIN] Epoch: 19/30 | Batch: 315/452 (69.9%) | Loss: 0.6794 | Batch time: 0.06s
+2025-03-03 23:07:39,573 - INFO - [TRAIN] Epoch: 19/30 | Batch: 360/452 (79.9%) | Loss: 0.6427 | Batch time: 0.06s
+2025-03-03 23:07:42,494 - INFO - [TRAIN] Epoch: 19/30 | Batch: 405/452 (89.8%) | Loss: 0.8817 | Batch time: 0.07s
+2025-03-03 23:07:44,959 - INFO - [TRAIN] Epoch: 19/30 | Batch: 450/452 (99.8%) | Loss: 0.5703 | Batch time: 0.05s
+2025-03-03 23:07:44,989 - INFO - [TRAIN] Epoch: 19/30 | Batch: 451/452 (100.0%) | Loss: 1.1252 | Batch time: 0.03s
+2025-03-03 23:07:45,109 - INFO - [VAL] Epoch: 19/30 | Batch: 0/97 (1.0%) | Loss: 0.5715 | Batch time: 0.04s
+2025-03-03 23:07:45,454 - INFO - [VAL] Epoch: 19/30 | Batch: 9/97 (10.3%) | Loss: 0.7540 | Batch time: 0.04s
+2025-03-03 23:07:45,800 - INFO - [VAL] Epoch: 19/30 | Batch: 18/97 (19.6%) | Loss: 0.5669 | Batch time: 0.04s
+2025-03-03 23:07:46,152 - INFO - [VAL] Epoch: 19/30 | Batch: 27/97 (28.9%) | Loss: 0.7657 | Batch time: 0.04s
+2025-03-03 23:07:46,506 - INFO - [VAL] Epoch: 19/30 | Batch: 36/97 (38.1%) | Loss: 0.5926 | Batch time: 0.04s
+2025-03-03 23:07:46,864 - INFO - [VAL] Epoch: 19/30 | Batch: 45/97 (47.4%) | Loss: 0.4769 | Batch time: 0.04s
+2025-03-03 23:07:47,221 - INFO - [VAL] Epoch: 19/30 | Batch: 54/97 (56.7%) | Loss: 1.2406 | Batch time: 0.04s
+2025-03-03 23:07:47,578 - INFO - [VAL] Epoch: 19/30 | Batch: 63/97 (66.0%) | Loss: 0.3007 | Batch time: 0.04s
+2025-03-03 23:07:47,932 - INFO - [VAL] Epoch: 19/30 | Batch: 72/97 (75.3%) | Loss: 0.5897 | Batch time: 0.04s
+2025-03-03 23:07:48,284 - INFO - [VAL] Epoch: 19/30 | Batch: 81/97 (84.5%) | Loss: 0.3787 | Batch time: 0.04s
+2025-03-03 23:07:48,640 - INFO - [VAL] Epoch: 19/30 | Batch: 90/97 (93.8%) | Loss: 0.4685 | Batch time: 0.04s
+2025-03-03 23:07:48,863 - INFO - [VAL] Epoch: 19/30 | Batch: 96/97 (100.0%) | Loss: 0.6435 | Batch time: 0.03s
+2025-03-03 23:07:48,867 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:07:48,867 - INFO - Epoch 19/30 completed in 32.44s
+2025-03-03 23:07:48,867 - INFO - Training   - Loss: 0.9008, Accuracy: 0.7075, F1: 0.7108
+2025-03-03 23:07:48,867 - INFO - Validation - Loss: 0.6238, Accuracy: 0.7930, F1: 0.7941
+2025-03-03 23:07:48,867 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:07:48,867 - INFO - Epoch 20/30
+2025-03-03 23:07:48,867 - INFO - ----------------------------------------
+2025-03-03 23:07:49,179 - INFO - [TRAIN] Epoch: 20/30 | Batch: 0/452 (0.2%) | Loss: 1.0142 | Batch time: 0.07s
+2025-03-03 23:07:52,250 - INFO - [TRAIN] Epoch: 20/30 | Batch: 45/452 (10.2%) | Loss: 1.2946 | Batch time: 0.06s
+2025-03-03 23:07:55,047 - INFO - [TRAIN] Epoch: 20/30 | Batch: 90/452 (20.1%) | Loss: 1.3940 | Batch time: 0.06s
+2025-03-03 23:07:57,925 - INFO - [TRAIN] Epoch: 20/30 | Batch: 135/452 (30.1%) | Loss: 0.8091 | Batch time: 0.06s
+2025-03-03 23:08:00,879 - INFO - [TRAIN] Epoch: 20/30 | Batch: 180/452 (40.0%) | Loss: 0.7672 | Batch time: 0.06s
+2025-03-03 23:08:03,916 - INFO - [TRAIN] Epoch: 20/30 | Batch: 225/452 (50.0%) | Loss: 1.2402 | Batch time: 0.07s
+2025-03-03 23:08:06,940 - INFO - [TRAIN] Epoch: 20/30 | Batch: 270/452 (60.0%) | Loss: 0.7795 | Batch time: 0.06s
+2025-03-03 23:08:10,075 - INFO - [TRAIN] Epoch: 20/30 | Batch: 315/452 (69.9%) | Loss: 1.2176 | Batch time: 0.07s
+2025-03-03 23:08:13,158 - INFO - [TRAIN] Epoch: 20/30 | Batch: 360/452 (79.9%) | Loss: 0.6970 | Batch time: 0.06s
+2025-03-03 23:08:16,296 - INFO - [TRAIN] Epoch: 20/30 | Batch: 405/452 (89.8%) | Loss: 0.8932 | Batch time: 0.08s
+2025-03-03 23:08:19,005 - INFO - [TRAIN] Epoch: 20/30 | Batch: 450/452 (99.8%) | Loss: 0.8310 | Batch time: 0.05s
+2025-03-03 23:08:19,034 - INFO - [TRAIN] Epoch: 20/30 | Batch: 451/452 (100.0%) | Loss: 0.8927 | Batch time: 0.03s
+2025-03-03 23:08:19,157 - INFO - [VAL] Epoch: 20/30 | Batch: 0/97 (1.0%) | Loss: 0.9681 | Batch time: 0.04s
+2025-03-03 23:08:19,511 - INFO - [VAL] Epoch: 20/30 | Batch: 9/97 (10.3%) | Loss: 0.9665 | Batch time: 0.04s
+2025-03-03 23:08:19,861 - INFO - [VAL] Epoch: 20/30 | Batch: 18/97 (19.6%) | Loss: 0.7017 | Batch time: 0.04s
+2025-03-03 23:08:20,217 - INFO - [VAL] Epoch: 20/30 | Batch: 27/97 (28.9%) | Loss: 0.8693 | Batch time: 0.04s
+2025-03-03 23:08:20,574 - INFO - [VAL] Epoch: 20/30 | Batch: 36/97 (38.1%) | Loss: 0.6125 | Batch time: 0.04s
+2025-03-03 23:08:20,935 - INFO - [VAL] Epoch: 20/30 | Batch: 45/97 (47.4%) | Loss: 0.6720 | Batch time: 0.04s
+2025-03-03 23:08:21,295 - INFO - [VAL] Epoch: 20/30 | Batch: 54/97 (56.7%) | Loss: 1.3591 | Batch time: 0.04s
+2025-03-03 23:08:21,654 - INFO - [VAL] Epoch: 20/30 | Batch: 63/97 (66.0%) | Loss: 1.0969 | Batch time: 0.04s
+2025-03-03 23:08:22,011 - INFO - [VAL] Epoch: 20/30 | Batch: 72/97 (75.3%) | Loss: 0.5996 | Batch time: 0.04s
+2025-03-03 23:08:22,382 - INFO - [VAL] Epoch: 20/30 | Batch: 81/97 (84.5%) | Loss: 0.5064 | Batch time: 0.04s
+2025-03-03 23:08:22,757 - INFO - [VAL] Epoch: 20/30 | Batch: 90/97 (93.8%) | Loss: 0.5096 | Batch time: 0.04s
+2025-03-03 23:08:22,996 - INFO - [VAL] Epoch: 20/30 | Batch: 96/97 (100.0%) | Loss: 0.7286 | Batch time: 0.03s
+2025-03-03 23:08:23,000 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:08:23,000 - INFO - Epoch 20/30 completed in 34.13s
+2025-03-03 23:08:23,000 - INFO - Training   - Loss: 0.9020, Accuracy: 0.7035, F1: 0.7068
+2025-03-03 23:08:23,000 - INFO - Validation - Loss: 0.7315, Accuracy: 0.7739, F1: 0.7742
+2025-03-03 23:08:23,000 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:08:23,166 - INFO - Checkpoint saved: checkpoint_epoch_20.pth (Epoch 20)
+2025-03-03 23:08:23,166 - INFO - Epoch 21/30
+2025-03-03 23:08:23,166 - INFO - ----------------------------------------
+2025-03-03 23:08:23,477 - INFO - [TRAIN] Epoch: 21/30 | Batch: 0/452 (0.2%) | Loss: 1.0173 | Batch time: 0.08s
+2025-03-03 23:08:26,373 - INFO - [TRAIN] Epoch: 21/30 | Batch: 45/452 (10.2%) | Loss: 0.4608 | Batch time: 0.06s
+2025-03-03 23:08:29,275 - INFO - [TRAIN] Epoch: 21/30 | Batch: 90/452 (20.1%) | Loss: 0.6838 | Batch time: 0.06s
+2025-03-03 23:08:32,293 - INFO - [TRAIN] Epoch: 21/30 | Batch: 135/452 (30.1%) | Loss: 1.0127 | Batch time: 0.06s
+2025-03-03 23:08:35,231 - INFO - [TRAIN] Epoch: 21/30 | Batch: 180/452 (40.0%) | Loss: 0.8599 | Batch time: 0.06s
+2025-03-03 23:08:38,456 - INFO - [TRAIN] Epoch: 21/30 | Batch: 225/452 (50.0%) | Loss: 0.8693 | Batch time: 0.08s
+2025-03-03 23:08:41,413 - INFO - [TRAIN] Epoch: 21/30 | Batch: 270/452 (60.0%) | Loss: 0.6049 | Batch time: 0.06s
+2025-03-03 23:08:44,321 - INFO - [TRAIN] Epoch: 21/30 | Batch: 315/452 (69.9%) | Loss: 0.8498 | Batch time: 0.06s
+2025-03-03 23:08:47,425 - INFO - [TRAIN] Epoch: 21/30 | Batch: 360/452 (79.9%) | Loss: 0.7526 | Batch time: 0.08s
+2025-03-03 23:08:50,586 - INFO - [TRAIN] Epoch: 21/30 | Batch: 405/452 (89.8%) | Loss: 0.9073 | Batch time: 0.07s
+2025-03-03 23:08:53,056 - INFO - [TRAIN] Epoch: 21/30 | Batch: 450/452 (99.8%) | Loss: 0.7830 | Batch time: 0.05s
+2025-03-03 23:08:53,091 - INFO - [TRAIN] Epoch: 21/30 | Batch: 451/452 (100.0%) | Loss: 1.6670 | Batch time: 0.03s
+2025-03-03 23:08:53,219 - INFO - [VAL] Epoch: 21/30 | Batch: 0/97 (1.0%) | Loss: 0.5768 | Batch time: 0.05s
+2025-03-03 23:08:53,572 - INFO - [VAL] Epoch: 21/30 | Batch: 9/97 (10.3%) | Loss: 0.8117 | Batch time: 0.04s
+2025-03-03 23:08:53,920 - INFO - [VAL] Epoch: 21/30 | Batch: 18/97 (19.6%) | Loss: 0.5603 | Batch time: 0.04s
+2025-03-03 23:08:54,272 - INFO - [VAL] Epoch: 21/30 | Batch: 27/97 (28.9%) | Loss: 0.7000 | Batch time: 0.04s
+2025-03-03 23:08:54,628 - INFO - [VAL] Epoch: 21/30 | Batch: 36/97 (38.1%) | Loss: 0.5199 | Batch time: 0.04s
+2025-03-03 23:08:54,985 - INFO - [VAL] Epoch: 21/30 | Batch: 45/97 (47.4%) | Loss: 0.5696 | Batch time: 0.04s
+2025-03-03 23:08:55,343 - INFO - [VAL] Epoch: 21/30 | Batch: 54/97 (56.7%) | Loss: 1.2251 | Batch time: 0.04s
+2025-03-03 23:08:55,700 - INFO - [VAL] Epoch: 21/30 | Batch: 63/97 (66.0%) | Loss: 0.3163 | Batch time: 0.04s
+2025-03-03 23:08:56,054 - INFO - [VAL] Epoch: 21/30 | Batch: 72/97 (75.3%) | Loss: 0.5565 | Batch time: 0.04s
+2025-03-03 23:08:56,407 - INFO - [VAL] Epoch: 21/30 | Batch: 81/97 (84.5%) | Loss: 0.5214 | Batch time: 0.04s
+2025-03-03 23:08:56,757 - INFO - [VAL] Epoch: 21/30 | Batch: 90/97 (93.8%) | Loss: 0.4629 | Batch time: 0.04s
+2025-03-03 23:08:56,991 - INFO - [VAL] Epoch: 21/30 | Batch: 96/97 (100.0%) | Loss: 0.6685 | Batch time: 0.03s
+2025-03-03 23:08:56,995 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:08:56,995 - INFO - Epoch 21/30 completed in 33.83s
+2025-03-03 23:08:56,996 - INFO - Training   - Loss: 0.8918, Accuracy: 0.7106, F1: 0.7143
+2025-03-03 23:08:56,996 - INFO - Validation - Loss: 0.6696, Accuracy: 0.7749, F1: 0.7761
+2025-03-03 23:08:56,996 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:08:56,996 - INFO - Epoch 22/30
+2025-03-03 23:08:56,996 - INFO - ----------------------------------------
+2025-03-03 23:08:57,313 - INFO - [TRAIN] Epoch: 22/30 | Batch: 0/452 (0.2%) | Loss: 0.8173 | Batch time: 0.09s
+2025-03-03 23:09:00,459 - INFO - [TRAIN] Epoch: 22/30 | Batch: 45/452 (10.2%) | Loss: 0.7937 | Batch time: 0.06s
+2025-03-03 23:09:03,128 - INFO - [TRAIN] Epoch: 22/30 | Batch: 90/452 (20.1%) | Loss: 0.8226 | Batch time: 0.06s
+2025-03-03 23:09:06,027 - INFO - [TRAIN] Epoch: 22/30 | Batch: 135/452 (30.1%) | Loss: 0.9289 | Batch time: 0.08s
+2025-03-03 23:09:09,012 - INFO - [TRAIN] Epoch: 22/30 | Batch: 180/452 (40.0%) | Loss: 0.6194 | Batch time: 0.07s
+2025-03-03 23:09:12,084 - INFO - [TRAIN] Epoch: 22/30 | Batch: 225/452 (50.0%) | Loss: 1.1156 | Batch time: 0.07s
+2025-03-03 23:09:15,085 - INFO - [TRAIN] Epoch: 22/30 | Batch: 270/452 (60.0%) | Loss: 0.7918 | Batch time: 0.07s
+2025-03-03 23:09:18,144 - INFO - [TRAIN] Epoch: 22/30 | Batch: 315/452 (69.9%) | Loss: 0.9516 | Batch time: 0.07s
+2025-03-03 23:09:21,199 - INFO - [TRAIN] Epoch: 22/30 | Batch: 360/452 (79.9%) | Loss: 0.7378 | Batch time: 0.06s
+2025-03-03 23:09:24,291 - INFO - [TRAIN] Epoch: 22/30 | Batch: 405/452 (89.8%) | Loss: 0.8334 | Batch time: 0.07s
+2025-03-03 23:09:26,788 - INFO - [TRAIN] Epoch: 22/30 | Batch: 450/452 (99.8%) | Loss: 1.1261 | Batch time: 0.05s
+2025-03-03 23:09:26,815 - INFO - [TRAIN] Epoch: 22/30 | Batch: 451/452 (100.0%) | Loss: 0.6577 | Batch time: 0.03s
+2025-03-03 23:09:26,939 - INFO - [VAL] Epoch: 22/30 | Batch: 0/97 (1.0%) | Loss: 0.6255 | Batch time: 0.04s
+2025-03-03 23:09:27,286 - INFO - [VAL] Epoch: 22/30 | Batch: 9/97 (10.3%) | Loss: 0.7765 | Batch time: 0.04s
+2025-03-03 23:09:27,635 - INFO - [VAL] Epoch: 22/30 | Batch: 18/97 (19.6%) | Loss: 0.5261 | Batch time: 0.04s
+2025-03-03 23:09:27,987 - INFO - [VAL] Epoch: 22/30 | Batch: 27/97 (28.9%) | Loss: 0.6762 | Batch time: 0.04s
+2025-03-03 23:09:28,342 - INFO - [VAL] Epoch: 22/30 | Batch: 36/97 (38.1%) | Loss: 0.6548 | Batch time: 0.04s
+2025-03-03 23:09:28,700 - INFO - [VAL] Epoch: 22/30 | Batch: 45/97 (47.4%) | Loss: 0.5473 | Batch time: 0.04s
+2025-03-03 23:09:29,059 - INFO - [VAL] Epoch: 22/30 | Batch: 54/97 (56.7%) | Loss: 1.0971 | Batch time: 0.04s
+2025-03-03 23:09:29,418 - INFO - [VAL] Epoch: 22/30 | Batch: 63/97 (66.0%) | Loss: 0.2599 | Batch time: 0.04s
+2025-03-03 23:09:29,779 - INFO - [VAL] Epoch: 22/30 | Batch: 72/97 (75.3%) | Loss: 0.5284 | Batch time: 0.04s
+2025-03-03 23:09:30,154 - INFO - [VAL] Epoch: 22/30 | Batch: 81/97 (84.5%) | Loss: 0.4332 | Batch time: 0.04s
+2025-03-03 23:09:30,532 - INFO - [VAL] Epoch: 22/30 | Batch: 90/97 (93.8%) | Loss: 0.6440 | Batch time: 0.04s
+2025-03-03 23:09:30,770 - INFO - [VAL] Epoch: 22/30 | Batch: 96/97 (100.0%) | Loss: 0.6652 | Batch time: 0.03s
+2025-03-03 23:09:30,773 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:09:30,774 - INFO - Epoch 22/30 completed in 33.78s
+2025-03-03 23:09:30,774 - INFO - Training   - Loss: 0.8947, Accuracy: 0.7068, F1: 0.7101
+2025-03-03 23:09:30,774 - INFO - Validation - Loss: 0.6229, Accuracy: 0.7952, F1: 0.7960
+2025-03-03 23:09:30,774 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:09:30,774 - INFO - Epoch 23/30
+2025-03-03 23:09:30,774 - INFO - ----------------------------------------
+2025-03-03 23:09:31,120 - INFO - [TRAIN] Epoch: 23/30 | Batch: 0/452 (0.2%) | Loss: 0.6730 | Batch time: 0.11s
+2025-03-03 23:09:34,122 - INFO - [TRAIN] Epoch: 23/30 | Batch: 45/452 (10.2%) | Loss: 0.7494 | Batch time: 0.10s
+2025-03-03 23:09:36,988 - INFO - [TRAIN] Epoch: 23/30 | Batch: 90/452 (20.1%) | Loss: 0.8314 | Batch time: 0.06s
+2025-03-03 23:09:40,104 - INFO - [TRAIN] Epoch: 23/30 | Batch: 135/452 (30.1%) | Loss: 1.0966 | Batch time: 0.10s
+2025-03-03 23:09:43,223 - INFO - [TRAIN] Epoch: 23/30 | Batch: 180/452 (40.0%) | Loss: 1.3837 | Batch time: 0.08s
+2025-03-03 23:09:46,383 - INFO - [TRAIN] Epoch: 23/30 | Batch: 225/452 (50.0%) | Loss: 0.9721 | Batch time: 0.08s
+2025-03-03 23:09:49,494 - INFO - [TRAIN] Epoch: 23/30 | Batch: 270/452 (60.0%) | Loss: 0.3319 | Batch time: 0.06s
+2025-03-03 23:09:52,840 - INFO - [TRAIN] Epoch: 23/30 | Batch: 315/452 (69.9%) | Loss: 1.2864 | Batch time: 0.07s
+2025-03-03 23:09:55,947 - INFO - [TRAIN] Epoch: 23/30 | Batch: 360/452 (79.9%) | Loss: 0.7944 | Batch time: 0.06s
+2025-03-03 23:09:58,989 - INFO - [TRAIN] Epoch: 23/30 | Batch: 405/452 (89.8%) | Loss: 0.8068 | Batch time: 0.06s
+2025-03-03 23:10:01,487 - INFO - [TRAIN] Epoch: 23/30 | Batch: 450/452 (99.8%) | Loss: 1.0118 | Batch time: 0.05s
+2025-03-03 23:10:01,515 - INFO - [TRAIN] Epoch: 23/30 | Batch: 451/452 (100.0%) | Loss: 1.4924 | Batch time: 0.03s
+2025-03-03 23:10:01,629 - INFO - [VAL] Epoch: 23/30 | Batch: 0/97 (1.0%) | Loss: 0.6573 | Batch time: 0.04s
+2025-03-03 23:10:01,977 - INFO - [VAL] Epoch: 23/30 | Batch: 9/97 (10.3%) | Loss: 0.7855 | Batch time: 0.04s
+2025-03-03 23:10:02,328 - INFO - [VAL] Epoch: 23/30 | Batch: 18/97 (19.6%) | Loss: 0.5407 | Batch time: 0.04s
+2025-03-03 23:10:02,683 - INFO - [VAL] Epoch: 23/30 | Batch: 27/97 (28.9%) | Loss: 0.6742 | Batch time: 0.04s
+2025-03-03 23:10:03,041 - INFO - [VAL] Epoch: 23/30 | Batch: 36/97 (38.1%) | Loss: 0.5703 | Batch time: 0.04s
+2025-03-03 23:10:03,403 - INFO - [VAL] Epoch: 23/30 | Batch: 45/97 (47.4%) | Loss: 0.5333 | Batch time: 0.04s
+2025-03-03 23:10:03,771 - INFO - [VAL] Epoch: 23/30 | Batch: 54/97 (56.7%) | Loss: 1.1800 | Batch time: 0.04s
+2025-03-03 23:10:04,143 - INFO - [VAL] Epoch: 23/30 | Batch: 63/97 (66.0%) | Loss: 0.6639 | Batch time: 0.04s
+2025-03-03 23:10:04,537 - INFO - [VAL] Epoch: 23/30 | Batch: 72/97 (75.3%) | Loss: 0.5233 | Batch time: 0.04s
+2025-03-03 23:10:04,923 - INFO - [VAL] Epoch: 23/30 | Batch: 81/97 (84.5%) | Loss: 0.4281 | Batch time: 0.04s
+2025-03-03 23:10:05,302 - INFO - [VAL] Epoch: 23/30 | Batch: 90/97 (93.8%) | Loss: 0.3996 | Batch time: 0.04s
+2025-03-03 23:10:05,546 - INFO - [VAL] Epoch: 23/30 | Batch: 96/97 (100.0%) | Loss: 0.6492 | Batch time: 0.03s
+2025-03-03 23:10:05,550 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:10:05,550 - INFO - Epoch 23/30 completed in 34.78s
+2025-03-03 23:10:05,550 - INFO - Training   - Loss: 0.8893, Accuracy: 0.7113, F1: 0.7139
+2025-03-03 23:10:05,550 - INFO - Validation - Loss: 0.6419, Accuracy: 0.7865, F1: 0.7886
+2025-03-03 23:10:05,550 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:10:05,550 - INFO - Epoch 24/30
+2025-03-03 23:10:05,550 - INFO - ----------------------------------------
+2025-03-03 23:10:05,861 - INFO - [TRAIN] Epoch: 24/30 | Batch: 0/452 (0.2%) | Loss: 1.0666 | Batch time: 0.07s
+2025-03-03 23:10:08,989 - INFO - [TRAIN] Epoch: 24/30 | Batch: 45/452 (10.2%) | Loss: 0.9987 | Batch time: 0.06s
+2025-03-03 23:10:11,859 - INFO - [TRAIN] Epoch: 24/30 | Batch: 90/452 (20.1%) | Loss: 0.7476 | Batch time: 0.07s
+2025-03-03 23:10:14,753 - INFO - [TRAIN] Epoch: 24/30 | Batch: 135/452 (30.1%) | Loss: 0.7414 | Batch time: 0.06s
+2025-03-03 23:10:17,739 - INFO - [TRAIN] Epoch: 24/30 | Batch: 180/452 (40.0%) | Loss: 0.4352 | Batch time: 0.06s
+2025-03-03 23:10:20,824 - INFO - [TRAIN] Epoch: 24/30 | Batch: 225/452 (50.0%) | Loss: 0.7781 | Batch time: 0.08s
+2025-03-03 23:10:23,899 - INFO - [TRAIN] Epoch: 24/30 | Batch: 270/452 (60.0%) | Loss: 1.0701 | Batch time: 0.06s
+2025-03-03 23:10:26,943 - INFO - [TRAIN] Epoch: 24/30 | Batch: 315/452 (69.9%) | Loss: 0.3208 | Batch time: 0.06s
+2025-03-03 23:10:30,051 - INFO - [TRAIN] Epoch: 24/30 | Batch: 360/452 (79.9%) | Loss: 1.0300 | Batch time: 0.06s
+2025-03-03 23:10:33,071 - INFO - [TRAIN] Epoch: 24/30 | Batch: 405/452 (89.8%) | Loss: 0.8008 | Batch time: 0.06s
+2025-03-03 23:10:35,733 - INFO - [TRAIN] Epoch: 24/30 | Batch: 450/452 (99.8%) | Loss: 0.7280 | Batch time: 0.05s
+2025-03-03 23:10:35,765 - INFO - [TRAIN] Epoch: 24/30 | Batch: 451/452 (100.0%) | Loss: 1.2669 | Batch time: 0.03s
+2025-03-03 23:10:35,886 - INFO - [VAL] Epoch: 24/30 | Batch: 0/97 (1.0%) | Loss: 0.4475 | Batch time: 0.05s
+2025-03-03 23:10:36,276 - INFO - [VAL] Epoch: 24/30 | Batch: 9/97 (10.3%) | Loss: 0.6684 | Batch time: 0.04s
+2025-03-03 23:10:36,642 - INFO - [VAL] Epoch: 24/30 | Batch: 18/97 (19.6%) | Loss: 0.5354 | Batch time: 0.04s
+2025-03-03 23:10:37,003 - INFO - [VAL] Epoch: 24/30 | Batch: 27/97 (28.9%) | Loss: 0.5370 | Batch time: 0.04s
+2025-03-03 23:10:37,359 - INFO - [VAL] Epoch: 24/30 | Batch: 36/97 (38.1%) | Loss: 0.6810 | Batch time: 0.04s
+2025-03-03 23:10:37,715 - INFO - [VAL] Epoch: 24/30 | Batch: 45/97 (47.4%) | Loss: 0.4485 | Batch time: 0.04s
+2025-03-03 23:10:38,078 - INFO - [VAL] Epoch: 24/30 | Batch: 54/97 (56.7%) | Loss: 0.9364 | Batch time: 0.04s
+2025-03-03 23:10:38,438 - INFO - [VAL] Epoch: 24/30 | Batch: 63/97 (66.0%) | Loss: 0.1674 | Batch time: 0.04s
+2025-03-03 23:10:38,805 - INFO - [VAL] Epoch: 24/30 | Batch: 72/97 (75.3%) | Loss: 0.5619 | Batch time: 0.04s
+2025-03-03 23:10:39,198 - INFO - [VAL] Epoch: 24/30 | Batch: 81/97 (84.5%) | Loss: 0.4229 | Batch time: 0.04s
+2025-03-03 23:10:39,599 - INFO - [VAL] Epoch: 24/30 | Batch: 90/97 (93.8%) | Loss: 0.3295 | Batch time: 0.04s
+2025-03-03 23:10:39,845 - INFO - [VAL] Epoch: 24/30 | Batch: 96/97 (100.0%) | Loss: 0.5302 | Batch time: 0.03s
+2025-03-03 23:10:39,849 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:10:39,849 - INFO - Epoch 24/30 completed in 34.30s
+2025-03-03 23:10:39,849 - INFO - Training   - Loss: 0.8977, Accuracy: 0.7078, F1: 0.7115
+2025-03-03 23:10:39,849 - INFO - Validation - Loss: 0.5639, Accuracy: 0.8217, F1: 0.8210
+2025-03-03 23:10:39,849 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:10:39,849 - INFO - Epoch 25/30
+2025-03-03 23:10:39,850 - INFO - ----------------------------------------
+2025-03-03 23:10:40,173 - INFO - [TRAIN] Epoch: 25/30 | Batch: 0/452 (0.2%) | Loss: 1.0074 | Batch time: 0.08s
+2025-03-03 23:10:43,356 - INFO - [TRAIN] Epoch: 25/30 | Batch: 45/452 (10.2%) | Loss: 0.7942 | Batch time: 0.06s
+2025-03-03 23:10:46,677 - INFO - [TRAIN] Epoch: 25/30 | Batch: 90/452 (20.1%) | Loss: 0.6875 | Batch time: 0.12s
+2025-03-03 23:10:49,844 - INFO - [TRAIN] Epoch: 25/30 | Batch: 135/452 (30.1%) | Loss: 0.8968 | Batch time: 0.07s
+2025-03-03 23:10:52,940 - INFO - [TRAIN] Epoch: 25/30 | Batch: 180/452 (40.0%) | Loss: 0.6639 | Batch time: 0.07s
+2025-03-03 23:10:56,051 - INFO - [TRAIN] Epoch: 25/30 | Batch: 225/452 (50.0%) | Loss: 1.0972 | Batch time: 0.07s
+2025-03-03 23:10:59,164 - INFO - [TRAIN] Epoch: 25/30 | Batch: 270/452 (60.0%) | Loss: 0.5902 | Batch time: 0.06s
+2025-03-03 23:11:02,377 - INFO - [TRAIN] Epoch: 25/30 | Batch: 315/452 (69.9%) | Loss: 0.9576 | Batch time: 0.07s
+2025-03-03 23:11:05,564 - INFO - [TRAIN] Epoch: 25/30 | Batch: 360/452 (79.9%) | Loss: 1.0150 | Batch time: 0.06s
+2025-03-03 23:11:08,800 - INFO - [TRAIN] Epoch: 25/30 | Batch: 405/452 (89.8%) | Loss: 0.8156 | Batch time: 0.07s
+2025-03-03 23:11:11,438 - INFO - [TRAIN] Epoch: 25/30 | Batch: 450/452 (99.8%) | Loss: 1.1660 | Batch time: 0.05s
+2025-03-03 23:11:11,466 - INFO - [TRAIN] Epoch: 25/30 | Batch: 451/452 (100.0%) | Loss: 0.9077 | Batch time: 0.03s
+2025-03-03 23:11:11,584 - INFO - [VAL] Epoch: 25/30 | Batch: 0/97 (1.0%) | Loss: 0.5695 | Batch time: 0.04s
+2025-03-03 23:11:11,940 - INFO - [VAL] Epoch: 25/30 | Batch: 9/97 (10.3%) | Loss: 0.8083 | Batch time: 0.04s
+2025-03-03 23:11:12,298 - INFO - [VAL] Epoch: 25/30 | Batch: 18/97 (19.6%) | Loss: 0.5732 | Batch time: 0.04s
+2025-03-03 23:11:12,659 - INFO - [VAL] Epoch: 25/30 | Batch: 27/97 (28.9%) | Loss: 0.7463 | Batch time: 0.04s
+2025-03-03 23:11:13,026 - INFO - [VAL] Epoch: 25/30 | Batch: 36/97 (38.1%) | Loss: 0.6341 | Batch time: 0.04s
+2025-03-03 23:11:13,394 - INFO - [VAL] Epoch: 25/30 | Batch: 45/97 (47.4%) | Loss: 0.5913 | Batch time: 0.04s
+2025-03-03 23:11:13,766 - INFO - [VAL] Epoch: 25/30 | Batch: 54/97 (56.7%) | Loss: 1.2256 | Batch time: 0.04s
+2025-03-03 23:11:14,137 - INFO - [VAL] Epoch: 25/30 | Batch: 63/97 (66.0%) | Loss: 0.2304 | Batch time: 0.04s
+2025-03-03 23:11:14,510 - INFO - [VAL] Epoch: 25/30 | Batch: 72/97 (75.3%) | Loss: 0.5005 | Batch time: 0.04s
+2025-03-03 23:11:14,893 - INFO - [VAL] Epoch: 25/30 | Batch: 81/97 (84.5%) | Loss: 0.4949 | Batch time: 0.04s
+2025-03-03 23:11:15,273 - INFO - [VAL] Epoch: 25/30 | Batch: 90/97 (93.8%) | Loss: 0.3847 | Batch time: 0.04s
+2025-03-03 23:11:15,515 - INFO - [VAL] Epoch: 25/30 | Batch: 96/97 (100.0%) | Loss: 0.6146 | Batch time: 0.03s
+2025-03-03 23:11:15,519 - INFO - Early stopping triggered after 25 epochs
+2025-03-03 23:11:15,519 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:11:15,519 - INFO - Epoch 25/30 completed in 35.67s
+2025-03-03 23:11:15,519 - INFO - Training   - Loss: 0.8844, Accuracy: 0.7080, F1: 0.7114
+2025-03-03 23:11:15,519 - INFO - Validation - Loss: 0.6433, Accuracy: 0.7871, F1: 0.7882
+2025-03-03 23:11:15,519 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:11:15,676 - INFO - Checkpoint saved: checkpoint_epoch_25.pth (Epoch 25)
+2025-03-03 23:11:15,676 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:11:15,676 - INFO - Training completed in 0h 13m 43.65s
+2025-03-03 23:11:15,676 - INFO - Best validation F1: 0.8222 (Epoch 15)
+2025-03-03 23:11:15,676 - INFO - --------------------------------------------------------------------------------
+2025-03-03 23:11:16,296 - INFO - Final model saved to models/efficientnet_b3_v1/models/efficientnet_b3_v1_final.pth
+2025-03-03 23:11:16,325 - INFO - Model registered in models/model_registry.json
+2025-03-03 23:11:16,325 - INFO - Generating visualizations...
+2025-03-03 23:11:16,325 - INFO - Generating standard visualizations and GradCAM
+2025-03-03 23:12:00,300 - INFO - t-SNE visualization saved to models/efficientnet_b3_v1/visualizations
+2025-03-03 23:12:00,301 - INFO - Training and visualization finished!
