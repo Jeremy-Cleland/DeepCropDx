@@ -1,0 +1,50 @@
+2025-03-04 01:23:09,103 - INFO - --------------------------------------------------------------------------------
+2025-03-04 01:23:09,103 - INFO - Starting evaluation: efficientnet_b3 v1 (best)
+2025-03-04 01:23:09,103 - INFO - Model path: models/efficientnet_b3_v1/models/efficientnet_b3_v1_best.pth
+2025-03-04 01:23:09,103 - INFO - Dataset size: 20638 images
+2025-03-04 01:23:09,103 - INFO - --------------------------------------------------------------------------------
+2025-03-04 01:23:09,103 - INFO - Looking for model at models/efficientnet_b3_v1/models/efficientnet_b3_v1_best.pth...
+2025-03-04 01:23:09,589 - INFO - Model loaded successfully
+2025-03-04 01:23:09,589 - INFO - Starting model evaluation...
+2025-03-04 01:25:37,465 - INFO - Evaluation complete
+2025-03-04 01:25:37,465 - INFO - --------------------------------------------------------------------------------
+2025-03-04 01:25:37,465 - INFO - Evaluation Results:
+2025-03-04 01:25:37,465 - INFO - Accuracy: 0.8255
+2025-03-04 01:25:37,465 - INFO - Precision: 0.8352
+2025-03-04 01:25:37,465 - INFO - Recall: 0.8255
+2025-03-04 01:25:37,465 - INFO - F1 Score: 0.8262
+2025-03-04 01:25:37,465 - INFO - --------------------------------------------------------------------------------
+2025-03-04 01:25:37,776 - INFO - Metrics visualization saved to reports/evaluations/efficientnet_b3_v1/logs/efficientnet_b3_v1_evaluation_metrics.png
+2025-03-04 01:25:37,776 - INFO - Confusion Matrix:
+2025-03-04 01:25:37,776 - INFO - Tomato_healthy: [1304   11    3    5   83   10    6   49    6    5   11   13   22   38
+   25]
+2025-03-04 01:25:37,777 - INFO - Potato___Early_blight: [  4 885   0   1   3  32   1   0  13   0  15   5   4   9  28]
+2025-03-04 01:25:37,777 - INFO - Tomato__Tomato_YellowLeaf__Curl_Virus: [   2    0 2787   15    7    0   20  147   10   65   23  110   14    8
+    0]
+2025-03-04 01:25:37,777 - INFO - Tomato_Early_blight: [ 14   9   3 580  90   2  33  27  69   9  13  85  63   3   0]
+2025-03-04 01:25:37,777 - INFO - Tomato__Target_Spot: [ 90   5   1  31 963   7  24 145  16  10  21  44  14  24   9]
+2025-03-04 01:25:37,777 - INFO - Potato___Late_blight: [  0  29   1   2   3 832   1   2   2   0   3   2  33   8  82]
+2025-03-04 01:25:37,777 - INFO - Tomato_Leaf_Mold: [  3   0   2  11  11   1 823   8  19  30   2  21  17   4   0]
+2025-03-04 01:25:37,777 - INFO - Tomato_Spider_mites_Two_spotted_spider_mite: [  27    3    4   12  133    6   19 1336    9   79    5   13    7   20
+    3]
+2025-03-04 01:25:37,777 - INFO - Tomato_Septoria_leaf_spot: [  23   33    0   21   43    2  120   21 1263   46   24  116   50    6
+    3]
+2025-03-04 01:25:37,777 - INFO - Tomato__Tomato_mosaic_virus: [  2   0   2   3   4   0  11  15  13 318   0   1   4   0   0]
+2025-03-04 01:25:37,777 - INFO - Pepper__bell___Bacterial_spot: [  0   0   0   1   1   1   2   0   2   0 918   1   2  69   0]
+2025-03-04 01:25:37,777 - INFO - Tomato_Bacterial_spot: [   3    1    2   13   29    0    1    5   42    2    8 1988   30    3
+    0]
+2025-03-04 01:25:37,777 - INFO - Tomato_Late_blight: [  19    4    6   68   37   62   92   15   28    4   17   68 1480    5
+    4]
+2025-03-04 01:25:37,777 - INFO - Pepper__bell___healthy: [   0    0    1    0    0    0    0    5    0    0   42    0    1 1424
+    5]
+2025-03-04 01:25:37,777 - INFO - Potato___healthy: [  1   1   0   0   0   5   0   0   0   0   0   0   0  10 135]
+2025-03-04 01:25:37,777 - INFO - --------------------------------------------------------------------------------
+2025-03-04 01:25:37,782 - INFO - Metrics saved to reports/evaluations/efficientnet_b3_v1/metrics.csv
+2025-03-04 01:25:37,782 - INFO - Evaluation summary saved to reports/evaluations/efficientnet_b3_v1/evaluation_summary.json
+2025-03-04 01:25:37,783 - INFO - Generating visualizations...
+2025-03-04 01:25:37,870 - INFO - Found model type in checkpoint: efficientnet_b3
+2025-03-04 01:30:11,922 - INFO - Visualizations saved to reports/evaluations/efficientnet_b3_v1/visualizations
+2025-03-04 01:30:11,923 - INFO - --------------------------------------------------------------------------------
+2025-03-04 01:30:11,923 - INFO - Evaluation of efficientnet_b3 v1 (best) completed successfully
+2025-03-04 01:30:11,923 - INFO - F1 Score: 0.8262
+2025-03-04 01:30:11,923 - INFO - --------------------------------------------------------------------------------
