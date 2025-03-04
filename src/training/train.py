@@ -83,9 +83,11 @@ def get_next_version(model_dir, model_name):
     pattern1 = os.path.join(model_dir, f"{model_name}_v*_best.pth")
     pattern2 = os.path.join(model_dir, f"{model_name}_v*_final.pth")
     existing_models = glob.glob(pattern1) + glob.glob(pattern2)
-    
-    print(f"Looking for existing versions in {model_dir} with patterns: {pattern1}, {pattern2}")
-    
+
+    print(
+        f"Looking for existing versions in {model_dir} with patterns: {pattern1}, {pattern2}"
+    )
+
     if not existing_models:
         print(f"No existing versions found for {model_name}, starting with version 1")
         return 1
@@ -96,12 +98,12 @@ def get_next_version(model_dir, model_name):
             # Extract version number from filename
             filename = os.path.basename(model_path)
             # Split by '_v' to get the part after the version marker
-            parts = filename.split('_v')
+            parts = filename.split("_v")
             if len(parts) < 2:
                 continue
-            
+
             # Get the version number (part before the next underscore)
-            version_part = parts[1].split('_')[0]
+            version_part = parts[1].split("_")[0]
             version = int(version_part)
             versions.append(version)
             print(f"Found existing version: {version} in {filename}")
@@ -385,7 +387,7 @@ def train_model(
     if keep_top_k > 0:
         cleanup_checkpoints(save_dir, keep_top_k)
 
-    return model, history, best_model_path
+    return model, history, best_model_path, version
 
 
 def find_learning_rate(
@@ -534,7 +536,7 @@ def parse_args():
     parser.add_argument("--lr", type=float, default=0.001, help="Learning rate")
     parser.add_argument("--weight_decay", type=float, default=1e-4, help="Weight decay")
     parser.add_argument(
-        "--pretrained", action="store_true", help="Use pretrained weights"
+        "--use_weights", action="store_true", help="Use pretrained weights"
     )
     parser.add_argument(
         "--freeze_backbone", action="store_true", help="Freeze backbone layers"
@@ -571,7 +573,7 @@ def parse_args():
         help="Use pinned memory for faster data transfer to GPU",
     )
     parser.add_argument(
-        "--optimize_for_m_series", 
+        "--optimize_for_m_series",
         action="store_true",
         help="Apply specific optimizations for M-series Apple Silicon chips (M1/M2/M3/M4)",
     )
@@ -600,7 +602,7 @@ def parse_args():
         "--resnet_version",
         type=int,
         default=50,
-        help="ResNet version (18, 34, 50, etc.)",
+        help="ResNet version (18, 34, 50, 101, 152) - only used for 'resnet_attention' model",
     )
 
     return parser.parse_args()
@@ -627,23 +629,25 @@ def main():
         os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
         # Use float32 for better compatibility with MPS
         torch.set_default_dtype(torch.float32)
-        
+
         # Apply M-series specific optimizations if requested
         if args.optimize_for_m_series:
             print("Applying advanced optimizations for M-series chips")
             # For latest M-series chips (M2/M3/M4), optimize memory usage
-            os.environ["PYTORCH_MPS_HIGH_WATERMARK_RATIO"] = "0.0"  # Maximize GPU memory usage
-            
+            os.environ["PYTORCH_MPS_HIGH_WATERMARK_RATIO"] = (
+                "0.0"  # Maximize GPU memory usage
+            )
+
             # Thread optimizations for M4 Max which has more cores
             num_cores = min(16, os.cpu_count() or 8)  # M4 Max has up to 16 cores
             os.environ["OMP_NUM_THREADS"] = str(min(8, num_cores))
             os.environ["MKL_NUM_THREADS"] = str(min(8, num_cores))
-            
+
             # Enable graph mode if supported and not already enabled
             if hasattr(torch.backends.mps, "enable_graph_mode"):
                 torch.backends.mps.enable_graph_mode = True
                 print("MPS graph mode enabled for M-series optimization")
-                
+
             # Check PyTorch version for additional optimizations
             if hasattr(torch, "__version__") and torch.__version__ >= "2.2.0":
                 print("Enabling PyTorch 2.2+ specific MPS optimizations")
@@ -662,7 +666,7 @@ def main():
 
     # Create output directories with improved structure
     root_dir = args.output_dir
-    
+
     # Check if the output directory already has a version suffix (_v1, _v2, etc.)
     # If it does, use it directly to avoid nesting
     if os.path.basename(root_dir).startswith(f"{args.experiment_name}_v"):
@@ -672,13 +676,13 @@ def main():
     else:
         # Standard case - create experiment directory inside root
         experiment_dir = os.path.join(root_dir, args.experiment_name)
-    
+
     # Create subdirectories
     processed_data_dir = os.path.join(experiment_dir, "processed_data")
     model_save_dir = os.path.join(experiment_dir, "models")
     logs_dir = os.path.join(experiment_dir, "logs")
     viz_dir = os.path.join(experiment_dir, "visualizations")
-    
+
     # Print directory structure for debugging
     print(f"Output directory structure:")
     print(f"  Root dir: {root_dir}")
@@ -719,7 +723,7 @@ def main():
     model = create_model(
         model_type=args.model,
         num_classes=num_classes,
-        pretrained=args.pretrained,
+        use_weights=args.use_weights,
         freeze_backbone=args.freeze_backbone,
         resnet_version=args.resnet_version,
     )
@@ -803,7 +807,7 @@ def main():
         "learning_rate": args.lr,
         "weight_decay": args.weight_decay,
         "img_size": args.img_size,
-        "pretrained": args.pretrained,
+        "use_weights": args.use_weights,
         "freeze_backbone": args.freeze_backbone,
         "device": str(device),
         "use_amp": args.use_amp,
@@ -814,7 +818,7 @@ def main():
     logger.logger.info(f"Using Automatic Mixed Precision: {args.use_amp}")
     logger.logger.info(f"Early stopping patience: {args.patience}")
 
-    model, history, best_model_path = train_model(
+    model, history, best_model_path, version = train_model(
         model,
         dataloaders,
         criterion,
@@ -832,10 +836,6 @@ def main():
         training_params=training_params,
     )
 
-    # Save final model with versioning
-    version = (
-        get_next_version(model_save_dir, args.experiment_name) - 1
-    )  # Reuse the same version from training
     versioned_model_name = f"{args.experiment_name}_v{version}"
     final_model_path = os.path.join(model_save_dir, f"{versioned_model_name}_final.pth")
 
@@ -864,13 +864,16 @@ def main():
         registry_dir = os.path.dirname(root_dir)
     else:
         registry_dir = root_dir
-        
+
     registry_path = os.path.join(registry_dir, "model_registry.json")
 
     # Load best metrics, if available
     from src.utils.model_utils import safe_torch_load
-    best_checkpoint = safe_torch_load(best_model_path, map_location="cpu", weights_only=True, fallback_to_unsafe=True)
-    
+
+    best_checkpoint = safe_torch_load(
+        best_model_path, map_location="cpu", weights_only=True, fallback_to_unsafe=True
+    )
+
     best_metrics = best_checkpoint.get("metrics", {})
 
     model_info = {
@@ -904,7 +907,10 @@ def main():
     # Generate all standard visualizations including GradCAM
     logger.logger.info("Generating standard visualizations and GradCAM")
     from src.utils.visualization import save_all_visualizations
-    save_all_visualizations(model, dataloaders, class_names, device, viz_dir, model_type=args.model)
+
+    save_all_visualizations(
+        model, dataloaders, class_names, device, viz_dir, model_type=args.model
+    )
 
     # t-SNE visualization of feature space
     try:

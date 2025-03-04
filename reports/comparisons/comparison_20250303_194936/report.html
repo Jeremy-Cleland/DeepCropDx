@@ -1,0 +1,115 @@
+
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>crop_disease_detection - Model Comparison Report</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        h1 { color: #333366; }
+                        h2 { color: #333366; margin-top: 20px; }
+                        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+                        th, td { text-align: left; padding: 12px; }
+                        th { background-color: #333366; color: white; }
+                        tr:nth-child(even) { background-color: #f2f2f2; }
+                        .metric-highlight { font-weight: bold; color: #006600; }
+                        .content { max-width: 1200px; margin: 0 auto; }
+                        .timestamp { color: #666; font-size: 0.8em; }
+                        img { max-width: 100%; height: auto; margin-top: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="content">
+                        <h1>crop_disease_detection - Model Comparison Report</h1>
+                        <p class="timestamp">Generated on 2025-03-03 19:49:36</p>
+                
+                        <h2>Performance Metrics Comparison</h2>
+                        <img src="metrics_comparison.png" alt="Metrics Comparison">
+                    
+                        <h2>Metrics Table</h2>
+                        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Model</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>efficientnet_b0_v1</td>
+      <td>0.863117</td>
+      <td>0.871835</td>
+      <td>0.863117</td>
+      <td>0.865057</td>
+    </tr>
+    <tr>
+      <td>efficientnet_b3_v1</td>
+      <td>0.823045</td>
+      <td>0.833691</td>
+      <td>0.823045</td>
+      <td>0.823839</td>
+    </tr>
+    <tr>
+      <td>resnet18_v1</td>
+      <td>0.823045</td>
+      <td>0.847730</td>
+      <td>0.823045</td>
+      <td>0.829591</td>
+    </tr>
+    <tr>
+      <td>resnet_attention_v1</td>
+      <td>0.977517</td>
+      <td>0.977789</td>
+      <td>0.977517</td>
+      <td>0.977518</td>
+    </tr>
+  </tbody>
+</table>
+                
+                        <h2>Best Performing Models</h2>
+                        <table border="1">
+                            <tr>
+                                <th>Metric</th>
+                                <th>Best Model</th>
+                                <th>Value</th>
+                            </tr>
+                    
+                            <tr>
+                                <td>Accuracy</td>
+                                <td>resnet_attention_v1</td>
+                                <td>0.9775</td>
+                            </tr>
+                        
+                            <tr>
+                                <td>Precision</td>
+                                <td>resnet_attention_v1</td>
+                                <td>0.9778</td>
+                            </tr>
+                        
+                            <tr>
+                                <td>Recall</td>
+                                <td>resnet_attention_v1</td>
+                                <td>0.9775</td>
+                            </tr>
+                        
+                            <tr>
+                                <td>F1</td>
+                                <td>resnet_attention_v1</td>
+                                <td>0.9775</td>
+                            </tr>
+                        </table>
+                            <h2>Best Overall Model: resnet_attention_v1</h2>
+                            <p>Based on F1 Score: 0.9775</p>
+                        
+                                            <h3>Confusion Matrix</h3>
+                                            <img src="best_model_confusion_matrix.png" alt="Confusion Matrix">
+                                        
+                                        <h3>Common Misclassifications</h3>
+                                        <img src="best_model_misclassifications.png" alt="Misclassifications">
+                                    
+                    </div>
+                </body>
+                </html>
+                

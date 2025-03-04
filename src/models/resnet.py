@@ -1,60 +1,64 @@
 # ResNet50 model modifications
 import torch
 import torch.nn as nn
-import torchvision.models as models
 import torch.nn.functional as F
+from torchvision import models  # Add this import statement
+
+# ResNet18 and ResNet50 weights
+from torchvision.models import (
+    ResNet18_Weights,
+    ResNet34_Weights,
+    ResNet50_Weights,
+    ResNet101_Weights,
+    ResNet152_Weights,
+)
 
 
-def create_resnet18_model(num_classes, pretrained=True, freeze_backbone=True):
+def create_resnet18_model(num_classes, use_weights=True, freeze_backbone=True):
     """
-    Create a ResNet-18 model with a custom classifier
+    Create a ResNet-18 model with a custom classifier using the new 'weights' parameter.
 
     Args:
-        num_classes (int): Number of output classes
-        pretrained (bool): Whether to use pretrained weights
-        freeze_backbone (bool): Whether to freeze the backbone layers
+        num_classes (int): Number of output classes.
+        use_weights (bool): If True, load pretrained weights (ResNet18_Weights.IMAGENET1K_V1).
+        freeze_backbone (bool): Whether to freeze the backbone layers.
 
     Returns:
-        torch.nn.Module: The ResNet-18 model
+        torch.nn.Module: Modified ResNet-18 model.
     """
-    # Load pretrained ResNet-18
-    model = models.resnet18(pretrained=pretrained)
+    weights = ResNet18_Weights.IMAGENET1K_V1 if use_weights else None
+    model = models.resnet18(weights=weights)
 
-    # Freeze backbone layers if specified
     if freeze_backbone:
         for param in model.parameters():
             param.requires_grad = False
 
-    # Replace the classifier (fc layer)
     in_features = model.fc.in_features
     model.fc = nn.Sequential(
         nn.Dropout(p=0.3), nn.Linear(in_features=in_features, out_features=num_classes)
     )
-
     return model
 
 
-def create_resnet50_model(num_classes, pretrained=True, freeze_backbone=True):
+def create_resnet50_model(num_classes, use_weights=True, freeze_backbone=True):
     """
-    Create a ResNet-50 model with a custom classifier
+    Create a ResNet-50 model with a custom classifier using the new 'weights' parameter.
 
     Args:
-        num_classes (int): Number of output classes
-        pretrained (bool): Whether to use pretrained weights
-        freeze_backbone (bool): Whether to freeze the backbone layers
+        num_classes (int): Number of output classes.
+        use_weights (bool): If True, load pretrained weights (ResNet50_Weights.IMAGENET1K_V1).
+        freeze_backbone (bool): Whether to freeze the backbone layers.
 
     Returns:
-        torch.nn.Module: The ResNet-50 model
+        torch.nn.Module: Modified ResNet-50 model.
     """
-    # Load pretrained ResNet-50
-    model = models.resnet50(pretrained=pretrained)
+    weights = ResNet50_Weights.IMAGENET1K_V1 if use_weights else None
+    model = models.resnet50(weights=weights)
 
-    # Freeze backbone layers if specified
     if freeze_backbone:
         for param in model.parameters():
             param.requires_grad = False
 
-    # Replace the classifier (fc layer)
     in_features = model.fc.in_features
     model.fc = nn.Sequential(
         nn.Linear(in_features=in_features, out_features=512),
@@ -62,13 +66,13 @@ def create_resnet50_model(num_classes, pretrained=True, freeze_backbone=True):
         nn.Dropout(p=0.3),
         nn.Linear(in_features=512, out_features=num_classes),
     )
-
     return model
 
 
+# Residual Attention Module for ResNet
 class ResidualAttention(nn.Module):
     """
-    Attention module for ResNet
+    Attention module for ResNet.
     """
 
     def __init__(self, channels, reduction=16):
@@ -90,28 +94,19 @@ class ResidualAttention(nn.Module):
 
 class ResNetWithAttention(nn.Module):
     """
-    ResNet model with attention mechanism
+    ResNet model with an attention mechanism.
     """
 
     def __init__(self, resnet_model, num_classes):
         super(ResNetWithAttention, self).__init__()
-        # Remove the original fully connected layer
+        # Use all layers except the final pooling and fc layer
         self.features = nn.Sequential(*list(resnet_model.children())[:-2])
 
-        # Get the number of features from the last convolutional layer
-        if isinstance(resnet_model, models.ResNet):
-            if resnet_model.layer4[0].downsample is not None:
-                num_features = resnet_model.layer4[0].downsample[0].out_channels
-            else:
-                num_features = resnet_model.layer4[0].conv1.out_channels * 4
-        else:
-            # Default for ResNet50 and similar
-            num_features = 2048
+        # Determine number of features from last conv layer
+        # For ResNet50 and similar architectures, it's typically 2048.
+        num_features = 2048
 
-        # Add attention module
         self.attention = ResidualAttention(num_features)
-
-        # Global average pooling and classifier
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.classifier = nn.Sequential(
             nn.Dropout(p=0.5), nn.Linear(num_features, num_classes)
@@ -127,40 +122,41 @@ class ResNetWithAttention(nn.Module):
 
 
 def create_resnet_with_attention(
-    num_classes, resnet_version=50, pretrained=True, freeze_backbone=True
+    num_classes, resnet_version=50, use_weights=True, freeze_backbone=True
 ):
     """
-    Create a ResNet model with attention mechanism
+    Create a ResNet model with an attention mechanism using the new 'weights' parameter.
 
     Args:
-        num_classes (int): Number of output classes
-        resnet_version (int): ResNet version (18, 34, 50, 101, or 152)
-        pretrained (bool): Whether to use pretrained weights
-        freeze_backbone (bool): Whether to freeze the backbone layers
+        num_classes (int): Number of output classes.
+        resnet_version (int): ResNet version (18, 34, 50, 101, or 152).
+        use_weights (bool): If True, load pretrained weights for the specified ResNet.
+        freeze_backbone (bool): Whether to freeze the backbone layers.
 
     Returns:
-        torch.nn.Module: The ResNet model with attention
+        torch.nn.Module: Modified ResNet model with attention.
     """
-    # Load appropriate ResNet model
     if resnet_version == 18:
-        base_model = models.resnet18(pretrained=pretrained)
+        weights = ResNet18_Weights.IMAGENET1K_V1 if use_weights else None
+        base_model = models.resnet18(weights=weights)
     elif resnet_version == 34:
-        base_model = models.resnet34(pretrained=pretrained)
+        weights = ResNet34_Weights.IMAGENET1K_V1 if use_weights else None
+        base_model = models.resnet34(weights=weights)
     elif resnet_version == 50:
-        base_model = models.resnet50(pretrained=pretrained)
+        weights = ResNet50_Weights.IMAGENET1K_V1 if use_weights else None
+        base_model = models.resnet50(weights=weights)
     elif resnet_version == 101:
-        base_model = models.resnet101(pretrained=pretrained)
+        weights = ResNet101_Weights.IMAGENET1K_V1 if use_weights else None
+        base_model = models.resnet101(weights=weights)
     elif resnet_version == 152:
-        base_model = models.resnet152(pretrained=pretrained)
+        weights = ResNet152_Weights.IMAGENET1K_V1 if use_weights else None
+        base_model = models.resnet152(weights=weights)
     else:
         raise ValueError(f"Unsupported ResNet version: {resnet_version}")
 
-    # Freeze backbone if specified
     if freeze_backbone:
         for param in base_model.parameters():
             param.requires_grad = False
 
-    # Create the model with attention
     model = ResNetWithAttention(base_model, num_classes)
-
     return model

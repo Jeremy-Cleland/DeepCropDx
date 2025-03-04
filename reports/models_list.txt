@@ -1,0 +1,6 @@
+models/efficientnet_b0_v1/models/efficientnet_b0_v1_best.pth
+models/efficientnet_b3_v1/models/efficientnet_b3_v1_best.pth
+models/mobilenet_v2_v1/models/mobilenet_v2_v1_best.pth
+models/resnet18_v1/models/resnet18_v1_best.pth
+models/resnet_attention_v1/models/resnet_attention_v1_best.pth
+models/mobilenet_v3_small_v1/models/mobilenet_v3_small_v1_best.pth

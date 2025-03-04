@@ -17,6 +17,7 @@ This repository presents a deep neural network pipeline combining EfficientNet, 
     - [Starting with a Clean Environment](#starting-with-a-clean-environment)
     - [Full Pipeline Execution](#full-pipeline-execution)
     - [Visualization](#visualization)
+    - [Complete Pipeline](#complete-pipeline)
   - [🧠 Model Architectures](#-model-architectures)
   - [🔬 Examples](#-examples)
     - [Training with EfficientNet-B3](#training-with-efficientnet-b3)
@@ -33,14 +34,14 @@ This repository presents a deep neural network pipeline combining EfficientNet, 
     - [Mobile Deployment](#mobile-deployment)
   - [📱 Web Interface](#-web-interface)
     - [Running the Web App](#running-the-web-app)
-    - [Features](#features)
+    - [Web Features](#web-features)
     - [Screenshots](#screenshots)
   - [🔌 API Integration](#-api-integration)
     - [API Endpoints](#api-endpoints)
     - [Using the API Client](#using-the-api-client)
     - [API Documentation](#api-documentation)
   - [📊 Evaluation Framework](#-evaluation-framework)
-    - [Features](#features-1)
+    - [Features](#features)
     - [Running Evaluations](#running-evaluations)
     - [Batch Evaluation](#batch-evaluation)
     - [Model Comparison Reports](#model-comparison-reports)
@@ -254,23 +255,6 @@ python -m src.pipeline.train_evaluate_compare \
   --epochs 30
 ```
 
-python -m src.pipeline.train_evaluate_compare \
-  --data_dir data/raw \
-  --output_dir models \
-  --report_dir reports \
-  --epochs 1 \
-  --batch_size 8 \
-  --img_size 64 \
-  --patience 30 \
-  --visualize \
-  --use_mps \
-  --mps_graph \
-  --mps_fallback \
-  --memory_efficient \
-  --cache_dataset \
-  --pin_memory \
-  --optimize_for_m_series
-
 For a quick test run with minimal time:
 
 ```bash
@@ -305,6 +289,25 @@ python -m src.pipeline.train_evaluate_compare \
   --pin_memory \
   --optimize_for_m_series
 ```
+
+python -m src.pipeline.train_evaluate_compare \
+  --data_dir data/raw\
+  --output_dir models \
+  --report_dir reports \
+  --img_size 224 \
+  --batch_size 64 \
+  --epochs 30 \
+  --num_workers 16 \
+  --use_mps \
+  --mps_graph \
+  --memory_efficient \
+  --cache_dataset \
+  --visualize \
+  --cache_dataset \
+  --patience 10 \
+  --keep_top_k 3 \
+  --optimize_for_m_series \
+  --project_name "crop_disease_detection"
 
 ```bash
 ### Model Evaluation
@@ -355,6 +358,28 @@ python -m src.utils.visualization \
   --data_dir data/processed/test \
   --output_dir reports/visualizations
 ```
+
+### Complete Pipeline
+
+**You can run the complete pipeline with:**
+
+```bash
+python -m src.pipeline.train_evaluate_compare --data_dir /path/to/data --output_dir models --report_dir reports
+```
+
+**If you only want to run comparison on existing evaluations:**
+
+```bash
+python -m src.pipeline.train_evaluate_compare --data_dir /path/to/data --skip_training
+```
+
+**Or directly run just the comparison step:**
+
+```bash
+python -m src.scripts.compare_models --evaluations_dir reports/evaluations --output_dir reports/comparisons
+```
+
+The enhancements ensure that model comparison is explicitly included in the pipeline, giving you comparative metrics and visualizations to better understand which model performs best for crop disease detection.
 
 ## 🧠 Model Architectures
 
@@ -525,9 +550,7 @@ python run_app.py --model models/best_model.pth
 python run_app.py --model models/best_model.pth --model-id "EfficientNet-B0" --host 0.0.0.0
 ```
 
-<a id="web-features"></a>
-
-### Features
+### Web Features
 
 - **User-friendly Interface**: Intuitive drag-and-drop image upload
 - **Real-time Analysis**: Immediate disease detection and confidence scores
@@ -676,9 +699,11 @@ def create_your_model(num_classes, pretrained=True, freeze_backbone=True):
     # Modify as needed
     # Return model
     pass
-```
 
 3. Add the model to the model selection logic in `src/models/model_factory.py`
+
+
+```
 
 ### Custom Datasets
 
@@ -698,7 +723,7 @@ Modify the `create_dataset_from_directory` function in `src/data/dataset.py` to 
 
 If you use this code in your research, please cite:
 
-```
+```bibtex
 @software{crop_disease_detection,
   author = {Jeremy Cleland},
   title = {{Crop Disease Detection: A Deep Learning Approach}},
@@ -713,6 +738,18 @@ If you use this code in your research, please cite:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
+
+```bibtex
+@dataset{pandian2019plant,
+  author       = {Arun Pandian, J. and Geetharamani, Gopal},
+  title        = {Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep Convolutional Neural Network},
+  year         = {2019},
+  publisher    = {Mendeley Data},
+  version      = {1},
+  doi          = {10.17632/tywbtsjrjv.1},
+  url          = {https://data.mendeley.com/datasets/tywbtsjrjv/1}
+}
+```
 
 - The attention mechanisms are inspired by "Residual Attention Network for Image Classification" (Wang et al., 2017)
 - EfficientNet implementations based on "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks" (Tan & Le, 2019)

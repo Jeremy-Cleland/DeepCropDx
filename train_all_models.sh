@@ -37,7 +37,7 @@ train_model() {
             --data_dir data/raw \
             --output_dir "$output_dir" \
             --model "$model_type" \
-            --pretrained \
+            --use_weights \
             --patience 7 \
             --find_lr \
             --experiment_name "$experiment_name" \

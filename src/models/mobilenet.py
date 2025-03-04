@@ -1,66 +1,69 @@
-# MobileNetV3 model modifications
 import torch
 import torch.nn as nn
 import torchvision.models as models
 
+from torchvision.models import MobileNet_V2_Weights
 
-def create_mobilenet_model(num_classes, pretrained=True, freeze_backbone=True):
+
+def create_mobilenet_model(num_classes, use_weights=True, freeze_backbone=True):
     """
-    Create a MobileNetV2 model with a custom classifier
+    Create a MobileNetV2 model with a custom classifier using the new 'weights' parameter.
 
     Args:
-        num_classes (int): Number of output classes
-        pretrained (bool): Whether to use pretrained weights
-        freeze_backbone (bool): Whether to freeze the backbone layers
+        num_classes (int): Number of output classes.
+        use_weights (bool): If True, load pretrained weights (MobileNet_V2_Weights.IMAGENET1K_V1).
+        freeze_backbone (bool): Whether to freeze the backbone layers.
 
     Returns:
-        torch.nn.Module: The MobileNetV2 model
+        torch.nn.Module: Modified MobileNetV2 model.
     """
-    # Load pretrained MobileNetV2
-    model = models.mobilenet_v2(pretrained=pretrained)
+    weights = MobileNet_V2_Weights.IMAGENET1K_V1 if use_weights else None
+    model = models.mobilenet_v2(weights=weights)
 
-    # Freeze backbone layers if specified
     if freeze_backbone:
         for param in model.parameters():
             param.requires_grad = False
 
-    # Replace the classifier
+    # Replace the classifier (the second element in the classifier Sequential)
     in_features = model.classifier[1].in_features
     model.classifier = nn.Sequential(
         nn.Dropout(p=0.2, inplace=True),
         nn.Linear(in_features=in_features, out_features=num_classes),
     )
-
     return model
 
 
+# MobileNet V3
+from torchvision.models import MobileNet_V3_Small_Weights, MobileNet_V3_Large_Weights
+
+
 def create_mobilenet_v3_model(
-    num_classes, pretrained=True, freeze_backbone=True, model_size="small"
+    num_classes, use_weights=True, freeze_backbone=True, model_size="small"
 ):
     """
-    Create a MobileNetV3 model with a custom classifier
+    Create a MobileNetV3 model with a custom classifier using the new 'weights' parameter.
 
     Args:
-        num_classes (int): Number of output classes
-        pretrained (bool): Whether to use pretrained weights
-        freeze_backbone (bool): Whether to freeze the backbone layers
-        model_size (str): Size of the model, either 'small' or 'large'
+        num_classes (int): Number of output classes.
+        use_weights (bool): If True, load pretrained weights (MobileNet_V3_Small_Weights or MobileNet_V3_Large_Weights).
+        freeze_backbone (bool): Whether to freeze the backbone layers.
+        model_size (str): 'small' or 'large' model variant.
 
     Returns:
-        torch.nn.Module: The MobileNetV3 model
+        torch.nn.Module: Modified MobileNetV3 model.
     """
-    # Load pretrained MobileNetV3
     if model_size.lower() == "small":
-        model = models.mobilenet_v3_small(pretrained=pretrained)
+        weights = MobileNet_V3_Small_Weights.IMAGENET1K_V1 if use_weights else None
+        model = models.mobilenet_v3_small(weights=weights)
     else:
-        model = models.mobilenet_v3_large(pretrained=pretrained)
+        weights = MobileNet_V3_Large_Weights.IMAGENET1K_V1 if use_weights else None
+        model = models.mobilenet_v3_large(weights=weights)
 
-    # Freeze backbone layers if specified
     if freeze_backbone:
         for param in model.parameters():
             param.requires_grad = False
 
-    # Replace the classifier
+    # For MobileNetV3, classifier is structured differently:
     in_features = model.classifier[0].in_features
     model.classifier = nn.Sequential(
         nn.Linear(in_features=in_features, out_features=512),
@@ -68,44 +71,40 @@ def create_mobilenet_v3_model(
         nn.Dropout(p=0.2, inplace=True),
         nn.Linear(in_features=512, out_features=num_classes),
     )
-
     return model
 
 
 def create_mobilenet_model_with_attention(
-    num_classes, pretrained=True, freeze_backbone=True
+    num_classes, use_weights=True, freeze_backbone=True
 ):
     """
-    Create a MobileNetV2 model with a custom classifier and attention mechanism
+    Create a MobileNetV2 model with a custom classifier and an attention mechanism.
 
     Args:
-        num_classes (int): Number of output classes
-        pretrained (bool): Whether to use pretrained weights
-        freeze_backbone (bool): Whether to freeze the backbone layers
+        num_classes (int): Number of output classes.
+        use_weights (bool): If True, load pretrained weights (MobileNet_V2_Weights.IMAGENET1K_V1).
+        freeze_backbone (bool): Whether to freeze the backbone layers (only freeze features).
 
     Returns:
-        torch.nn.Module: The MobileNetV2 model with attention
+        torch.nn.Module: Modified MobileNetV2 model with attention.
     """
-    # Load pretrained MobileNetV2
-    model = models.mobilenet_v2(pretrained=pretrained)
+    weights = MobileNet_V2_Weights.IMAGENET1K_V1 if use_weights else None
+    model = models.mobilenet_v2(weights=weights)
 
-    # Freeze backbone layers if specified
     if freeze_backbone:
         for param in model.features.parameters():
             param.requires_grad = False
 
-    # Extract the feature extractor
     feature_extractor = model.features
 
-    # Create a new model with attention
     class MobileNetWithAttention(nn.Module):
         def __init__(self, feature_extractor, num_classes):
             super(MobileNetWithAttention, self).__init__()
             self.features = feature_extractor
             self.avg_pool = nn.AdaptiveAvgPool2d(1)
+            feature_dim = 1280  # Last channel size in MobileNetV2
 
             # Attention block
-            feature_dim = 1280  # Last channel size in MobileNetV2
             self.attention = nn.Sequential(
                 nn.Conv2d(feature_dim, feature_dim // 16, kernel_size=1),
                 nn.ReLU(inplace=True),
@@ -113,23 +112,17 @@ def create_mobilenet_model_with_attention(
                 nn.Sigmoid(),
             )
 
-            # Classifier
             self.classifier = nn.Sequential(
                 nn.Dropout(p=0.2), nn.Linear(feature_dim, num_classes)
             )
 
         def forward(self, x):
             x = self.features(x)
-
-            # Apply attention
             attention = self.attention(x)
             x = x * attention
-
-            # Global average pooling and classify
             x = self.avg_pool(x)
             x = torch.flatten(x, 1)
             x = self.classifier(x)
-
             return x
 
     return MobileNetWithAttention(feature_extractor, num_classes)

@@ -5,10 +5,11 @@ import subprocess
 import json
 from datetime import datetime
 import glob
+import logging
+from src.utils.log_config import configure_logger, get_level_from_string
 
 # Apple Silicon optimization - prevent thread contention
 os.environ["OMP_NUM_THREADS"] = "16"
-os.environ["MKL_NUM_THREADS"] = "16"
 
 
 def parse_args():
@@ -150,18 +151,18 @@ def load_model_configs(config_file=None):
             "epochs": 30,
             "lr": 0.001,
             "weight_decay": 1e-4,
-            "pretrained": True,
+            "use_weights": True,
             "freeze_backbone": True,
         },
         {
             "name": "efficientnet_b3",
             "model": "efficientnet_b3",
             "img_size": 224,
-            "batch_size": 16,
+            "batch_size": 32,
             "epochs": 30,
             "lr": 0.001,
             "weight_decay": 1e-4,
-            "pretrained": True,
+            "use_weights": True,
             "freeze_backbone": True,
         },
         {
@@ -172,7 +173,7 @@ def load_model_configs(config_file=None):
             "epochs": 30,
             "lr": 0.001,
             "weight_decay": 1e-4,
-            "pretrained": True,
+            "use_weights": True,
             "freeze_backbone": True,
         },
         {
@@ -183,29 +184,29 @@ def load_model_configs(config_file=None):
             "epochs": 30,
             "lr": 0.001,
             "weight_decay": 1e-4,
-            "pretrained": True,
+            "use_weights": True,
             "freeze_backbone": True,
         },
         {
             "name": "resnet_attention",
             "model": "resnet_attention",
             "img_size": 224,
-            "batch_size": 24,
-            "epochs": 30,
-            "lr": 0.0005,
-            "weight_decay": 1e-5,
-            "pretrained": True,
-            "freeze_backbone": False,
-        },
-        {
-            "name": "mobilenet_v3_small",  # Very efficient on MPS
-            "model": "mobilenet_v3_small",
-            "img_size": 224,
-            "batch_size": 64,  # Can use larger batches with smaller models
+            "batch_size": 32,
             "epochs": 30,
             "lr": 0.001,
             "weight_decay": 1e-4,
-            "pretrained": True,
+            "use_weights": True,
+            "freeze_backbone": False,
+        },
+        {
+            "name": "mobilenet_v3_small",
+            "model": "mobilenet_v3_small",
+            "img_size": 224,
+            "batch_size": 64,
+            "epochs": 30,
+            "lr": 0.001,
+            "weight_decay": 1e-4,
+            "use_weights": True,
             "freeze_backbone": True,
         },
     ]
@@ -276,8 +277,8 @@ def train_model(config, args):
     ]
 
     # Add optional flags
-    if config.get("pretrained", True):
-        cmd.append("--pretrained")
+    if config.get("use_weights", True):
+        cmd.append("--use_weights")
 
     if config.get("freeze_backbone", True):
         cmd.append("--freeze_backbone")
@@ -415,6 +416,49 @@ def evaluate_all_models(models_dir, data_dir, args):
 
     if result.returncode != 0:
         print("Evaluation failed")
+        return False
+
+    return True
+
+
+def run_model_comparison(args, trained_model_names=None):
+    """
+    Run the model comparison script to generate comprehensive comparison reports
+    """
+    print(f"\n{'='*80}")
+    print(f"Generating model comparison reports")
+    print(f"{'='*80}")
+
+    evals_dir = os.path.join(args.report_dir, "evaluations")
+    output_dir = os.path.join(args.report_dir, "comparisons")
+
+    # Build command
+    cmd = [
+        "python",
+        "-m",
+        "src.scripts.compare_models",
+        "--evaluations_dir",
+        evals_dir,
+        "--output_dir",
+        output_dir,
+        "--report_title",
+        f"{args.project_name} - Model Comparison Report",
+    ]
+
+    # Add specific models to compare if provided
+    if trained_model_names:
+        cmd.extend(["--models"] + trained_model_names)
+
+    # Execute command
+    result = subprocess.run(cmd)
+
+    if result.returncode == 0:
+        print(f"Model comparison completed successfully")
+        print(f"Reports available at: {output_dir}")
+        return True
+    else:
+        print(f"Model comparison failed with exit code {result.returncode}")
+        return False
 
 
 def display_model_registry(registry_path):
@@ -481,13 +525,15 @@ def main():
         json.dump(run_config, f, indent=2)
 
     # Train models
-    if not args.skip_training:
-        successful_models = []
+    trained_model_names = []
+    successful_models = []
 
+    if not args.skip_training:
         for config in model_configs:
             success, model_path, versioned_name = train_model(config, args)
             if success:
                 successful_models.append((versioned_name, model_path))
+                trained_model_names.append(versioned_name)
 
         print(f"\nSuccessfully trained {len(successful_models)} models")
 
@@ -519,7 +565,17 @@ def main():
         )
 
     # Evaluate all models
-    evaluate_all_models(args.output_dir, test_data_dir, args)
+    eval_success = evaluate_all_models(args.output_dir, test_data_dir, args)
+
+    # Run model comparison
+    if eval_success:
+        # If models were trained in this run, only compare those models
+        # Otherwise, compare all models in the evaluations directory
+        comp_success = run_model_comparison(
+            args, trained_model_names if trained_model_names else None
+        )
+        if comp_success:
+            print(f"Model comparison completed successfully")
 
     print(f"\nTraining and evaluation pipeline complete!")
     print(

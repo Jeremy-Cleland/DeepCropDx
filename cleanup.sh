@@ -9,8 +9,8 @@ echo ""
 # Define the root directory as the script's location
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Confirm before deletion
-if [ "$1" != "--confirm" ] && [ "$1" != "--dry-run" ]; then
+# Confirm before deletion unless running with --confirm or --dry-run flag
+if [ "$1" != "--confirm" ] && [ "$1" != "--dry-run" ] && [ "$1" != "--pycache" ]; then
     echo "⚠️  WARNING: This will PERMANENTLY DELETE files! ⚠️"
     echo ""
     echo "This includes:"
@@ -58,18 +58,27 @@ case $1 in
     --logs)
         echo "Removing log files only..."
         remove_dir_contents "$ROOT_DIR/logs" $DRY_RUN
-        # Also delete __pycache__ directories
+        # Also delete __pycache__ directories in the logs context
+        if [ "$DRY_RUN" == "--dry-run" ]; then
+            echo "Would remove __pycache__ directories within logs"
+        else
+            find "$ROOT_DIR/logs" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null
+            echo "Removed __pycache__ directories within logs"
+        fi
+        ;;
+    --pycache)
+        echo "Removing all __pycache__ directories..."
         if [ "$DRY_RUN" == "--dry-run" ]; then
             echo "Would remove __pycache__ directories"
         else
-            find "$ROOT_DIR" -type d -name "__pycache__" -exec rm -rf {} +
+            find "$ROOT_DIR" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null
             echo "Removed __pycache__ directories"
         fi
         ;;
     *)
-        # Default: Remove all
+        # Default: Remove all generated files
         echo "Removing all generated files..."
-        # Clean model directories
+        # Clean models directory
         remove_dir_contents "$ROOT_DIR/models" $DRY_RUN
         
         # Clean reports directory
@@ -78,7 +87,7 @@ case $1 in
         # Clean logs directory
         remove_dir_contents "$ROOT_DIR/logs" $DRY_RUN
         
-        # Remove __pycache__ directories
+        # Remove __pycache__ directories across the entire project
         if [ "$DRY_RUN" == "--dry-run" ]; then
             echo "Would remove __pycache__ directories"
         else

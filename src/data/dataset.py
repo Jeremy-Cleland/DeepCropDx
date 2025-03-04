@@ -237,7 +237,7 @@ def create_dataloaders(
     # Auto-determine optimal number of workers if not specified
     if num_workers is None:
         num_workers = min(
-            8, os.cpu_count() or 4
+            12, os.cpu_count() or 4
         )  # Adjust based on your specific Mac model
 
     # Set pin_memory and other optimizations based on device
@@ -353,7 +353,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--num_workers",
         type=int,
-        default=4,
+        default=16,
         help="Number of worker threads for data loading",
     )
 

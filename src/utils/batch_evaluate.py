@@ -31,7 +31,6 @@ class EvaluationLogger(TrainingLogger):
 
     def __init__(self, log_dir, experiment_name=None):
         super().__init__(log_dir, experiment_name)
-        # We don't need training metrics history for evaluation
         self.history = {}
         self.metrics = None
 
@@ -72,7 +71,7 @@ class EvaluationLogger(TrainingLogger):
         if confusion_matrix is not None and class_names is not None:
             # Normalize confusion matrix
             cm_norm = (
-                confusion_matrix.astype("float") 
+                confusion_matrix.astype("float")
                 / confusion_matrix.sum(axis=1)[:, np.newaxis]
             )
 
@@ -563,7 +562,7 @@ def evaluate_models(args):
             confusion_matrix = evaluation_results.get("confusion_matrix")
             if confusion_matrix is None:
                 confusion_matrix = evaluation_results["metrics"].get("confusion_matrix")
-                
+
             # Generate and save metrics plot
             logger.generate_metrics_plot(class_names, confusion_matrix)
 
@@ -578,10 +577,12 @@ def evaluate_models(args):
 
             # Save metrics to file
             metrics = ["accuracy", "precision", "recall", "f1"]
-            metrics_df = pd.DataFrame({
-                "Metric": [m.capitalize() for m in metrics],
-                "Value": [evaluation_results["metrics"][m] for m in metrics]
-            })
+            metrics_df = pd.DataFrame(
+                {
+                    "Metric": [m.capitalize() for m in metrics],
+                    "Value": [evaluation_results["metrics"][m] for m in metrics],
+                }
+            )
 
             metrics_path = os.path.join(model_output_dir, "metrics.csv")
             metrics_df.to_csv(metrics_path, index=False)
@@ -673,7 +674,7 @@ def evaluate_models(args):
             # Log the error
             logger.logger.error(logger.log_separator)
             logger.logger.error(error_msg)
-            
+
             error_traceback = traceback.format_exc()
             logger.logger.error(error_traceback)
             logger.logger.error(logger.log_separator)

@@ -314,7 +314,6 @@ def get_target_layer_for_model(model, model_name):
 
     # Handle EfficientNet models
     if "efficientnet" in model_name.lower():
-        # ...existing EfficientNet handling code...
         if hasattr(model, "features"):
             # Calculate the layer index based on the variant
             if "b3" in model_name.lower():
@@ -870,17 +869,22 @@ def visualize_tsne(
     return plt.gcf()
 
 
-def save_all_visualizations(model, dataloaders, class_names, device, output_dir):
+def save_all_visualizations(
+    model, dataloaders, class_names, device, output_dir, model_type=None
+):
     """
-    Generate and save all visualizations
+    Generate and save all visualizations for a model.
 
     Args:
-        model (torch.nn.Module): Trained model
-        dataloaders (dict): Dictionary of dataloaders
-        class_names (list): List of class names
-        device (torch.device): Device to run the model on
-        output_dir (str): Output directory
+        model: PyTorch model
+        dataloaders: Dictionary of PyTorch dataloaders
+        class_names: List of class names
+        device: Device to use for inference
+        output_dir: Directory to save visualizations
+        model_type: Type of model architecture (for target layer selection)
     """
+    os.makedirs(output_dir, exist_ok=True)
+
     # Check if output_dir has redundant model name structure
     # For example: 'efficientnet_b0/visualizations/efficientnet_b0'
     path_parts = output_dir.split(os.sep)

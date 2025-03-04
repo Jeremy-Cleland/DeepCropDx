@@ -26,9 +26,26 @@ def safe_torch_load(
         import numpy as np
         import numpy.core.multiarray
 
-        # Add both numpy.ndarray and numpy.core.multiarray._reconstruct to safe globals
+        # Add numpy types to safe globals - expanded list for more thorough coverage
         torch.serialization.add_safe_globals(
-            [np.ndarray, numpy.core.multiarray._reconstruct]
+            [
+                np.ndarray,
+                numpy.core.multiarray._reconstruct,
+                np.dtype,
+                np.int64,
+                np.float32,
+                np.float64,
+                np.bool_,
+                # Add the specific Int64DType class
+                getattr(np.dtypes, "Int64DType", None),
+                # Add all numpy scalar types
+                *[
+                    getattr(np, t)
+                    for t in dir(np)
+                    if isinstance(getattr(np, t), type)
+                    and isinstance(getattr(np, t)(), np.number)
+                ],
+            ]
         )
 
         # Try loading with weights_only=True
