@@ -1,0 +1,11 @@
+{
+  "model_path": "models/resnet_attention_v1/models/resnet_attention_v1_best.pth",
+  "model_name": "resnet_attention v1 (best)",
+  "evaluated_at": "2025-03-04T01:39:18.308984",
+  "metrics": {
+    "accuracy": 0.9793584649675356,
+    "precision": 0.9794859591112602,
+    "recall": 0.9793584649675356,
+    "f1": 0.9793551491348537
+  }
+}

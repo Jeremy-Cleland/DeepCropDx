@@ -6,7 +6,6 @@ import json
 from datetime import datetime
 import glob
 import logging
-from src.utils.log_config import configure_logger, get_level_from_string
 
 # Apple Silicon optimization - prevent thread contention
 os.environ["OMP_NUM_THREADS"] = "16"

@@ -1,0 +1,11 @@
+{
+  "model_path": "models/resnet18_v1/models/resnet18_v1_best.pth",
+  "model_name": "resnet18 v1 (best)",
+  "evaluated_at": "2025-03-04T02:01:56.582795",
+  "metrics": {
+    "accuracy": 0.8271150305262138,
+    "precision": 0.8468739094335592,
+    "recall": 0.8271150305262138,
+    "f1": 0.8316336152860762
+  }
+}
