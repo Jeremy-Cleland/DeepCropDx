@@ -16,6 +16,7 @@ This repository presents a deep neural network pipeline combining EfficientNet, 
     - [Training](#training)
     - [Starting with a Clean Environment](#starting-with-a-clean-environment)
     - [Full Pipeline Execution](#full-pipeline-execution)
+    - [Batch Evaluation](#batch-evaluation)
     - [Visualization](#visualization)
   - [🧠 Model Architectures](#-model-architectures)
   - [🔬 Examples](#-examples)
@@ -41,7 +42,7 @@ This repository presents a deep neural network pipeline combining EfficientNet, 
   - [📊 Evaluation Framework](#-evaluation-framework)
     - [Features](#features)
     - [Running Evaluations](#running-evaluations)
-    - [Batch Evaluation](#batch-evaluation)
+    - [Batch Evaluation](#batch-evaluation-1)
     - [Model Comparison Reports](#model-comparison-reports)
   - [🧩 Extending the Project](#-extending-the-project)
     - [Adding New Models](#adding-new-models)
@@ -250,9 +251,7 @@ python -m src.pipeline.train_evaluate_compare \
   --visualize
 ```
 
-```bash
-
-### Batch evaluate multiple models:
+### Batch Evaluation
 
 ```bash
 python -m src.scripts.batch_evaluate \

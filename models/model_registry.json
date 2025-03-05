@@ -166,5 +166,117 @@
       "device": "mps",
       "use_amp": false
     }
+  },
+  {
+    "id": "efficientnet_b0_v1",
+    "experiment": "efficientnet_b0",
+    "model_type": "efficientnet",
+    "path": "models/efficientnet_b0_v1_final.pth",
+    "best_model_path": "models/efficientnet_b0_v1_best.pth",
+    "num_classes": 39,
+    "created_at": "2025-03-04T23:25:22.973695",
+    "version": 1,
+    "metrics": {
+      "val_accuracy": 0.9000325273772092,
+      "val_precision": 0.9057453416659952,
+      "val_recall": 0.9000325273772092,
+      "val_f1": 0.8999185799642218
+    },
+    "training_params": {
+      "model_type": "efficientnet",
+      "epochs": 30,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "img_size": 224,
+      "use_weights": true,
+      "freeze_backbone": true,
+      "device": "mps",
+      "use_amp": false
+    }
+  },
+  {
+    "id": "efficientnet_b3_v1",
+    "experiment": "efficientnet_b3",
+    "model_type": "efficientnet_b3",
+    "path": "models/efficientnet_b3_v1_final.pth",
+    "best_model_path": "models/efficientnet_b3_v1_best.pth",
+    "num_classes": 39,
+    "created_at": "2025-03-05T00:06:43.867566",
+    "version": 1,
+    "metrics": {
+      "val_accuracy": 0.8776970616935921,
+      "val_precision": 0.8841816807884051,
+      "val_recall": 0.8776970616935921,
+      "val_f1": 0.878194036207504
+    },
+    "training_params": {
+      "model_type": "efficientnet_b3",
+      "epochs": 30,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "img_size": 224,
+      "use_weights": true,
+      "freeze_backbone": true,
+      "device": "mps",
+      "use_amp": false
+    }
+  },
+  {
+    "id": "mobilenet_v2_v1",
+    "experiment": "mobilenet_v2",
+    "model_type": "mobilenet",
+    "path": "models/mobilenet_v2_v1_final.pth",
+    "best_model_path": "models/mobilenet_v2_v1_best.pth",
+    "num_classes": 39,
+    "created_at": "2025-03-05T00:31:39.383358",
+    "version": 1,
+    "metrics": {
+      "val_accuracy": 0.912718204488778,
+      "val_precision": 0.9182054603196163,
+      "val_recall": 0.912718204488778,
+      "val_f1": 0.9135468098339817
+    },
+    "training_params": {
+      "model_type": "mobilenet",
+      "epochs": 30,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "img_size": 224,
+      "use_weights": true,
+      "freeze_backbone": true,
+      "device": "mps",
+      "use_amp": false
+    }
+  },
+  {
+    "id": "resnet18_v1",
+    "experiment": "resnet18",
+    "model_type": "resnet18",
+    "path": "models/resnet18_v1_final.pth",
+    "best_model_path": "models/resnet18_v1_best.pth",
+    "num_classes": 39,
+    "created_at": "2025-03-05T00:52:51.867757",
+    "version": 1,
+    "metrics": {
+      "val_accuracy": 0.8779139108749865,
+      "val_precision": 0.8873629322904567,
+      "val_recall": 0.8779139108749865,
+      "val_f1": 0.8792929627341878
+    },
+    "training_params": {
+      "model_type": "resnet18",
+      "epochs": 30,
+      "batch_size": 32,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "img_size": 224,
+      "use_weights": true,
+      "freeze_backbone": true,
+      "device": "mps",
+      "use_amp": false
+    }
   }
 ]
