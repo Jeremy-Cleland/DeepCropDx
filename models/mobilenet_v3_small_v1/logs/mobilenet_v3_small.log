@@ -1110,3 +1110,9 @@ MobileNetV3(
 2025-03-04 00:31:23,146 - INFO - Generating standard visualizations and GradCAM
 2025-03-04 00:32:11,375 - INFO - t-SNE visualization saved to models/mobilenet_v3_small_v1/visualizations
 2025-03-04 00:32:11,375 - INFO - Training and visualization finished!
+2025-03-04 22:52:59,278 - INFO - Starting experiment: mobilenet_v3_small
+2025-03-04 22:52:59,278 - INFO - Command line arguments: Namespace(data_dir='/path/to/data', output_dir='models/mobilenet_v3_small_v1', model='mobilenet_v3_small', img_size=224, batch_size=64, num_workers=16, epochs=30, lr=0.001, weight_decay=0.0001, use_weights=True, freeze_backbone=True, no_cuda=False, no_mps=False, use_mps=False, use_amp=False, memory_efficient=False, cache_dataset=False, mps_graph=False, mps_fallback=False, pin_memory=False, optimize_for_m_series=True, patience=10, keep_top_k=3, version=None, find_lr=False, experiment_name='mobilenet_v3_small', resnet_version=50)
+2025-03-04 22:52:59,278 - INFO - Processing dataset...
+2025-03-04 22:55:32,336 - INFO - Starting experiment: mobilenet_v3_small
+2025-03-04 22:55:32,337 - INFO - Command line arguments: Namespace(data_dir='/data/raw', output_dir='models/mobilenet_v3_small_v1', model='mobilenet_v3_small', img_size=224, batch_size=64, num_workers=16, epochs=30, lr=0.001, weight_decay=0.0001, use_weights=True, freeze_backbone=True, no_cuda=False, no_mps=False, use_mps=False, use_amp=False, memory_efficient=False, cache_dataset=False, mps_graph=False, mps_fallback=False, pin_memory=False, optimize_for_m_series=True, patience=10, keep_top_k=3, version=None, find_lr=False, experiment_name='mobilenet_v3_small', resnet_version=50)
+2025-03-04 22:55:32,337 - INFO - Processing dataset...

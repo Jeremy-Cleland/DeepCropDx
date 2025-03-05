@@ -1,0 +1,611 @@
+2025-03-04 22:57:25,705 - INFO - Starting experiment: efficientnet_b0
+2025-03-04 22:57:25,705 - INFO - Command line arguments: Namespace(data_dir='data/raw', output_dir='models/efficientnet_b0_v2', model='efficientnet', img_size=224, batch_size=32, num_workers=16, epochs=30, lr=0.001, weight_decay=0.0001, use_weights=True, freeze_backbone=True, no_cuda=False, no_mps=False, use_mps=True, use_amp=False, memory_efficient=True, cache_dataset=True, mps_graph=True, mps_fallback=False, pin_memory=False, optimize_for_m_series=True, patience=10, keep_top_k=3, version=None, find_lr=False, experiment_name='efficientnet_b0', resnet_version=50)
+2025-03-04 22:57:25,705 - INFO - Processing dataset...
+2025-03-04 22:57:25,909 - INFO - Class distribution:
+2025-03-04 22:57:25,909 - INFO -   Strawberry___healthy: 1000 images
+2025-03-04 22:57:25,909 - INFO -   Grape___Black_rot: 1180 images
+2025-03-04 22:57:25,909 - INFO -   Potato___Early_blight: 1000 images
+2025-03-04 22:57:25,909 - INFO -   Blueberry___healthy: 1502 images
+2025-03-04 22:57:25,909 - INFO -   Cherry___Powdery_mildew: 1052 images
+2025-03-04 22:57:25,909 - INFO -   Tomato___Target_Spot: 1404 images
+2025-03-04 22:57:25,909 - INFO -   Peach___healthy: 1000 images
+2025-03-04 22:57:25,909 - INFO -   Potato___Late_blight: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Late_blight: 1909 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Tomato_mosaic_virus: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Pepper,_bell___healthy: 1478 images
+2025-03-04 22:57:25,910 - INFO -   Orange___Haunglongbing_(Citrus_greening): 5507 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Leaf_Mold: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Grape___Leaf_blight_(Isariopsis_Leaf_Spot): 1076 images
+2025-03-04 22:57:25,910 - INFO -   Apple___Cedar_apple_rust: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Bacterial_spot: 2127 images
+2025-03-04 22:57:25,910 - INFO -   Grape___healthy: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Corn___Cercospora_leaf_spot Gray_leaf_spot: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Early_blight: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Grape___Esca_(Black_Measles): 1383 images
+2025-03-04 22:57:25,910 - INFO -   Raspberry___healthy: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___healthy: 1591 images
+2025-03-04 22:57:25,910 - INFO -   Corn___Northern_Leaf_Blight: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Tomato_Yellow_Leaf_Curl_Virus: 5357 images
+2025-03-04 22:57:25,910 - INFO -   Cherry___healthy: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Apple___Apple_scab: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Spider_mites Two-spotted_spider_mite: 1676 images
+2025-03-04 22:57:25,910 - INFO -   Corn___Common_rust: 1192 images
+2025-03-04 22:57:25,910 - INFO -   Background_without_leaves: 1143 images
+2025-03-04 22:57:25,910 - INFO -   Peach___Bacterial_spot: 2297 images
+2025-03-04 22:57:25,910 - INFO -   Pepper,_bell___Bacterial_spot: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Tomato___Septoria_leaf_spot: 1771 images
+2025-03-04 22:57:25,910 - INFO -   Corn___healthy: 1162 images
+2025-03-04 22:57:25,910 - INFO -   Squash___Powdery_mildew: 1835 images
+2025-03-04 22:57:25,910 - INFO -   Apple___Black_rot: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Apple___healthy: 1645 images
+2025-03-04 22:57:25,910 - INFO -   Strawberry___Leaf_scorch: 1109 images
+2025-03-04 22:57:25,910 - INFO -   Potato___healthy: 1000 images
+2025-03-04 22:57:25,910 - INFO -   Soybean___healthy: 5090 images
+2025-03-04 22:57:25,910 - INFO - Creating model: efficientnet with 39 classes
+2025-03-04 22:57:26,161 - INFO - Model architecture:
+EfficientNet(
+  (features): Sequential(
+    (0): Conv2dNormActivation(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): SiLU(inplace=True)
+    )
+    (1): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+            (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (2): Conv2dNormActivation(
+            (0): Conv2d(32, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.0, mode=row)
+      )
+    )
+    (2): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(16, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(96, 96, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=96, bias=False)
+            (1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(96, 4, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(4, 96, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(96, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.0125, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(24, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=144, bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(144, 6, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(6, 144, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(144, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.025, mode=row)
+      )
+    )
+    (3): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(24, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(144, 144, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), groups=144, bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(144, 6, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(6, 144, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(144, 40, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.037500000000000006, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(40, 240, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(240, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(240, 240, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=240, bias=False)
+            (1): BatchNorm2d(240, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(240, 10, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(10, 240, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(240, 40, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(40, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.05, mode=row)
+      )
+    )
+    (4): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(40, 240, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(240, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(240, 240, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=240, bias=False)
+            (1): BatchNorm2d(240, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(240, 10, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(10, 240, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(240, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.0625, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(480, 480, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=480, bias=False)
+            (1): BatchNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.07500000000000001, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(480, 480, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=480, bias=False)
+            (1): BatchNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(80, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.08750000000000001, mode=row)
+      )
+    )
+    (5): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+            (1): BatchNorm2d(480, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(480, 112, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(112, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(112, 672, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(672, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(672, 672, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=672, bias=False)
+            (1): BatchNorm2d(672, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(672, 28, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(28, 672, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(672, 112, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(112, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1125, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(112, 672, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(672, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(672, 672, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=672, bias=False)
+            (1): BatchNorm2d(672, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(672, 28, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(28, 672, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(672, 112, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(112, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.125, mode=row)
+      )
+    )
+    (6): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(112, 672, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(672, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(672, 672, kernel_size=(5, 5), stride=(2, 2), padding=(2, 2), groups=672, bias=False)
+            (1): BatchNorm2d(672, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(672, 28, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(28, 672, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(672, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1375, mode=row)
+      )
+      (1): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(192, 1152, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1152, 1152, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1152, bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1152, 48, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(48, 1152, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1152, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.15000000000000002, mode=row)
+      )
+      (2): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(192, 1152, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1152, 1152, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1152, bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1152, 48, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(48, 1152, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1152, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1625, mode=row)
+      )
+      (3): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(192, 1152, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1152, 1152, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1152, bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1152, 48, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(48, 1152, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1152, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(192, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.17500000000000002, mode=row)
+      )
+    )
+    (7): Sequential(
+      (0): MBConv(
+        (block): Sequential(
+          (0): Conv2dNormActivation(
+            (0): Conv2d(192, 1152, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (1): Conv2dNormActivation(
+            (0): Conv2d(1152, 1152, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1152, bias=False)
+            (1): BatchNorm2d(1152, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): SiLU(inplace=True)
+          )
+          (2): SqueezeExcitation(
+            (avgpool): AdaptiveAvgPool2d(output_size=1)
+            (fc1): Conv2d(1152, 48, kernel_size=(1, 1), stride=(1, 1))
+            (fc2): Conv2d(48, 1152, kernel_size=(1, 1), stride=(1, 1))
+            (activation): SiLU(inplace=True)
+            (scale_activation): Sigmoid()
+          )
+          (3): Conv2dNormActivation(
+            (0): Conv2d(1152, 320, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (stochastic_depth): StochasticDepth(p=0.1875, mode=row)
+      )
+    )
+    (8): Conv2dNormActivation(
+      (0): Conv2d(320, 1280, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): BatchNorm2d(1280, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): SiLU(inplace=True)
+    )
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=1)
+  (classifier): Sequential(
+    (0): Dropout(p=0.2, inplace=True)
+    (1): Linear(in_features=1280, out_features=39, bias=True)
+  )
+)
+2025-03-04 22:57:26,168 - INFO - Using class weights: [1.2614028  1.0689855  1.2614028  0.83981544 1.1990521  0.89843506
+ 1.2614028  1.2614028  0.66076624 1.2614028  0.8534525  0.22905444
+ 1.2614028  1.1723075  1.2614028  0.59304315 1.2614028  1.2614028
+ 1.2614028  0.91207725 1.2614028  0.7928365  1.2614028  0.23546813
+ 1.2614028  1.2614028  0.75262696 1.0582238  1.1035895  0.5491523
+ 1.2614028  0.7122546  1.0855446  0.687413   1.2614028  0.76681024
+ 1.1374236  1.2614028  0.24781981]
+2025-03-04 22:57:26,168 - INFO - Training only 2 parameters (classifier)
+2025-03-04 22:57:26,171 - INFO - Starting training for 30 epochs
+2025-03-04 22:57:26,171 - INFO - Using Automatic Mixed Precision: False
+2025-03-04 22:57:26,171 - INFO - Early stopping patience: 10
+2025-03-04 22:57:26,171 - INFO - --------------------------------------------------------------------------------
+2025-03-04 22:57:26,171 - INFO - Starting training: efficientnet_b0
+2025-03-04 22:57:26,171 - INFO - Total epochs: 30
+2025-03-04 22:57:26,171 - INFO - Training batches per epoch: 1345
+2025-03-04 22:57:26,171 - INFO - Validation batches per epoch: 289
+2025-03-04 22:57:26,171 - INFO - --------------------------------------------------------------------------------
+2025-03-04 22:57:26,171 - INFO - Training model: efficientnet_b0_v1
+2025-03-04 22:57:26,171 - INFO - Epoch 1/30
+2025-03-04 22:57:26,171 - INFO - ----------------------------------------
+2025-03-04 22:58:07,980 - INFO - [TRAIN] Epoch: 1/30 | Batch: 0/1345 (0.1%) | Loss: 3.7364 | Batch time: 2.73s
+2025-03-04 22:58:14,513 - INFO - [TRAIN] Epoch: 1/30 | Batch: 134/1345 (10.0%) | Loss: 2.2401 | Batch time: 0.06s
+2025-03-04 22:58:21,063 - INFO - [TRAIN] Epoch: 1/30 | Batch: 268/1345 (20.0%) | Loss: 1.9598 | Batch time: 0.06s
+2025-03-04 22:58:27,659 - INFO - [TRAIN] Epoch: 1/30 | Batch: 402/1345 (30.0%) | Loss: 1.7878 | Batch time: 0.06s
+2025-03-04 22:58:34,155 - INFO - [TRAIN] Epoch: 1/30 | Batch: 536/1345 (39.9%) | Loss: 1.4880 | Batch time: 0.02s
+2025-03-04 22:58:40,991 - INFO - [TRAIN] Epoch: 1/30 | Batch: 670/1345 (49.9%) | Loss: 1.0129 | Batch time: 0.04s
+2025-03-04 22:58:46,493 - INFO - [TRAIN] Epoch: 1/30 | Batch: 804/1345 (59.9%) | Loss: 1.2737 | Batch time: 0.07s
+2025-03-04 22:58:53,178 - INFO - [TRAIN] Epoch: 1/30 | Batch: 938/1345 (69.8%) | Loss: 1.3994 | Batch time: 0.06s
+2025-03-04 22:58:59,824 - INFO - [TRAIN] Epoch: 1/30 | Batch: 1072/1345 (79.8%) | Loss: 0.9290 | Batch time: 0.07s
+2025-03-04 22:59:06,593 - INFO - [TRAIN] Epoch: 1/30 | Batch: 1206/1345 (89.7%) | Loss: 1.0387 | Batch time: 0.03s
+2025-03-04 22:59:13,332 - INFO - [TRAIN] Epoch: 1/30 | Batch: 1340/1345 (99.7%) | Loss: 1.1753 | Batch time: 0.03s
+2025-03-04 22:59:13,550 - INFO - [TRAIN] Epoch: 1/30 | Batch: 1344/1345 (100.0%) | Loss: 0.7805 | Batch time: 0.05s
+2025-03-04 22:59:53,771 - INFO - [VAL] Epoch: 1/30 | Batch: 0/289 (0.3%) | Loss: 0.6001 | Batch time: 0.38s
+2025-03-04 22:59:55,005 - INFO - [VAL] Epoch: 1/30 | Batch: 28/289 (10.0%) | Loss: 0.7145 | Batch time: 0.04s
+2025-03-04 22:59:56,124 - INFO - [VAL] Epoch: 1/30 | Batch: 56/289 (19.7%) | Loss: 0.9363 | Batch time: 0.05s
+2025-03-04 22:59:57,197 - INFO - [VAL] Epoch: 1/30 | Batch: 84/289 (29.4%) | Loss: 0.5886 | Batch time: 0.05s
+2025-03-04 22:59:58,248 - INFO - [VAL] Epoch: 1/30 | Batch: 112/289 (39.1%) | Loss: 0.5851 | Batch time: 0.05s
+2025-03-04 22:59:59,310 - INFO - [VAL] Epoch: 1/30 | Batch: 140/289 (48.8%) | Loss: 0.4484 | Batch time: 0.03s
+2025-03-04 23:00:00,358 - INFO - [VAL] Epoch: 1/30 | Batch: 168/289 (58.5%) | Loss: 0.4657 | Batch time: 0.02s
+2025-03-04 23:00:01,410 - INFO - [VAL] Epoch: 1/30 | Batch: 196/289 (68.2%) | Loss: 0.4507 | Batch time: 0.02s
+2025-03-04 23:00:02,452 - INFO - [VAL] Epoch: 1/30 | Batch: 224/289 (77.9%) | Loss: 0.5304 | Batch time: 0.02s
+2025-03-04 23:00:03,494 - INFO - [VAL] Epoch: 1/30 | Batch: 252/289 (87.5%) | Loss: 0.8039 | Batch time: 0.02s
+2025-03-04 23:00:04,568 - INFO - [VAL] Epoch: 1/30 | Batch: 280/289 (97.2%) | Loss: 0.7289 | Batch time: 0.04s
+2025-03-04 23:00:05,488 - INFO - [VAL] Epoch: 1/30 | Batch: 288/289 (100.0%) | Loss: 0.2825 | Batch time: 0.61s
+2025-03-04 23:00:06,022 - INFO - Checkpoint saved: efficientnet_b0_v1_best.pth (Epoch 1)
+2025-03-04 23:00:06,022 - INFO - --------------------------------------------------------------------------------
+2025-03-04 23:00:06,022 - INFO - Epoch 1/30 completed in 159.85s
+2025-03-04 23:00:06,022 - INFO - Training   - Loss: 1.4255, Accuracy: 0.6521, F1: 0.6539
+2025-03-04 23:00:06,022 - INFO - Validation - Loss: 0.6127, Accuracy: 0.8432, F1: 0.8436
+2025-03-04 23:00:06,022 - INFO - --------------------------------------------------------------------------------
+2025-03-04 23:00:06,023 - INFO - Epoch 2/30
+2025-03-04 23:00:06,023 - INFO - ----------------------------------------
+2025-03-04 23:00:06,661 - INFO - [TRAIN] Epoch: 2/30 | Batch: 0/1345 (0.1%) | Loss: 0.8994 | Batch time: 0.14s
+2025-03-04 23:00:13,734 - INFO - [TRAIN] Epoch: 2/30 | Batch: 134/1345 (10.0%) | Loss: 1.0431 | Batch time: 0.03s
+2025-03-04 23:00:20,716 - INFO - [TRAIN] Epoch: 2/30 | Batch: 268/1345 (20.0%) | Loss: 0.7235 | Batch time: 0.05s
+2025-03-04 23:00:27,513 - INFO - [TRAIN] Epoch: 2/30 | Batch: 402/1345 (30.0%) | Loss: 1.0514 | Batch time: 0.04s
+2025-03-04 23:00:34,273 - INFO - [TRAIN] Epoch: 2/30 | Batch: 536/1345 (39.9%) | Loss: 0.9622 | Batch time: 0.05s
+2025-03-04 23:00:40,831 - INFO - [TRAIN] Epoch: 2/30 | Batch: 670/1345 (49.9%) | Loss: 1.3249 | Batch time: 0.07s
+2025-03-04 23:00:47,102 - INFO - [TRAIN] Epoch: 2/30 | Batch: 804/1345 (59.9%) | Loss: 0.8162 | Batch time: 0.04s
+2025-03-04 23:00:54,982 - INFO - [TRAIN] Epoch: 2/30 | Batch: 938/1345 (69.8%) | Loss: 0.9212 | Batch time: 0.03s
+2025-03-04 23:00:59,832 - INFO - [TRAIN] Epoch: 2/30 | Batch: 1072/1345 (79.8%) | Loss: 1.0558 | Batch time: 0.03s
+2025-03-04 23:01:06,394 - INFO - [TRAIN] Epoch: 2/30 | Batch: 1206/1345 (89.7%) | Loss: 0.6077 | Batch time: 0.06s
+2025-03-04 23:01:13,120 - INFO - [TRAIN] Epoch: 2/30 | Batch: 1340/1345 (99.7%) | Loss: 0.8132 | Batch time: 0.04s
+2025-03-04 23:01:13,342 - INFO - [TRAIN] Epoch: 2/30 | Batch: 1344/1345 (100.0%) | Loss: 0.6305 | Batch time: 0.05s
+2025-03-04 23:01:13,606 - INFO - [VAL] Epoch: 2/30 | Batch: 0/289 (0.3%) | Loss: 0.4602 | Batch time: 0.05s
+2025-03-04 23:01:14,717 - INFO - [VAL] Epoch: 2/30 | Batch: 28/289 (10.0%) | Loss: 0.5629 | Batch time: 0.02s
+2025-03-04 23:01:15,840 - INFO - [VAL] Epoch: 2/30 | Batch: 56/289 (19.7%) | Loss: 0.6501 | Batch time: 0.03s
+2025-03-04 23:01:16,983 - INFO - [VAL] Epoch: 2/30 | Batch: 84/289 (29.4%) | Loss: 0.3630 | Batch time: 0.05s
+2025-03-04 23:01:18,088 - INFO - [VAL] Epoch: 2/30 | Batch: 112/289 (39.1%) | Loss: 0.5667 | Batch time: 0.05s
+2025-03-04 23:01:19,244 - INFO - [VAL] Epoch: 2/30 | Batch: 140/289 (48.8%) | Loss: 0.2810 | Batch time: 0.04s
+2025-03-04 23:01:20,367 - INFO - [VAL] Epoch: 2/30 | Batch: 168/289 (58.5%) | Loss: 0.3352 | Batch time: 0.04s
+2025-03-04 23:01:21,485 - INFO - [VAL] Epoch: 2/30 | Batch: 196/289 (68.2%) | Loss: 0.3370 | Batch time: 0.05s
+2025-03-04 23:01:22,605 - INFO - [VAL] Epoch: 2/30 | Batch: 224/289 (77.9%) | Loss: 0.4300 | Batch time: 0.05s
+2025-03-04 23:01:23,721 - INFO - [VAL] Epoch: 2/30 | Batch: 252/289 (87.5%) | Loss: 0.5909 | Batch time: 0.05s
+2025-03-04 23:01:24,812 - INFO - [VAL] Epoch: 2/30 | Batch: 280/289 (97.2%) | Loss: 0.5918 | Batch time: 0.02s
+2025-03-04 23:01:25,102 - INFO - [VAL] Epoch: 2/30 | Batch: 288/289 (100.0%) | Loss: 0.1007 | Batch time: 0.03s
+2025-03-04 23:01:25,606 - INFO - Checkpoint saved: efficientnet_b0_v1_best.pth (Epoch 2)
+2025-03-04 23:01:25,606 - INFO - --------------------------------------------------------------------------------
+2025-03-04 23:01:25,606 - INFO - Epoch 2/30 completed in 79.58s
+2025-03-04 23:01:25,606 - INFO - Training   - Loss: 0.9811, Accuracy: 0.7276, F1: 0.7290
+2025-03-04 23:01:25,606 - INFO - Validation - Loss: 0.4993, Accuracy: 0.8579, F1: 0.8576
+2025-03-04 23:01:25,606 - INFO - Validation F1 improved from 0.8436 to 0.8576
+2025-03-04 23:01:25,606 - INFO - --------------------------------------------------------------------------------
+2025-03-04 23:01:25,606 - INFO - Epoch 3/30
+2025-03-04 23:01:25,606 - INFO - ----------------------------------------
+2025-03-04 23:01:26,027 - INFO - [TRAIN] Epoch: 3/30 | Batch: 0/1345 (0.1%) | Loss: 1.4599 | Batch time: 0.15s
+2025-03-04 23:01:32,897 - INFO - [TRAIN] Epoch: 3/30 | Batch: 134/1345 (10.0%) | Loss: 1.2979 | Batch time: 0.08s
+2025-03-04 23:01:40,257 - INFO - [TRAIN] Epoch: 3/30 | Batch: 268/1345 (20.0%) | Loss: 0.7715 | Batch time: 0.06s
+2025-03-04 23:01:47,078 - INFO - [TRAIN] Epoch: 3/30 | Batch: 402/1345 (30.0%) | Loss: 0.8260 | Batch time: 0.06s
+2025-03-04 23:01:54,166 - INFO - [TRAIN] Epoch: 3/30 | Batch: 536/1345 (39.9%) | Loss: 0.9722 | Batch time: 0.04s
+2025-03-04 23:02:00,929 - INFO - [TRAIN] Epoch: 3/30 | Batch: 670/1345 (49.9%) | Loss: 0.9432 | Batch time: 0.06s
+2025-03-04 23:02:07,450 - INFO - [TRAIN] Epoch: 3/30 | Batch: 804/1345 (59.9%) | Loss: 0.8842 | Batch time: 0.05s
+2025-03-04 23:02:14,099 - INFO - [TRAIN] Epoch: 3/30 | Batch: 938/1345 (69.8%) | Loss: 0.4951 | Batch time: 0.04s
+2025-03-04 23:02:20,284 - INFO - [TRAIN] Epoch: 3/30 | Batch: 1072/1345 (79.8%) | Loss: 1.0415 | Batch time: 0.05s
+2025-03-04 23:02:27,402 - INFO - [TRAIN] Epoch: 3/30 | Batch: 1206/1345 (89.7%) | Loss: 0.7976 | Batch time: 0.06s
+2025-03-04 23:02:34,537 - INFO - [TRAIN] Epoch: 3/30 | Batch: 1340/1345 (99.7%) | Loss: 0.7629 | Batch time: 0.02s
+2025-03-04 23:02:34,704 - INFO - [TRAIN] Epoch: 3/30 | Batch: 1344/1345 (100.0%) | Loss: 0.6285 | Batch time: 0.06s
+2025-03-04 23:02:34,943 - INFO - [VAL] Epoch: 3/30 | Batch: 0/289 (0.3%) | Loss: 0.5053 | Batch time: 0.10s
+2025-03-04 23:02:35,999 - INFO - [VAL] Epoch: 3/30 | Batch: 28/289 (10.0%) | Loss: 0.5215 | Batch time: 0.05s
+2025-03-04 23:02:37,163 - INFO - [VAL] Epoch: 3/30 | Batch: 56/289 (19.7%) | Loss: 0.7081 | Batch time: 0.05s
+2025-03-04 23:02:38,328 - INFO - [VAL] Epoch: 3/30 | Batch: 84/289 (29.4%) | Loss: 0.4236 | Batch time: 0.06s
+2025-03-04 23:02:39,457 - INFO - [VAL] Epoch: 3/30 | Batch: 112/289 (39.1%) | Loss: 0.4807 | Batch time: 0.04s
+2025-03-04 23:02:40,590 - INFO - [VAL] Epoch: 3/30 | Batch: 140/289 (48.8%) | Loss: 0.3287 | Batch time: 0.05s
+2025-03-04 23:02:41,744 - INFO - [VAL] Epoch: 3/30 | Batch: 168/289 (58.5%) | Loss: 0.3168 | Batch time: 0.05s
+2025-03-04 23:02:42,856 - INFO - [VAL] Epoch: 3/30 | Batch: 196/289 (68.2%) | Loss: 0.3686 | Batch time: 0.05s
+2025-03-04 23:02:43,992 - INFO - [VAL] Epoch: 3/30 | Batch: 224/289 (77.9%) | Loss: 0.3899 | Batch time: 0.06s
+2025-03-04 23:02:45,159 - INFO - [VAL] Epoch: 3/30 | Batch: 252/289 (87.5%) | Loss: 0.5184 | Batch time: 0.05s
+2025-03-04 23:02:46,264 - INFO - [VAL] Epoch: 3/30 | Batch: 280/289 (97.2%) | Loss: 0.7056 | Batch time: 0.05s
+2025-03-04 23:02:46,524 - INFO - [VAL] Epoch: 3/30 | Batch: 288/289 (100.0%) | Loss: 0.1362 | Batch time: 0.03s
+2025-03-04 23:02:46,973 - INFO - Checkpoint saved: efficientnet_b0_v1_best.pth (Epoch 3)
+2025-03-04 23:02:46,973 - INFO - --------------------------------------------------------------------------------
+2025-03-04 23:02:46,973 - INFO - Epoch 3/30 completed in 81.37s
+2025-03-04 23:02:46,973 - INFO - Training   - Loss: 0.9138, Accuracy: 0.7427, F1: 0.7443
+2025-03-04 23:02:46,973 - INFO - Validation - Loss: 0.4649, Accuracy: 0.8678, F1: 0.8673
+2025-03-04 23:02:46,973 - INFO - Validation F1 improved from 0.8576 to 0.8673
+2025-03-04 23:02:46,973 - INFO - --------------------------------------------------------------------------------
+2025-03-04 23:02:46,973 - INFO - Epoch 4/30
+2025-03-04 23:02:46,973 - INFO - ----------------------------------------
+2025-03-04 23:02:47,521 - INFO - [TRAIN] Epoch: 4/30 | Batch: 0/1345 (0.1%) | Loss: 0.5170 | Batch time: 0.14s
+2025-03-04 23:02:55,064 - INFO - [TRAIN] Epoch: 4/30 | Batch: 134/1345 (10.0%) | Loss: 0.8240 | Batch time: 0.04s
+2025-03-04 23:03:02,649 - INFO - [TRAIN] Epoch: 4/30 | Batch: 268/1345 (20.0%) | Loss: 0.5306 | Batch time: 0.06s
+2025-03-04 23:03:10,460 - INFO - [TRAIN] Epoch: 4/30 | Batch: 402/1345 (30.0%) | Loss: 0.7023 | Batch time: 0.06s

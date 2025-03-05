@@ -17,13 +17,11 @@ This repository presents a deep neural network pipeline combining EfficientNet, 
     - [Starting with a Clean Environment](#starting-with-a-clean-environment)
     - [Full Pipeline Execution](#full-pipeline-execution)
     - [Visualization](#visualization)
-    - [Complete Pipeline](#complete-pipeline)
   - [🧠 Model Architectures](#-model-architectures)
   - [🔬 Examples](#-examples)
     - [Training with EfficientNet-B3](#training-with-efficientnet-b3)
     - [Fine-tuning a pre-trained ResNet with attention](#fine-tuning-a-pre-trained-resnet-with-attention)
     - [Evaluating a trained model](#evaluating-a-trained-model)
-    - [Running the Model Evaluation Pipeline](#running-the-model-evaluation-pipeline)
   - [🔧 Advanced Features](#-advanced-features)
     - [Device Support](#device-support)
     - [Class Imbalance](#class-imbalance)
@@ -227,32 +225,15 @@ python -m src.pipeline.train_evaluate_compare \
   --output_dir models \
   --report_dir reports \
   --visualize \
-  --img_size 224 \
-  --batch_size 32 \
-  --epochs 30 \
-  --patience 10
-```
-
-For Apple Silicon (M-series) optimized training:
-
-```bash
-python -m src.pipeline.train_evaluate_compare \
-  --data_dir data/raw \
-  --output_dir models \
-  --report_dir reports \
-  --visualize \
   --use_mps \
   --mps_graph \
-  --mps_fallback \
   --memory_efficient \
   --cache_dataset \
-  --pin_memory \
-  --optimize_for_m_series \
   --img_size 224 \
   --batch_size 64 \
-  --num_workers 16 \
-  --patience 30 \ 
-  --epochs 30
+  --epochs 30 \
+  --patience 10 \
+  --optimize_for_m_series
 ```
 
 For a quick test run with minimal time:
@@ -269,60 +250,9 @@ python -m src.pipeline.train_evaluate_compare \
   --visualize
 ```
 
-For a quick test run with minimal time on Apple Silicon:
-
 ```bash
-python -m src.pipeline.train_evaluate_compare \
-  --data_dir data/raw \
-  --output_dir models \
-  --report_dir reports \
-  --epochs 1 \
-  --batch_size 8 \
-  --img_size 64 \
-  --patience 1 \
-  --visualize \
-  --use_mps \
-  --mps_graph \
-  --mps_fallback \
-  --memory_efficient \
-  --cache_dataset \
-  --pin_memory \
-  --optimize_for_m_series
-```
 
-python -m src.pipeline.train_evaluate_compare \
-  --data_dir data/raw\
-  --output_dir models \
-  --report_dir reports \
-  --img_size 224 \
-  --batch_size 64 \
-  --epochs 30 \
-  --num_workers 16 \
-  --use_mps \
-  --mps_graph \
-  --memory_efficient \
-  --cache_dataset \
-  --visualize \
-  --cache_dataset \
-  --patience 10 \
-  --keep_top_k 3 \
-  --optimize_for_m_series \
-  --project_name "crop_disease_detection"
-
-```bash
-### Model Evaluation
-
-Evaluate a single model:
-
-```bash
-python -m src.training.evaluate \
-  --model_path models/experiment1/best_model.pth \
-  --data_dir data/raw \
-  --output_dir reports/evaluations \
-  --visualize
-```
-
-Batch evaluate multiple models:
+### Batch evaluate multiple models:
 
 ```bash
 python -m src.scripts.batch_evaluate \
@@ -358,28 +288,6 @@ python -m src.utils.visualization \
   --data_dir data/processed/test \
   --output_dir reports/visualizations
 ```
-
-### Complete Pipeline
-
-**You can run the complete pipeline with:**
-
-```bash
-python -m src.pipeline.train_evaluate_compare --data_dir /path/to/data --output_dir models --report_dir reports
-```
-
-**If you only want to run comparison on existing evaluations:**
-
-```bash
-python -m src.pipeline.train_evaluate_compare --data_dir /path/to/data --skip_training
-```
-
-**Or directly run just the comparison step:**
-
-```bash
-python -m src.scripts.compare_models --evaluations_dir reports/evaluations --output_dir reports/comparisons
-```
-
-The enhancements ensure that model comparison is explicitly included in the pipeline, giving you comparative metrics and visualizations to better understand which model performs best for crop disease detection.
 
 ## 🧠 Model Architectures
 
@@ -446,19 +354,6 @@ The evaluation script provides comprehensive model assessment with:
 - GradCAM visualizations of model attention
 - Identification of misclassified examples
 - Export of results to CSV files
-
-### Running the Model Evaluation Pipeline
-
-```bash
-python -m src.scripts.batch_evaluate \
-  --models_dir models \
-  --data_dir data/raw \
-  --output_dir reports/evaluations \
-  --report_dir reports/comparisons \
-  --use_registry \
-  --report_id custom_evaluation_run \
-  --visualize
-```
 
 ## 🔧 Advanced Features
 

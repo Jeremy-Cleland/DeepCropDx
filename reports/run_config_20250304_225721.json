@@ -1,0 +1,97 @@
+{
+  "timestamp": "20250304_225721",
+  "args": {
+    "data_dir": "data/raw",
+    "output_dir": "models",
+    "report_dir": "reports",
+    "config_file": null,
+    "img_size": 224,
+    "batch_size": 64,
+    "epochs": 30,
+    "no_cuda": false,
+    "no_mps": false,
+    "use_mps": true,
+    "num_workers": 16,
+    "visualize": true,
+    "skip_training": false,
+    "project_name": "crop_disease_detection",
+    "use_amp": false,
+    "mps_fallback": false,
+    "memory_efficient": true,
+    "cache_dataset": true,
+    "pin_memory": false,
+    "mps_graph": true,
+    "find_lr": false,
+    "patience": 10,
+    "keep_top_k": 3,
+    "optimize_for_m_series": true
+  },
+  "models": [
+    {
+      "name": "efficientnet_b0",
+      "model": "efficientnet",
+      "img_size": 224,
+      "batch_size": 32,
+      "epochs": 30,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "use_weights": true,
+      "freeze_backbone": true
+    },
+    {
+      "name": "efficientnet_b3",
+      "model": "efficientnet_b3",
+      "img_size": 224,
+      "batch_size": 32,
+      "epochs": 30,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "use_weights": true,
+      "freeze_backbone": true
+    },
+    {
+      "name": "mobilenet_v2",
+      "model": "mobilenet",
+      "img_size": 224,
+      "batch_size": 32,
+      "epochs": 30,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "use_weights": true,
+      "freeze_backbone": true
+    },
+    {
+      "name": "resnet18",
+      "model": "resnet18",
+      "img_size": 224,
+      "batch_size": 32,
+      "epochs": 30,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "use_weights": true,
+      "freeze_backbone": true
+    },
+    {
+      "name": "resnet_attention",
+      "model": "resnet_attention",
+      "img_size": 224,
+      "batch_size": 32,
+      "epochs": 30,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "use_weights": true,
+      "freeze_backbone": false
+    },
+    {
+      "name": "mobilenet_v3_small",
+      "model": "mobilenet_v3_small",
+      "img_size": 224,
+      "batch_size": 64,
+      "epochs": 30,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "use_weights": true,
+      "freeze_backbone": true
+    }
+  ]
+}
