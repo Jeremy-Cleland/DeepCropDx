@@ -307,7 +307,7 @@ def objective(trial, args, dataloaders, class_info, device, logger):
         elif scheduler_type == "plateau":
             scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
                 optimizer,
-                mode="max",
+                mode="min",
                 factor=scheduler_params.get("factor", 0.1),
                 patience=scheduler_params.get("patience", 5),
                 verbose=True,

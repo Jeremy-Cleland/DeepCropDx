@@ -21,6 +21,32 @@ from src.utils.logger import TrainingLogger
 from src.utils.visualization import GradCAM, get_target_layer_for_model
 
 
+def initialize_model_registry(registry_path):
+    """Initialize the model registry if it doesn't exist."""
+    if not os.path.exists(registry_path):
+        with open(registry_path, "w") as f:
+            json.dump([], f, indent=2)
+        print(f"Created new model registry at {registry_path}")
+        return True
+    return False
+
+
+def get_models_from_registry(registry_path):
+    """Get all models from the registry."""
+    if not os.path.exists(registry_path):
+        return []
+
+    try:
+        with open(registry_path, "r") as f:
+            registry = json.load(f)
+        return registry
+    except json.JSONDecodeError:
+        print(f"Warning: Registry file is corrupted. Creating new one.")
+        with open(registry_path, "w") as f:
+            json.dump([], f, indent=2)
+        return []
+
+
 def update_model_registry(registry_path, model_info):
     """
     Update the model registry with information about a newly trained model
@@ -29,21 +55,67 @@ def update_model_registry(registry_path, model_info):
         registry_path (str): Path to the registry JSON file
         model_info (dict): Information about the model to register
     """
+    # Ensure registry exists
+    if not os.path.exists(os.path.dirname(registry_path)):
+        os.makedirs(os.path.dirname(registry_path), exist_ok=True)
+
+    # Read existing registry or create new one
     registry = []
     if os.path.exists(registry_path):
         try:
             with open(registry_path, "r") as f:
                 registry = json.load(f)
+                # Ensure registry is a list
+                if not isinstance(registry, list):
+                    print("Registry is not a list, creating new registry.")
+                    registry = []
         except json.JSONDecodeError:
-            # Handle corrupted registry file
-            pass
+            print("Registry file is corrupted, creating new registry.")
+            registry = []
+        except Exception as e:
+            print(f"Error reading registry: {str(e)}")
+            registry = []
 
+    # Add new model info with unique ID
+    model_info["registry_id"] = str(len(registry) + 1)
     registry.append(model_info)
 
-    with open(registry_path, "w") as f:
-        json.dump(registry, f, indent=2)
+    # Write updated registry
+    try:
+        with open(registry_path, "w") as f:
+            json.dump(registry, f, indent=2)
+        print(f"Updated registry with model: {model_info.get('id', 'unknown')}")
+        return True
+    except Exception as e:
+        print(f"Error updating registry: {str(e)}")
+        return False
 
-    return True
+
+def display_model_registry(registry_path):
+    """Display the contents of the model registry."""
+    models = get_models_from_registry(registry_path)
+    if not models:
+        print("Model registry is empty.")
+        return
+
+    print(f"\n{'='*80}")
+    print(f"MODEL REGISTRY ({len(models)} models)")
+    print(f"{'='*80}")
+
+    # Sort by creation date (newest first)
+    models.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+
+    for i, model in enumerate(models):
+        print(
+            f"{i+1}. {model.get('id', 'Unknown')} ({model.get('model_type', 'Unknown')})"
+        )
+        print(f"   Created: {model.get('created_at', 'Unknown')}")
+        print(f"   Path: {model.get('path', 'Unknown')}")
+        metrics = model.get("metrics", {})
+        print(
+            f"   Metrics: Accuracy={metrics.get('val_accuracy', 0):.4f}, F1={metrics.get('val_f1', 0):.4f}"
+        )
+        print()
 
 
 def cleanup_checkpoints(checkpoint_dir, keep_top_k=3, pattern="checkpoint_epoch_*.pth"):
@@ -284,7 +356,13 @@ def train_model(
                     )
 
             if phase == "train" and scheduler is not None:
-                scheduler.step()
+                if isinstance(scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau):
+                    # For ReduceLROnPlateau, pass the validation metrics
+                    # This code should be after validation phase
+                    pass  # We'll handle it after validation phase
+                else:
+                    # For other schedulers like StepLR, CosineAnnealingLR, etc.
+                    scheduler.step()
 
             # Calculate metrics
             epoch_loss = running_loss / len(dataloaders[phase].dataset)
@@ -375,6 +453,11 @@ def train_model(
                         return model, history, best_model_path, version
                         # If we have a best model, load it before pruning
 
+        if scheduler is not None and isinstance(
+            scheduler, torch.optim.lr_scheduler.ReduceLROnPlateau
+        ):
+            # Pass validation metrics (typically validation loss) to ReduceLROnPlateau
+            scheduler.step(val_metrics["loss"])
         # Log epoch results
         if logger:
             logger.end_epoch(train_metrics, val_metrics)
@@ -908,7 +991,8 @@ def main():
     else:
         registry_dir = root_dir
 
-    registry_path = os.path.join(registry_dir, "model_registry.json")
+    # Initialize the registry if it doesn't exist
+    initialize_model_registry(registry_path)
 
     # Load best metrics, if available
     from src.utils.model_utils import safe_torch_load
@@ -939,6 +1023,9 @@ def main():
 
     update_model_registry(registry_path, model_info)
     logger.logger.info(f"Model registered in {registry_path}")
+
+    # Display registry contents
+    display_model_registry(registry_path)
 
     # Get class names from class_to_idx mapping
     class_names = [None] * len(class_info["class_to_idx"])
