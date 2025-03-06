@@ -5,18 +5,15 @@ import torchvision.models as models
 from torchvision.models import MobileNet_V2_Weights
 
 
-def create_mobilenet_model(num_classes, use_weights=True, freeze_backbone=True):
-    """
-    Create a MobileNetV2 model with a custom classifier using the new 'weights' parameter.
-
-    Args:
-        num_classes (int): Number of output classes.
-        use_weights (bool): If True, load pretrained weights (MobileNet_V2_Weights.IMAGENET1K_V1).
-        freeze_backbone (bool): Whether to freeze the backbone layers.
-
-    Returns:
-        torch.nn.Module: Modified MobileNetV2 model.
-    """
+def create_mobilenet_model(
+    num_classes,
+    use_weights=True,
+    freeze_backbone=True,
+    dropout_rate=0.2,
+    add_hidden_layer=False,
+    hidden_layer_size=512,
+    **kwargs
+):
     weights = MobileNet_V2_Weights.IMAGENET1K_V1 if use_weights else None
     model = models.mobilenet_v2(weights=weights)
 
@@ -24,12 +21,24 @@ def create_mobilenet_model(num_classes, use_weights=True, freeze_backbone=True):
         for param in model.parameters():
             param.requires_grad = False
 
-    # Replace the classifier (the second element in the classifier Sequential)
+    # Get input features size
     in_features = model.classifier[1].in_features
-    model.classifier = nn.Sequential(
-        nn.Dropout(p=0.2, inplace=True),
-        nn.Linear(in_features=in_features, out_features=num_classes),
-    )
+
+    # Replace the classifier with optional hidden layer
+    if add_hidden_layer:
+        model.classifier = nn.Sequential(
+            nn.Dropout(p=dropout_rate, inplace=False),
+            nn.Linear(in_features=in_features, out_features=hidden_layer_size),
+            nn.ReLU(inplace=False),
+            nn.Dropout(p=dropout_rate / 2, inplace=False),
+            nn.Linear(in_features=hidden_layer_size, out_features=num_classes),
+        )
+    else:
+        model.classifier = nn.Sequential(
+            nn.Dropout(p=dropout_rate, inplace=False),
+            nn.Linear(in_features=in_features, out_features=num_classes),
+        )
+
     return model
 
 
@@ -38,20 +47,15 @@ from torchvision.models import MobileNet_V3_Small_Weights, MobileNet_V3_Large_We
 
 
 def create_mobilenet_v3_model(
-    num_classes, use_weights=True, freeze_backbone=True, model_size="small"
+    num_classes,
+    use_weights=True,
+    freeze_backbone=True,
+    model_size="small",
+    dropout_rate=0.2,
+    add_hidden_layer=True,
+    hidden_layer_size=512,
+    **kwargs
 ):
-    """
-    Create a MobileNetV3 model with a custom classifier using the new 'weights' parameter.
-
-    Args:
-        num_classes (int): Number of output classes.
-        use_weights (bool): If True, load pretrained weights (MobileNet_V3_Small_Weights or MobileNet_V3_Large_Weights).
-        freeze_backbone (bool): Whether to freeze the backbone layers.
-        model_size (str): 'small' or 'large' model variant.
-
-    Returns:
-        torch.nn.Module: Modified MobileNetV3 model.
-    """
     if model_size.lower() == "small":
         weights = MobileNet_V3_Small_Weights.IMAGENET1K_V1 if use_weights else None
         model = models.mobilenet_v3_small(weights=weights)
@@ -63,19 +67,27 @@ def create_mobilenet_v3_model(
         for param in model.parameters():
             param.requires_grad = False
 
-    # For MobileNetV3, classifier is structured differently:
+    # Get input features size
     in_features = model.classifier[0].in_features
+
+    # Create classifier - MobileNetV3 always has a hidden layer in typical use
     model.classifier = nn.Sequential(
-        nn.Linear(in_features=in_features, out_features=512),
-        nn.Hardswish(inplace=True),
-        nn.Dropout(p=0.2, inplace=True),
-        nn.Linear(in_features=512, out_features=num_classes),
+        nn.Linear(in_features=in_features, out_features=hidden_layer_size),
+        nn.Hardswish(inplace=False),
+        nn.Dropout(p=dropout_rate, inplace=False),
+        nn.Linear(in_features=hidden_layer_size, out_features=num_classes),
     )
+
     return model
 
 
 def create_mobilenet_model_with_attention(
-    num_classes, use_weights=True, freeze_backbone=True
+    num_classes,
+    use_weights=True,
+    freeze_backbone=True,
+    dropout_rate=0.2,
+    attention_reduction=16,
+    **kwargs
 ):
     """
     Create a MobileNetV2 model with a custom classifier and an attention mechanism.
@@ -84,6 +96,8 @@ def create_mobilenet_model_with_attention(
         num_classes (int): Number of output classes.
         use_weights (bool): If True, load pretrained weights (MobileNet_V2_Weights.IMAGENET1K_V1).
         freeze_backbone (bool): Whether to freeze the backbone layers (only freeze features).
+        dropout_rate (float): Dropout probability.
+        attention_reduction (int): Reduction factor for the attention module.
 
     Returns:
         torch.nn.Module: Modified MobileNetV2 model with attention.
@@ -98,7 +112,7 @@ def create_mobilenet_model_with_attention(
     feature_extractor = model.features
 
     class MobileNetWithAttention(nn.Module):
-        def __init__(self, feature_extractor, num_classes):
+        def __init__(self, feature_extractor, num_classes, dropout_rate, reduction):
             super(MobileNetWithAttention, self).__init__()
             self.features = feature_extractor
             self.avg_pool = nn.AdaptiveAvgPool2d(1)
@@ -106,14 +120,15 @@ def create_mobilenet_model_with_attention(
 
             # Attention block
             self.attention = nn.Sequential(
-                nn.Conv2d(feature_dim, feature_dim // 16, kernel_size=1),
-                nn.ReLU(inplace=True),
-                nn.Conv2d(feature_dim // 16, feature_dim, kernel_size=1),
+                nn.Conv2d(feature_dim, feature_dim // reduction, kernel_size=1),
+                nn.ReLU(inplace=False),
+                nn.Conv2d(feature_dim // reduction, feature_dim, kernel_size=1),
                 nn.Sigmoid(),
             )
 
             self.classifier = nn.Sequential(
-                nn.Dropout(p=0.2), nn.Linear(feature_dim, num_classes)
+                nn.Dropout(p=dropout_rate, inplace=False),
+                nn.Linear(feature_dim, num_classes),
             )
 
         def forward(self, x):
@@ -125,4 +140,6 @@ def create_mobilenet_model_with_attention(
             x = self.classifier(x)
             return x
 
-    return MobileNetWithAttention(feature_extractor, num_classes)
+    return MobileNetWithAttention(
+        feature_extractor, num_classes, dropout_rate, attention_reduction
+    )

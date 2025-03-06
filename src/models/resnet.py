@@ -14,18 +14,15 @@ from torchvision.models import (
 )
 
 
-def create_resnet18_model(num_classes, use_weights=True, freeze_backbone=True):
-    """
-    Create a ResNet-18 model with a custom classifier using the new 'weights' parameter.
-
-    Args:
-        num_classes (int): Number of output classes.
-        use_weights (bool): If True, load pretrained weights (ResNet18_Weights.IMAGENET1K_V1).
-        freeze_backbone (bool): Whether to freeze the backbone layers.
-
-    Returns:
-        torch.nn.Module: Modified ResNet-18 model.
-    """
+def create_resnet18_model(
+    num_classes,
+    use_weights=True,
+    freeze_backbone=True,
+    dropout_rate=0.3,
+    add_hidden_layer=False,
+    hidden_layer_size=512,
+    **kwargs,
+):
     weights = ResNet18_Weights.IMAGENET1K_V1 if use_weights else None
     model = models.resnet18(weights=weights)
 
@@ -34,13 +31,33 @@ def create_resnet18_model(num_classes, use_weights=True, freeze_backbone=True):
             param.requires_grad = False
 
     in_features = model.fc.in_features
-    model.fc = nn.Sequential(
-        nn.Dropout(p=0.3), nn.Linear(in_features=in_features, out_features=num_classes)
-    )
+
+    if add_hidden_layer:
+        model.fc = nn.Sequential(
+            nn.Dropout(p=dropout_rate, inplace=False),
+            nn.Linear(in_features=in_features, out_features=hidden_layer_size),
+            nn.ReLU(inplace=False),
+            nn.Dropout(p=dropout_rate / 2, inplace=False),
+            nn.Linear(in_features=hidden_layer_size, out_features=num_classes),
+        )
+    else:
+        model.fc = nn.Sequential(
+            nn.Dropout(p=dropout_rate, inplace=False),
+            nn.Linear(in_features=in_features, out_features=num_classes),
+        )
+
     return model
 
 
-def create_resnet50_model(num_classes, use_weights=True, freeze_backbone=True):
+def create_resnet50_model(
+    num_classes,
+    use_weights=True,
+    freeze_backbone=True,
+    dropout_rate=0.3,
+    add_hidden_layer=True,  # ResNet50 usually has a hidden layer
+    hidden_layer_size=512,
+    **kwargs,
+):
     """
     Create a ResNet-50 model with a custom classifier using the new 'weights' parameter.
 
@@ -48,6 +65,9 @@ def create_resnet50_model(num_classes, use_weights=True, freeze_backbone=True):
         num_classes (int): Number of output classes.
         use_weights (bool): If True, load pretrained weights (ResNet50_Weights.IMAGENET1K_V1).
         freeze_backbone (bool): Whether to freeze the backbone layers.
+        dropout_rate (float): Dropout probability.
+        add_hidden_layer (bool): Whether to add a hidden layer to the classifier.
+        hidden_layer_size (int): Size of the hidden layer if used.
 
     Returns:
         torch.nn.Module: Modified ResNet-50 model.
@@ -60,12 +80,20 @@ def create_resnet50_model(num_classes, use_weights=True, freeze_backbone=True):
             param.requires_grad = False
 
     in_features = model.fc.in_features
-    model.fc = nn.Sequential(
-        nn.Linear(in_features=in_features, out_features=512),
-        nn.ReLU(inplace=True),
-        nn.Dropout(p=0.3),
-        nn.Linear(in_features=512, out_features=num_classes),
-    )
+
+    if add_hidden_layer:
+        model.fc = nn.Sequential(
+            nn.Linear(in_features=in_features, out_features=hidden_layer_size),
+            nn.ReLU(inplace=False),
+            nn.Dropout(p=dropout_rate, inplace=False),
+            nn.Linear(in_features=hidden_layer_size, out_features=num_classes),
+        )
+    else:
+        model.fc = nn.Sequential(
+            nn.Dropout(p=dropout_rate, inplace=False),
+            nn.Linear(in_features=in_features, out_features=num_classes),
+        )
+
     return model
 
 
@@ -122,7 +150,13 @@ class ResNetWithAttention(nn.Module):
 
 
 def create_resnet_with_attention(
-    num_classes, resnet_version=50, use_weights=True, freeze_backbone=True
+    num_classes,
+    resnet_version=50,
+    use_weights=True,
+    freeze_backbone=True,
+    dropout_rate=0.5,
+    attention_reduction=16,
+    **kwargs,
 ):
     """
     Create a ResNet model with an attention mechanism using the new 'weights' parameter.
@@ -132,6 +166,8 @@ def create_resnet_with_attention(
         resnet_version (int): ResNet version (18, 34, 50, 101, or 152).
         use_weights (bool): If True, load pretrained weights for the specified ResNet.
         freeze_backbone (bool): Whether to freeze the backbone layers.
+        dropout_rate (float): Dropout probability for the classifier.
+        attention_reduction (int): Reduction factor for the attention module.
 
     Returns:
         torch.nn.Module: Modified ResNet model with attention.
@@ -139,18 +175,23 @@ def create_resnet_with_attention(
     if resnet_version == 18:
         weights = ResNet18_Weights.IMAGENET1K_V1 if use_weights else None
         base_model = models.resnet18(weights=weights)
+        num_features = 512  # ResNet18 uses 512 features in final layer
     elif resnet_version == 34:
         weights = ResNet34_Weights.IMAGENET1K_V1 if use_weights else None
         base_model = models.resnet34(weights=weights)
+        num_features = 512  # ResNet34 uses 512 features in final layer
     elif resnet_version == 50:
         weights = ResNet50_Weights.IMAGENET1K_V1 if use_weights else None
         base_model = models.resnet50(weights=weights)
+        num_features = 2048  # ResNet50 uses 2048 features in final layer
     elif resnet_version == 101:
         weights = ResNet101_Weights.IMAGENET1K_V1 if use_weights else None
         base_model = models.resnet101(weights=weights)
+        num_features = 2048  # ResNet101 uses 2048 features in final layer
     elif resnet_version == 152:
         weights = ResNet152_Weights.IMAGENET1K_V1 if use_weights else None
         base_model = models.resnet152(weights=weights)
+        num_features = 2048  # ResNet152 uses 2048 features in final layer
     else:
         raise ValueError(f"Unsupported ResNet version: {resnet_version}")
 
@@ -158,5 +199,55 @@ def create_resnet_with_attention(
         for param in base_model.parameters():
             param.requires_grad = False
 
-    model = ResNetWithAttention(base_model, num_classes)
+    class ResNetWithAttention(nn.Module):
+        """ResNet model with an attention mechanism."""
+
+        def __init__(
+            self, features, num_features, num_classes, dropout_rate, reduction
+        ):
+            super(ResNetWithAttention, self).__init__()
+            # Use all layers except the final pooling and fc layer
+            self.features = features
+
+            self.attention = nn.Sequential(
+                nn.AdaptiveAvgPool2d(1),
+                nn.Flatten(),
+                nn.Linear(num_features, num_features // reduction),
+                nn.ReLU(inplace=False),
+                nn.Linear(num_features // reduction, num_features),
+                nn.Sigmoid(),
+            )
+
+            self.avg_pool = nn.AdaptiveAvgPool2d(1)
+            self.classifier = nn.Sequential(
+                nn.Dropout(p=dropout_rate, inplace=False),
+                nn.Linear(num_features, num_classes),
+            )
+
+        def forward(self, x):
+            features = self.features(x)
+
+            # Apply attention
+            att = self.attention(features)
+            att = att.view(att.size(0), att.size(1), 1, 1)
+            features = features * att
+
+            # Pooling and classification
+            x = self.avg_pool(features)
+            x = x.view(x.size(0), -1)
+            x = self.classifier(x)
+            return x
+
+    # Extract the feature extractor (everything except the final FC layer)
+    features = nn.Sequential(*list(base_model.children())[:-2])
+
+    # Create the attention model
+    model = ResNetWithAttention(
+        features=features,
+        num_features=num_features,
+        num_classes=num_classes,
+        dropout_rate=dropout_rate,
+        reduction=attention_reduction,
+    )
+
     return model
