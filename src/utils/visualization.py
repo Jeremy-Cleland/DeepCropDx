@@ -208,9 +208,6 @@ def plot_training_history(history):
     return fig
 
 
-# Replace the GradCAM class implementation (around line 200-300) with this improved version:
-
-
 class GradCAM:
     def __init__(self, model, target_layer):
         self.model = model

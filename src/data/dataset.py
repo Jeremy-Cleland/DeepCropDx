@@ -176,10 +176,80 @@ def create_dataset_from_directory(
     return dataset_info, class_info
 
 
-def get_data_transforms(img_size=224):
+# def get_data_transforms(img_size=224):
+#     """
+#     Get enhanced data transformations for training and validation/testing
+#     """
+#     # Mean and std from ImageNet
+#     mean = [0.485, 0.456, 0.406]
+#     std = [0.229, 0.224, 0.225]
+
+#     train_transforms = transforms.Compose(
+#         [
+#             transforms.RandomResizedCrop(img_size),
+#             transforms.RandomHorizontalFlip(),
+#             transforms.RandomVerticalFlip(),
+#             transforms.RandomRotation(20),
+#             transforms.ColorJitter(
+#                 brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1
+#             ),
+#             transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
+#             transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+#             transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
+#             transforms.RandomAutocontrast(p=0.2),
+#             transforms.ToTensor(),
+#             transforms.Normalize(mean=mean, std=std),
+#             transforms.RandomErasing(p=0.1, scale=(0.02, 0.1)),
+#         ]
+#     )
+
+#     val_transforms = transforms.Compose(
+#         [
+#             transforms.Resize(int(img_size * 1.14)),
+#             transforms.CenterCrop(img_size),
+#             transforms.ToTensor(),
+#             transforms.Normalize(mean=mean, std=std),
+#         ]
+#     )
+
+#     return {"train": train_transforms, "val": val_transforms, "test": val_transforms}
+
+
+def get_data_transforms(img_size=224, augmentation_params=None):
     """
     Get enhanced data transformations for training and validation/testing
+
+    Args:
+        img_size (int): Image size for training
+        augmentation_params (dict, optional): Dictionary with custom augmentation parameters
+
+    Returns:
+        dict: Dictionary with transforms for train, val, and test sets
     """
+    from torchvision import transforms
+
+    # Default augmentation parameters
+    default_params = {
+        "rotation_degrees": 20,
+        "brightness_factor": 0.2,
+        "contrast_factor": 0.2,
+        "saturation_factor": 0.2,
+        "hue_factor": 0.1,
+        "random_erase_prob": 0.1,
+        "mixup_alpha": 0.0,
+        "translate": (0.1, 0.1),
+        "perspective_distortion": 0.2,
+        "perspective_prob": 0.5,
+        "autocontrast_prob": 0.2,
+        "blur_kernel": 3,
+        "blur_sigma": (0.1, 2.0),
+    }
+
+    # Update with provided parameters
+    aug_params = default_params.copy()
+    if augmentation_params:
+        aug_params.update(augmentation_params)
+
     # Mean and std from ImageNet
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
@@ -189,20 +259,29 @@ def get_data_transforms(img_size=224):
             transforms.RandomResizedCrop(img_size),
             transforms.RandomHorizontalFlip(),
             transforms.RandomVerticalFlip(),
-            transforms.RandomRotation(20),
+            transforms.RandomRotation(aug_params["rotation_degrees"]),
             transforms.ColorJitter(
-                brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1
+                brightness=aug_params["brightness_factor"],
+                contrast=aug_params["contrast_factor"],
+                saturation=aug_params["saturation_factor"],
+                hue=aug_params.get("hue_factor", 0.1),
             ),
-            transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
-            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
-            transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
-            transforms.RandomAutocontrast(p=0.2),
+            transforms.RandomAffine(degrees=0, translate=aug_params["translate"]),
+            transforms.RandomPerspective(
+                distortion_scale=aug_params["perspective_distortion"],
+                p=aug_params["perspective_prob"],
+            ),
+            transforms.GaussianBlur(
+                kernel_size=aug_params["blur_kernel"], sigma=aug_params["blur_sigma"]
+            ),
+            transforms.RandomAutocontrast(p=aug_params["autocontrast_prob"]),
             transforms.ToTensor(),
             transforms.Normalize(mean=mean, std=std),
-            transforms.RandomErasing(p=0.1, scale=(0.02, 0.1)),
+            transforms.RandomErasing(p=aug_params["random_erase_prob"]),
         ]
     )
 
+    # Validation transforms remain the same
     val_transforms = transforms.Compose(
         [
             transforms.Resize(int(img_size * 1.14)),
@@ -308,6 +387,167 @@ def create_dataloaders(
         )
 
     return dataloaders
+
+
+def recreate_dataloaders(
+    data_dir, transforms, batch_size=32, num_workers=None, device=None, pin_memory=True
+):
+    """
+    Recreate DataLoaders with new transforms and batch size
+
+    Args:
+        data_dir (str): Directory containing dataset or dataset files
+        transforms (dict): Dictionary of transforms for each split
+        batch_size (int): Batch size for the data loaders
+        num_workers (int, optional): Number of workers for data loading
+        device (torch.device, optional): Device for optimizing data loading
+        pin_memory (bool): Whether to use pinned memory
+
+    Returns:
+        dict: Dictionary of DataLoaders
+    """
+    import os
+    import torch
+    from torch.utils.data import DataLoader
+    from src.data.dataset import CropDiseaseDataset, create_dataset_from_directory
+    import pandas as pd
+
+    # Auto-determine optimal number of workers if not specified
+    if num_workers is None:
+        num_workers = min(12, os.cpu_count() or 4)
+
+    # Check if data_dir is a directory with class folders or contains CSV files
+    if os.path.isdir(data_dir) and not any(
+        f.endswith(".csv")
+        for f in os.listdir(data_dir)
+        if os.path.isfile(os.path.join(data_dir, f))
+    ):
+        # Handle directory with class folders
+        dataset_info, class_info = create_dataset_from_directory(
+            data_dir, save_splits=False, output_dir=None
+        )
+
+        # Create datasets with new transforms
+        train_dataset = CropDiseaseDataset(
+            images_paths=dataset_info["train"]["images"],
+            labels=dataset_info["train"]["labels"],
+            transform=transforms["train"],
+        )
+
+        val_dataset = CropDiseaseDataset(
+            images_paths=dataset_info["val"]["images"],
+            labels=dataset_info["val"]["labels"],
+            transform=transforms["val"],
+        )
+
+        test_dataset = CropDiseaseDataset(
+            images_paths=dataset_info["test"]["images"],
+            labels=dataset_info["test"]["labels"],
+            transform=transforms["test"],
+        )
+
+    else:
+        # Check for CSV files in the data_dir
+        train_csv = os.path.join(data_dir, "train_set.csv")
+        val_csv = os.path.join(data_dir, "val_set.csv")
+        test_csv = os.path.join(data_dir, "test_set.csv")
+
+        # Check processed data directory structure
+        if not os.path.exists(train_csv):
+            processed_dir = os.path.join(data_dir, "processed_data")
+            if os.path.exists(processed_dir):
+                train_csv = os.path.join(processed_dir, "train_set.csv")
+                val_csv = os.path.join(processed_dir, "val_set.csv")
+                test_csv = os.path.join(processed_dir, "test_set.csv")
+
+        # Create datasets from CSV files
+        if (
+            os.path.exists(train_csv)
+            and os.path.exists(val_csv)
+            and os.path.exists(test_csv)
+        ):
+            # Load CSVs
+            train_df = pd.read_csv(train_csv)
+            val_df = pd.read_csv(val_csv)
+            test_df = pd.read_csv(test_csv)
+
+            # Create datasets
+            train_dataset = CropDiseaseDataset(
+                images_paths=train_df["image_path"].tolist(),
+                labels=train_df["label"].tolist(),
+                transform=transforms["train"],
+            )
+
+            val_dataset = CropDiseaseDataset(
+                images_paths=val_df["image_path"].tolist(),
+                labels=val_df["label"].tolist(),
+                transform=transforms["val"],
+            )
+
+            test_dataset = CropDiseaseDataset(
+                images_paths=test_df["image_path"].tolist(),
+                labels=test_df["label"].tolist(),
+                transform=transforms["test"],
+            )
+        else:
+            raise FileNotFoundError(f"Could not find dataset files in {data_dir}")
+
+    # Set device-specific optimizations
+    persistent_workers = True
+    prefetch_factor = 2
+
+    if device is not None and device.type == "cuda":
+        pin_memory = True
+        prefetch_factor = 4  # More aggressive prefetching for CUDA
+    elif device is not None and device.type == "mps":
+        # For Apple Silicon, pinned memory can be used but its benefit depends on the PyTorch version
+        try:
+            pytorch_version = torch.__version__
+            if pytorch_version >= "2.2.0":
+                # PyTorch 2.2+ has better MPS+pin_memory support
+                pin_memory = True
+                prefetch_factor = 3  # Moderate prefetching for M-series chips
+            else:
+                pin_memory = False
+        except:
+            pin_memory = False
+
+    # Create data loaders
+    dataloaders = {
+        "train": DataLoader(
+            train_dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            num_workers=num_workers,
+            pin_memory=pin_memory,
+            persistent_workers=persistent_workers,
+            prefetch_factor=prefetch_factor,
+        ),
+        "val": DataLoader(
+            val_dataset,
+            batch_size=batch_size,
+            shuffle=False,
+            num_workers=num_workers,
+            pin_memory=pin_memory,
+            persistent_workers=persistent_workers,
+            prefetch_factor=prefetch_factor,
+        ),
+        "test": DataLoader(
+            test_dataset,
+            batch_size=batch_size,
+            shuffle=False,
+            num_workers=num_workers,
+            pin_memory=pin_memory,
+            persistent_workers=persistent_workers,
+            prefetch_factor=prefetch_factor,
+        ),
+    }
+
+    return dataloaders, (
+        {"class_to_idx": train_dataset.class_to_idx}
+        if hasattr(train_dataset, "class_to_idx")
+        else None
+    )
 
 
 def process_data(

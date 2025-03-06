@@ -129,6 +129,35 @@ def parse_args():
         action="store_true",
         help="Apply specific optimizations for M-series Apple Silicon chips (M1/M2/M3/M4)",
     )
+
+    # Add Optuna-related arguments
+    parser.add_argument(
+        "--run_optuna",
+        action="store_true",
+        help="Run Optuna hyperparameter optimization before training",
+    )
+    parser.add_argument(
+        "--optuna_trials",
+        type=int,
+        default=30,
+        help="Number of Optuna trials to run per model",
+    )
+    parser.add_argument(
+        "--optuna_timeout",
+        type=int,
+        default=None,
+        help="Timeout for Optuna optimization in seconds",
+    )
+    parser.add_argument(
+        "--optimize_augmentation",
+        action="store_true",
+        help="Optimize data augmentation parameters with Optuna",
+    )
+    parser.add_argument(
+        "--optimize_architecture",
+        action="store_true",
+        help="Optimize model architecture parameters with Optuna",
+    )
     return parser.parse_args()
 
 
@@ -247,6 +276,43 @@ def train_model(config, args):
     os.makedirs(experiment_dir, exist_ok=True)
 
     print(f"Creating new model version: {versioned_model_name}")
+
+    # Check if Optuna results exist for this model type
+    optuna_results_path = os.path.join(
+        args.output_dir,
+        "optuna_study",
+        f"{config['model']}_optuna_study",
+        "study_results.json",
+    )
+
+    if os.path.exists(optuna_results_path):
+        try:
+            with open(optuna_results_path, "r") as f:
+                optuna_results = json.load(f)
+                best_params = optuna_results.get("best_params", {})
+
+                # Update config with the best parameters from Optuna
+                if best_params:
+                    print(
+                        f"Using optimal hyperparameters from Optuna for {config['name']}"
+                    )
+
+                    # Update learning rate if available
+                    if "learning_rate" in best_params:
+                        config["lr"] = best_params["learning_rate"]
+                        print(f"  Learning rate: {config['lr']}")
+
+                    # Update other hyperparameters
+                    for param, value in best_params.items():
+                        if param in ["batch_size", "weight_decay", "dropout_rate"]:
+                            config[param] = value
+                            print(f"  {param}: {value}")
+
+                    if "freeze_backbone" in best_params:
+                        config["freeze_backbone"] = best_params["freeze_backbone"]
+                        print(f"  freeze_backbone: {best_params['freeze_backbone']}")
+        except Exception as e:
+            print(f"Error loading Optuna results: {str(e)}")
 
     # Build command
     cmd = [
@@ -523,18 +589,104 @@ def main():
     with open(os.path.join(args.report_dir, f"run_config_{timestamp}.json"), "w") as f:
         json.dump(run_config, f, indent=2)
 
-    # Train models
-    trained_model_names = []
-    successful_models = []
+    # Run Optuna optimization if requested
+    if args.run_optuna and not args.skip_training:
+        print(f"\n{'='*80}")
+        print(f"Running Optuna hyperparameter optimization")
+        print(f"{'='*80}")
 
-    if not args.skip_training:
+        from src.utils.device_utils import get_device
+        from src.data.dataset import process_data
+        from src.utils.logger import TrainingLogger
+        from src.utils.optuna_utils import run_optuna_study
+
+        device = get_device(no_cuda=args.no_cuda, no_mps=args.no_mps)
+
+        # Set up logging directory for Optuna
+        logs_dir = os.path.join(args.output_dir, "optuna_logs")
+        os.makedirs(logs_dir, exist_ok=True)
+
+        # Optimize each model
         for config in model_configs:
-            success, model_path, versioned_name = train_model(config, args)
-            if success:
-                successful_models.append((versioned_name, model_path))
-                trained_model_names.append(versioned_name)
+            model_name = config["name"]
+            print(f"\nOptimizing hyperparameters for {model_name}")
 
-        print(f"\nSuccessfully trained {len(successful_models)} models")
+            # Create experiment name
+            experiment_name = f"{model_name}_optuna_{timestamp}"
+
+            # Initialize logger
+            logger = TrainingLogger(logs_dir, experiment_name)
+
+            # Process data
+            processed_data_dir = os.path.join(
+                args.output_dir, "processed_data", model_name
+            )
+            os.makedirs(processed_data_dir, exist_ok=True)
+
+            dataloaders, class_info = process_data(
+                args.data_dir,
+                processed_data_dir,
+                config.get("img_size", args.img_size),
+                config.get("batch_size", args.batch_size),
+                num_workers=args.num_workers,
+                device=device,
+            )
+
+            # Set up Optuna args (a subset of the main args)
+            optuna_args = argparse.Namespace(
+                data_dir=args.data_dir,
+                output_dir=args.output_dir,
+                model=config["model"],
+                img_size=config.get("img_size", args.img_size),
+                batch_size=config.get("batch_size", args.batch_size),
+                num_workers=args.num_workers,
+                epochs=min(
+                    config.get("epochs", args.epochs), 15
+                ),  # Use fewer epochs for optimization
+                use_weights=config.get("use_weights", True),
+                freeze_backbone=config.get("freeze_backbone", True),
+                patience=max(
+                    3, args.patience // 2
+                ),  # Use shorter patience for optimization
+                keep_top_k=1,  # Only keep the best model during optimization
+                use_amp=args.use_amp,
+                experiment_name=experiment_name,
+                optimize_augmentation=args.optimize_augmentation,
+                optimize_architecture=args.optimize_architecture,
+                resnet_version=getattr(args, "resnet_version", 50),
+            )
+
+            # Run Optuna study
+            study, best_params = run_optuna_study(
+                optuna_args,
+                dataloaders,
+                class_info,
+                device,
+                logger,
+                n_trials=args.optuna_trials,
+                timeout=args.optuna_timeout,
+            )
+
+            logger.logger.info(
+                f"Completed hyperparameter optimization for {model_name}"
+            )
+            logger.logger.info(f"Best hyperparameters: {best_params}")
+
+            print(f"Completed optimization for {model_name}")
+            print(f"Best parameters will be used for training")
+
+        # Train models
+        trained_model_names = []
+        successful_models = []
+
+        if not args.skip_training:
+            for config in model_configs:
+                success, model_path, versioned_name = train_model(config, args)
+                if success:
+                    successful_models.append((versioned_name, model_path))
+                    trained_model_names.append(versioned_name)
+
+            print(f"\nSuccessfully trained {len(successful_models)} models")
 
     # Collect paths of successfully trained models
     model_paths = []

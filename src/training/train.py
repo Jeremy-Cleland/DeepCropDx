@@ -132,36 +132,57 @@ def train_model(
     model_name=None,
     class_info=None,
     training_params=None,
+    optuna_trial=None,
 ):
     """
     Train the model with early stopping and optional mixed precision
-
-    Args:
-        model: PyTorch model
-        dataloaders: Dictionary of PyTorch dataloaders
-        criterion: Loss function
-        optimizer: Optimizer
-        scheduler: Learning rate scheduler
-        num_epochs: Number of epochs to train for
-        device: Device to train on
-        save_dir: Directory to save model weights
-        logger: Training logger
-        patience: Number of epochs to wait for improvement before early stopping
-        use_amp: Whether to use automatic mixed precision training
-        keep_top_k: Number of checkpoints to keep
-        model_name: Name of the model (for versioning)
-        class_info: Dictionary with class mapping information
-        training_params: Dictionary with training parameters
-
-    Returns:
-        model: Trained model
-        history: Training history
-        best_model_path: Path to the best model checkpoint
     """
     since = time.time()
 
     # Initialize scaler for AMP
     scaler = GradScaler() if use_amp and device.type == "cuda" else None
+
+    # Create model directory structure
+    if model_name:
+        # Create base model directory if needed
+        model_base_dir = os.path.join(save_dir, model_name)
+        if not os.path.exists(model_base_dir):
+            os.makedirs(model_base_dir, exist_ok=True)
+
+        # Get the next version
+        version = get_next_version(save_dir, model_name)
+        versioned_model_name = f"{model_name}_v{version}"
+
+        # Create full versioned directory
+        versioned_dir = os.path.join(save_dir, versioned_model_name)
+        os.makedirs(versioned_dir, exist_ok=True)
+
+        # Create subdirectories
+        models_dir = os.path.join(versioned_dir, "models")
+        logs_dir = os.path.join(versioned_dir, "logs")
+        viz_dir = os.path.join(versioned_dir, "visualizations")
+
+        for dir_path in [models_dir, logs_dir, viz_dir]:
+            os.makedirs(dir_path, exist_ok=True)
+
+        # Update model save directory to the versioned models folder
+        model_save_dir = models_dir
+
+        # If logger is provided, create a new one with the correct path
+        if logger:
+            # First, remove all handlers from the original logger to avoid duplicate logging
+            if hasattr(logger, "logger"):
+                original_logger = logger.logger
+                for handler in list(original_logger.handlers):
+                    original_logger.removeHandler(handler)
+
+            # Create new logger with the versioned logs directory
+            logger = TrainingLogger(logs_dir, model_name)
+    else:
+        # If no model_name, just use save_dir directly
+        model_save_dir = save_dir
+        versioned_model_name = None
+        version = 1
 
     # Initialize history dictionary
     if logger is None:
@@ -187,14 +208,11 @@ def train_model(
     best_metrics = None  # Store best metrics
     best_model_path = None  # Path to best model
 
-    os.makedirs(save_dir, exist_ok=True)
-
-    # Get the next version number for this model
-    version = get_next_version(save_dir, model_name)
-    versioned_model_name = f"{model_name}_v{version}"
+    # Ensure all necessary directories exist
+    os.makedirs(model_save_dir, exist_ok=True)
 
     if logger:
-        logger.logger.info(f"Training model: {versioned_model_name}")
+        logger.logger.info(f"Training model: {versioned_model_name or model_name}")
 
     for epoch in range(num_epochs):
         if logger:
@@ -310,7 +328,7 @@ def train_model(
 
                     # Save versioned best model
                     best_versioned_path = os.path.join(
-                        save_dir, f"{versioned_model_name}_best.pth"
+                        model_save_dir, f"{versioned_model_name or model_name}_best.pth"
                     )
                     torch.save(checkpoint, best_versioned_path)
                     best_model_path = best_versioned_path
@@ -334,13 +352,38 @@ def train_model(
                             print(f"Early stopping triggered after {epoch+1} epochs")
                         early_stop = True
 
+                # Add Optuna pruning support here
+                if optuna_trial is not None:
+                    # Report validation metrics for pruning
+                    optuna_trial.report(metrics["f1"], epoch)
+
+                    # Handle pruning based on reported value
+                    if optuna_trial.should_prune():
+                        message = (
+                            f"Trial {optuna_trial.number} pruned at epoch {epoch+1}"
+                        )
+                        if logger:
+                            logger.logger.info(message)
+                        else:
+                            print(message)
+
+                        # If we have a best model, load it before pruning
+                        if best_model_wts is not None:
+                            model.load_state_dict(best_model_wts)
+
+                        # Return early with current best results instead of raising exception
+                        return model, history, best_model_path, version
+                        # If we have a best model, load it before pruning
+
         # Log epoch results
         if logger:
             logger.end_epoch(train_metrics, val_metrics)
 
         # Save checkpoint every 5 epochs
         if (epoch + 1) % 5 == 0:
-            checkpoint_path = os.path.join(save_dir, f"checkpoint_epoch_{epoch+1}.pth")
+            checkpoint_path = os.path.join(
+                model_save_dir, f"checkpoint_epoch_{epoch+1}.pth"
+            )
             torch.save(
                 {
                     "epoch": epoch,
@@ -385,7 +428,7 @@ def train_model(
 
     # Cleanup old checkpoints
     if keep_top_k > 0:
-        cleanup_checkpoints(save_dir, keep_top_k)
+        cleanup_checkpoints(model_save_dir, keep_top_k)
 
     return model, history, best_model_path, version
 

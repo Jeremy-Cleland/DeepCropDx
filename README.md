@@ -16,8 +16,9 @@ This repository presents a deep neural network pipeline combining EfficientNet, 
     - [Training](#training)
     - [Starting with a Clean Environment](#starting-with-a-clean-environment)
     - [Full Pipeline Execution](#full-pipeline-execution)
-    - [Batch Evaluation](#batch-evaluation)
-    - [Visualization](#visualization)
+- [Run the full pipeline with a specific model](#run-the-full-pipeline-with-a-specific-model)
+  - [Batch Evaluation](#batch-evaluation)
+  - [Visualization](#visualization)
   - [🧠 Model Architectures](#-model-architectures)
   - [🔬 Examples](#-examples)
     - [Training with EfficientNet-B3](#training-with-efficientnet-b3)
@@ -236,6 +237,24 @@ python -m src.pipeline.train_evaluate_compare \
   --patience 10 \
   --optimize_for_m_series
 ```
+
+```
+python -m src.pipeline.train_evaluate_compare \
+  --data_dir data/raw \
+  --output_dir models \
+  --report_dir reports \
+  --run_optuna \
+  --use_mps \
+  --mps_graph \
+  --memory_efficient \
+  --cache_dataset \
+  --optuna_trials 30 \
+  --optimize_augmentation \
+  --optimize_architecture \
+  --num_workers 16
+```
+
+# Run the full pipeline with a specific model
 
 For a quick test run with minimal time:
 
