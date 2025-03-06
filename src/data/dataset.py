@@ -389,6 +389,29 @@ def create_dataloaders(
     return dataloaders
 
 
+def dataset_quality_check(dataloaders, class_info):
+    """Run quality checks on dataset and report issues"""
+    for phase in ["train", "val", "test"]:
+        # Check for class imbalance
+        labels = []
+        for _, batch_labels in dataloaders[phase]:
+            labels.extend(batch_labels.numpy())
+
+        class_counts = Counter(labels)
+        class_names = [
+            class_info["idx_to_class"][idx]
+            for idx in range(len(class_info["idx_to_class"]))
+        ]
+
+        print(f"\n{phase.capitalize()} set class distribution:")
+        for idx, count in class_counts.items():
+            print(f"  {class_names[idx]}: {count} images")
+
+        # Alert on extreme imbalance
+        if max(class_counts.values()) > 5 * min(class_counts.values()):
+            print(f"WARNING: Extreme class imbalance detected in {phase} set!")
+
+
 def recreate_dataloaders(
     data_dir, transforms, batch_size=32, num_workers=None, device=None, pin_memory=True
 ):

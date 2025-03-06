@@ -1,0 +1,22 @@
+2025-03-06 04:18:58,333 - INFO - --------------------------------------------------------------------------------
+2025-03-06 04:18:58,333 - INFO - Starting training: efficientnet_b0_optuna_20250305_232525_trial_12
+2025-03-06 04:18:58,333 - INFO - Total epochs: 15
+2025-03-06 04:18:58,333 - INFO - Training batches per epoch: 2426
+2025-03-06 04:18:58,333 - INFO - Validation batches per epoch: 520
+2025-03-06 04:18:58,333 - INFO - --------------------------------------------------------------------------------
+2025-03-06 04:18:58,333 - INFO - Training model: efficientnet_b0_optuna_20250305_232525_trial_12_v1
+2025-03-06 04:18:58,333 - INFO - Epoch 1/15
+2025-03-06 04:18:58,333 - INFO - ----------------------------------------
+2025-03-06 04:19:23,180 - INFO - [TRAIN] Epoch: 1/15 | Batch: 0/2426 (0.0%) | Loss: 3.6850 | Batch time: 0.20s
+2025-03-06 04:19:45,616 - INFO - [TRAIN] Epoch: 1/15 | Batch: 242/2426 (10.0%) | Loss: 2.2303 | Batch time: 0.09s
+2025-03-06 04:20:08,080 - INFO - [TRAIN] Epoch: 1/15 | Batch: 484/2426 (20.0%) | Loss: 0.6043 | Batch time: 0.09s
+2025-03-06 04:20:30,572 - INFO - [TRAIN] Epoch: 1/15 | Batch: 726/2426 (30.0%) | Loss: 0.7789 | Batch time: 0.09s
+2025-03-06 04:20:53,442 - INFO - [TRAIN] Epoch: 1/15 | Batch: 968/2426 (39.9%) | Loss: 1.1408 | Batch time: 0.09s
+2025-03-06 04:21:16,263 - INFO - [TRAIN] Epoch: 1/15 | Batch: 1210/2426 (49.9%) | Loss: 0.5703 | Batch time: 0.09s
+2025-03-06 04:21:38,956 - INFO - [TRAIN] Epoch: 1/15 | Batch: 1452/2426 (59.9%) | Loss: 0.3321 | Batch time: 0.09s
+2025-03-06 04:22:01,672 - INFO - [TRAIN] Epoch: 1/15 | Batch: 1694/2426 (69.9%) | Loss: 0.4734 | Batch time: 0.09s
+2025-03-06 04:22:24,309 - INFO - [TRAIN] Epoch: 1/15 | Batch: 1936/2426 (79.8%) | Loss: 0.6046 | Batch time: 0.09s
+2025-03-06 04:22:46,913 - INFO - [TRAIN] Epoch: 1/15 | Batch: 2178/2426 (89.8%) | Loss: 0.8707 | Batch time: 0.09s
+2025-03-06 04:23:09,497 - INFO - [TRAIN] Epoch: 1/15 | Batch: 2420/2426 (99.8%) | Loss: 0.6445 | Batch time: 0.09s
+2025-03-06 04:23:09,972 - INFO - [TRAIN] Epoch: 1/15 | Batch: 2425/2426 (100.0%) | Loss: 0.7788 | Batch time: 0.10s
+2025-03-06 04:23:09,973 - ERROR - Error in trial 12: ReduceLROnPlateau.step() missing 1 required positional argument: 'metrics'

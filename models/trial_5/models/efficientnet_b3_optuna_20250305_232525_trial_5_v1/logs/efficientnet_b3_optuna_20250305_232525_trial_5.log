@@ -1,0 +1,10 @@
+2025-03-06 06:50:35,943 - INFO - --------------------------------------------------------------------------------
+2025-03-06 06:50:35,943 - INFO - Starting training: efficientnet_b3_optuna_20250305_232525_trial_5
+2025-03-06 06:50:35,943 - INFO - Total epochs: 15
+2025-03-06 06:50:35,943 - INFO - Training batches per epoch: 304
+2025-03-06 06:50:35,943 - INFO - Validation batches per epoch: 65
+2025-03-06 06:50:35,943 - INFO - --------------------------------------------------------------------------------
+2025-03-06 06:50:35,943 - INFO - Training model: efficientnet_b3_optuna_20250305_232525_trial_5_v1
+2025-03-06 06:50:35,943 - INFO - Epoch 1/15
+2025-03-06 06:50:35,943 - INFO - ----------------------------------------
+2025-03-06 06:51:06,266 - ERROR - Error in trial 5: linear(): input and weight.T shapes cannot be multiplied (1x1 and 1536x39)

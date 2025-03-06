@@ -134,6 +134,22 @@ def main():
     device = get_device(no_cuda=args.no_cuda, no_mps=args.no_mps)
     print(f"Using device: {device}")
 
+    from src.utils.model_tester import test_model_forward_backward
+
+    print(f"\nVerifying {args.model} implementation before optimization...")
+    test_success = test_model_forward_backward(
+        model_type=args.model,
+        num_classes=39,  # Use a reasonable default
+        batch_size=args.batch_size,
+    )
+
+    if not test_success:
+        print(f"\nWARNING: Model {args.model} verification failed!")
+        user_response = input("Continue with optimization anyway? (y/n): ")
+        if user_response.lower() != "y":
+            print("Exiting due to model verification failure")
+            return 1
+
     # Create experiment name if not provided
     if args.experiment_name is None:
         args.experiment_name = (

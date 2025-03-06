@@ -1,0 +1,18 @@
+2025-03-06 03:22:51,888 - INFO - Trial 9 hyperparameters:
+2025-03-06 03:22:51,889 - INFO - Learning rate: 0.06994589881535453
+2025-03-06 03:22:51,889 - INFO - Weight decay: 0.004182178526757455
+2025-03-06 03:22:51,889 - INFO - Batch size: 16
+2025-03-06 03:22:51,889 - INFO - Optimizer: SGD
+2025-03-06 03:22:51,889 - INFO - freeze_backbone: False
+2025-03-06 03:22:51,889 - INFO - dropout_rate: 0.1284754593840916
+2025-03-06 03:22:51,889 - INFO - add_hidden_layer: False
+2025-03-06 03:22:51,889 - INFO - hidden_layer_size: 512
+2025-03-06 03:22:51,889 - INFO - activation: leaky_relu
+2025-03-06 03:22:51,889 - INFO - normalization: instance
+2025-03-06 03:22:51,889 - INFO - Scheduler: onecycle
+2025-03-06 03:22:51,889 - INFO - Scheduler max_lr: 0.3880088806904552
+2025-03-06 03:22:51,889 - INFO - Scheduler pct_start: 0.43058298644309667
+2025-03-06 03:22:51,889 - INFO - Loss function: cross_entropy
+2025-03-06 03:22:51,889 - INFO - Augmentation parameters: {'rotation_degrees': 40, 'brightness_factor': 0.23376776095097146, 'contrast_factor': 0.25087023259621216, 'saturation_factor': 0.12050864314282662, 'random_erase_prob': 0.05323186313391685, 'mixup_alpha': 0.37530737582042917}
+2025-03-06 03:22:51,889 - INFO - Applying optimized augmentation parameters
+2025-03-06 03:22:51,990 - INFO - Successfully created optimized dataloaders with batch size 16

@@ -866,6 +866,84 @@ def visualize_tsne(
     return plt.gcf()
 
 
+def visualize_model_architecture(model, input_shape=(1, 3, 224, 224)):
+    """Create a visualization of model architecture using graphviz"""
+    try:
+        from torchviz import make_dot
+
+        dummy_input = torch.randn(*input_shape)
+        y = model(dummy_input)
+
+        graph = make_dot(y, params=dict(model.named_parameters()))
+        graph.format = "png"
+        return graph
+    except ImportError:
+        print(
+            "torchviz not installed. Run 'pip install torchviz graphviz' to enable model visualization."
+        )
+        return None
+
+
+# src/utils/visualization.py
+def visualize_augmentations(
+    dataset, class_names, num_samples=5, augmentation_params=None
+):
+    """Visualize the effect of data augmentations on a few samples"""
+    # Get base transforms
+    base_transform = get_transforms(224)["val"]  # Non-augmented transform
+
+    # Get augmented transforms
+    if augmentation_params:
+        aug_transform = get_data_transforms(224, augmentation_params)["train"]
+    else:
+        aug_transform = get_transforms(224)["train"]
+
+    # Sample a few images
+    indices = np.random.choice(len(dataset), num_samples, replace=False)
+
+    plt.figure(figsize=(12, 4 * num_samples))
+
+    for i, idx in enumerate(indices):
+        img, label = dataset[idx]
+
+        # Get original image before any transforms
+        img_path = dataset.images_paths[idx]
+        orig_img = Image.open(img_path).convert("RGB")
+
+        # Apply base transform (resize only)
+        base_img = base_transform(orig_img)
+
+        # Apply augmented transform
+        aug_img = aug_transform(orig_img)
+
+        # Convert to numpy for visualization
+        base_img_np = base_img.permute(1, 2, 0).numpy()
+        base_img_np = base_img_np * np.array([0.229, 0.224, 0.225]) + np.array(
+            [0.485, 0.456, 0.406]
+        )
+        base_img_np = np.clip(base_img_np, 0, 1)
+
+        aug_img_np = aug_img.permute(1, 2, 0).numpy()
+        aug_img_np = aug_img_np * np.array([0.229, 0.224, 0.225]) + np.array(
+            [0.485, 0.456, 0.406]
+        )
+        aug_img_np = np.clip(aug_img_np, 0, 1)
+
+        # Plot
+        plt.subplot(num_samples, 2, 2 * i + 1)
+        plt.imshow(base_img_np)
+        plt.title(f"Original: {class_names[label]}")
+        plt.axis("off")
+
+        plt.subplot(num_samples, 2, 2 * i + 2)
+        plt.imshow(aug_img_np)
+        plt.title("Augmented")
+        plt.axis("off")
+
+    plt.tight_layout()
+    return plt.gcf()
+
+
 def save_all_visualizations(
     model, dataloaders, class_names, device, output_dir, model_type=None
 ):

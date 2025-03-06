@@ -19,6 +19,9 @@ from src.models.model_factory import create_model
 from src.utils.metrics import calculate_metrics
 from src.utils.logger import TrainingLogger
 from src.utils.visualization import GradCAM, get_target_layer_for_model
+from src.data.dataset_utils import dataset_quality_check
+from src.utils.checkpoint_utils import save_checkpoint, load_checkpoint
+from src.utils.model_tester import test_model_forward_backward
 
 
 def initialize_model_registry(registry_path):
@@ -388,21 +391,41 @@ def train_model(
                     best_model_wts = model.state_dict().copy()
                     best_metrics = metrics.copy()
 
-                    # Create checkpoint with enhanced metadata
-                    checkpoint = {
-                        "epoch": epoch,
-                        "model_state_dict": model.state_dict(),
-                        "optimizer_state_dict": optimizer.state_dict(),
-                        "loss": epoch_loss,
-                        "metrics": metrics,
-                        "model_type": training_params.get("model_type"),
-                        "class_to_idx": (
-                            class_info.get("class_to_idx") if class_info else None
-                        ),
-                        "version": version,
-                        "created_at": datetime.now().isoformat(),
-                        "training_params": training_params,
-                    }
+                    # Save best model with standardized function
+                    best_model_path = save_checkpoint(
+                        model=model,
+                        optimizer=optimizer,
+                        epoch=epoch,
+                        metrics=metrics,
+                        model_dir=model_save_dir,
+                        model_name=model_name,
+                        is_best=True,
+                        class_info=class_info,
+                        training_params=training_params,
+                        keep_top_k=keep_top_k,
+                    )
+
+                    logger.logger.info(f"New best model saved: {best_model_path}")
+                    logger.logger.info(
+                        f"Validation F1 improved from {best_prev_f1:.4f} to {best_f1:.4f}"
+                    )
+                else:
+                    counter += 1
+
+                # Save periodic checkpoints
+                if (epoch + 1) % 5 == 0:
+                    checkpoint_path = save_checkpoint(
+                        model=model,
+                        optimizer=optimizer,
+                        epoch=epoch,
+                        metrics=metrics,
+                        model_dir=model_save_dir,
+                        model_name=model_name,
+                        is_best=False,
+                        class_info=class_info,
+                        training_params=training_params,
+                        keep_top_k=keep_top_k,
+                    )
 
                     # Save versioned best model
                     best_versioned_path = os.path.join(
@@ -731,6 +754,21 @@ def parse_args():
         help="ResNet version (18, 34, 50, 101, 152) - only used for 'resnet_attention' model",
     )
 
+    parser.add_argument(
+        "--data_quality_dir",
+        type=str,
+        default=None,
+        help="Directory to save data quality reports",
+    )
+    parser.add_argument(
+        "--skip_quality_check", action="store_true", help="Skip dataset quality checks"
+    )
+    parser.add_argument(
+        "--verify_model",
+        action="store_true",
+        help="Verify model implementation before training",
+    )
+
     return parser.parse_args()
 
 
@@ -836,10 +874,29 @@ def main():
         device=device,
     )
 
+    # After data processing
+    logger.logger.info("Running dataset quality checks...")
+    quality_report_dir = os.path.join(logs_dir, "data_quality")
+    quality_report = dataset_quality_check(
+        dataloaders, class_info, output_dir=quality_report_dir
+    )
+
     # Print class distribution
     logger.logger.info("Class distribution:")
     for class_name, count in class_info["class_counts"].items():
         logger.logger.info(f"  {class_name}: {count} images")
+
+    # Before model creation, test the architecture
+    logger.logger.info(f"Verifying {args.model} implementation...")
+    try:
+        test_success = test_model_forward_backward(args.model, num_classes=num_classes)
+        if not test_success:
+            logger.logger.warning(
+                f"Model verification failed. Continuing with caution."
+            )
+    except Exception as e:
+        logger.logger.error(f"Error during model verification: {str(e)}")
+        logger.logger.warning("Model verification failed. Continuing with caution.")
 
     # Create model
     num_classes = len(class_info["class_to_idx"])
@@ -858,6 +915,21 @@ def main():
 
     # Log model architecture
     logger.logger.info(f"Model architecture:\n{model}")
+
+    # Add model summary using torchinfo if available
+    if logger:
+        logger.logger.info(f"Model summary:")
+        dummy_input = torch.randn(1, 3, args.img_size, args.img_size).to(device)
+        try:
+            from torchinfo import summary
+
+            logger.logger.info(
+                summary(model, input_size=(1, 3, args.img_size, args.img_size))
+            )
+        except ImportError:
+            logger.logger.info(
+                "torchinfo not available - install with pip install torchinfo for detailed model summaries"
+            )
 
     # Create criterion and optimizer
     class_weights = None

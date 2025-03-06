@@ -8,7 +8,7 @@ import glob
 import logging
 
 # Apple Silicon optimization - prevent thread contention
-os.environ["OMP_NUM_THREADS"] = "16"
+os.environ["OMP_NUM_THREADS"] = "14"
 
 
 def parse_args():
@@ -115,7 +115,7 @@ def parse_args():
     parser.add_argument(
         "--patience",
         type=int,
-        default=10,
+        default=7,
         help="Early stopping patience (epochs without improvement)",
     )
     parser.add_argument(
@@ -740,3 +740,55 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# TODO
+# def train_model(config, args):
+#     # Existing code...
+#     print(f"\n{'='*80}")
+#     print(f"Training model: {config['name']}")
+#     print(f"{'='*80}")
+
+#     # Find model versions...
+
+#     # [NEW CODE] Verify model implementation before training
+#     from src.utils.model_tester import test_model_forward_backward
+
+#     print(f"Verifying {config['model']} implementation...")
+#     test_success = test_model_forward_backward(
+#         model_type=config['model'],
+#         num_classes=39,  # Default to 39 classes for testing
+#         batch_size=config.get('batch_size', args.batch_size)
+#     )
+
+#     if not test_success:
+#         print(f"WARNING: Model verification failed for {config['model']}!")
+#         print("Continuing with caution, but expect potential training issues.")
+#     else:
+#         print(f"Model verification successful for {config['model']}")
+
+#     # Create versioned experiment directory...
+
+#     # After optuna results loading and before building command,
+#     # [NEW CODE] Create logs dir for data quality checks
+#     quality_check_dir = os.path.join(experiment_dir, "data_quality")
+#     os.makedirs(quality_check_dir, exist_ok=True)
+
+#     # Add data quality check to command
+#     cmd = [
+#         "python",
+#         "-m",
+#         "src.training.train",
+#         # ... existing args ...
+#     ]
+
+#     # [NEW CODE] Add data quality check flag
+#     cmd.extend(["--data_quality_dir", quality_check_dir])
+
+#     # Rest of the existing code...
+
+#     result = subprocess.run(cmd)
+
+#     # Return success/failure and model path
+#     if result.returncode == 0:
+#         # ... existing code ...

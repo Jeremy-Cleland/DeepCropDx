@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Cleanup script to remove all generated model files, logs, and other artifacts,
+Reset project script to remove all generated model files, logs, and other artifacts,
 including __pycache__ directories, for starting with a clean slate.
 """
 
@@ -12,11 +12,13 @@ from pathlib import Path
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Clean up the project directory")
+    parser = argparse.ArgumentParser(
+        description="Reset the project to start with a clean slate"
+    )
     parser.add_argument(
         "--all",
         action="store_true",
-        help="Remove all generated files (models, reports, logs, etc.)",
+        help="Remove all generated files (models, reports, logs, trials, etc.)",
     )
     parser.add_argument(
         "--models", action="store_true", help="Remove only model files and directories"
@@ -29,6 +31,9 @@ def parse_args():
     parser.add_argument("--logs", action="store_true", help="Remove only log files")
     parser.add_argument(
         "--pycache", action="store_true", help="Remove only __pycache__ directories"
+    )
+    parser.add_argument(
+        "--trials", action="store_true", help="Remove only trials directory contents"
     )
     parser.add_argument(
         "--keep-registry",
@@ -154,12 +159,28 @@ def remove_pycache_dirs(project_root, dry_run=False):
                 print(f"Removed __pycache__ directory: {pycache_dir}")
 
 
+def remove_trials_files(project_root, dry_run=False):
+    """Remove all contents from the trials directory."""
+    trials_dir = os.path.join(project_root, "trials")
+    if os.path.exists(trials_dir):
+        remove_directory_contents(trials_dir, dry_run)
+
+
 def main():
     args = parse_args()
-    project_root = os.path.dirname(os.path.abspath(__file__))
+    # Update to find the project root from the script location
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)  # Go up one level from scripts folder
 
     # If no specific flags are set, default to --all
-    if not (args.all or args.models or args.reports or args.logs or args.pycache):
+    if not (
+        args.all
+        or args.models
+        or args.reports
+        or args.logs
+        or args.pycache
+        or args.trials
+    ):
         args.all = True
 
     if not args.confirm and not args.dry_run:
@@ -173,6 +194,8 @@ def main():
             print("- All log files")
         if args.all or args.pycache:
             print("- All __pycache__ directories")
+        if args.all or args.trials:
+            print("- All files in the trials directory")
 
         confirmation = input(
             "\nAre you sure you want to proceed? (type 'yes' to confirm): "
@@ -194,13 +217,16 @@ def main():
     if args.all or args.logs:
         remove_log_files(project_root, args.dry_run)
 
+    if args.all or args.trials:
+        remove_trials_files(project_root, args.dry_run)
+
     if args.all or args.pycache:
         remove_pycache_dirs(project_root, args.dry_run)
 
     if args.dry_run:
         print("\nDRY RUN COMPLETE - No files were actually deleted")
     else:
-        print("\nCleanup complete!")
+        print("\nProject reset complete!")
         print("You can now start with a fresh training run.")
 
 

@@ -67,27 +67,23 @@ def create_efficientnet_b3_model(
     hidden_layer_size=512,
     **kwargs
 ):
-    """
-    Create an EfficientNet-B3 model with a custom classifier using the new API.
-    """
     from torchvision.models import EfficientNet_B3_Weights
 
     weights = EfficientNet_B3_Weights.IMAGENET1K_V1 if pretrained else None
     model = models.efficientnet_b3(weights=weights)
 
-    # Freeze backbone layers if specified
     if freeze_backbone:
         for param in model.parameters():
             param.requires_grad = False
+    else:
+        # Enable gradient checkpointing to reduce memory usage
+        model.set_grad_checkpointing(enable=True)
 
-    # Get input features size
-    in_features = model.classifier[1].in_features
+    in_features = model.classifier[1].in_features  # Typically 1536 for EfficientNet-B3
 
-    # Replace the classifier with proper flattening
+    # Remove the problematic nn.AdaptiveAvgPool2d and nn.Flatten layers
     if add_hidden_layer:
         model.classifier = nn.Sequential(
-            nn.AdaptiveAvgPool2d(1),  # Ensure spatial dimensions are 1x1
-            nn.Flatten(),  # Add flatten layer
             nn.Dropout(p=dropout_rate, inplace=False),
             nn.Linear(in_features=in_features, out_features=hidden_layer_size),
             nn.ReLU(inplace=False),
@@ -96,8 +92,6 @@ def create_efficientnet_b3_model(
         )
     else:
         model.classifier = nn.Sequential(
-            nn.AdaptiveAvgPool2d(1),  # Ensure spatial dimensions are 1x1
-            nn.Flatten(),  # Add flatten layer
             nn.Dropout(p=dropout_rate, inplace=False),
             nn.Linear(in_features=in_features, out_features=num_classes),
         )

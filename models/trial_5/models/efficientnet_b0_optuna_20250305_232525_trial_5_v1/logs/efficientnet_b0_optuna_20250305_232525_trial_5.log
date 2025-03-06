@@ -209,3 +209,301 @@
 2025-03-06 01:31:37,777 - INFO - [TRAIN] Epoch: 7/15 | Batch: 30/304 (10.2%) | Loss: 3.3908 | Batch time: 0.63s
 2025-03-06 01:31:57,020 - INFO - [TRAIN] Epoch: 7/15 | Batch: 60/304 (20.1%) | Loss: 3.3445 | Batch time: 0.63s
 2025-03-06 01:32:16,312 - INFO - [TRAIN] Epoch: 7/15 | Batch: 90/304 (29.9%) | Loss: 3.3725 | Batch time: 0.63s
+2025-03-06 01:32:35,832 - INFO - [TRAIN] Epoch: 7/15 | Batch: 120/304 (39.8%) | Loss: 3.3820 | Batch time: 0.65s
+2025-03-06 01:32:55,219 - INFO - [TRAIN] Epoch: 7/15 | Batch: 150/304 (49.7%) | Loss: 3.2866 | Batch time: 0.64s
+2025-03-06 01:33:14,586 - INFO - [TRAIN] Epoch: 7/15 | Batch: 180/304 (59.5%) | Loss: 3.3432 | Batch time: 0.64s
+2025-03-06 01:33:33,682 - INFO - [TRAIN] Epoch: 7/15 | Batch: 210/304 (69.4%) | Loss: 3.3291 | Batch time: 0.63s
+2025-03-06 01:33:52,620 - INFO - [TRAIN] Epoch: 7/15 | Batch: 240/304 (79.3%) | Loss: 3.3001 | Batch time: 0.63s
+2025-03-06 01:34:11,572 - INFO - [TRAIN] Epoch: 7/15 | Batch: 270/304 (89.1%) | Loss: 3.2877 | Batch time: 0.63s
+2025-03-06 01:34:30,733 - INFO - [TRAIN] Epoch: 7/15 | Batch: 300/304 (99.0%) | Loss: 3.3697 | Batch time: 0.65s
+2025-03-06 01:34:32,169 - INFO - [TRAIN] Epoch: 7/15 | Batch: 303/304 (100.0%) | Loss: 3.3262 | Batch time: 0.15s
+2025-03-06 01:34:32,602 - INFO - [VAL] Epoch: 7/15 | Batch: 0/65 (1.5%) | Loss: 3.2543 | Batch time: 0.16s
+2025-03-06 01:34:33,556 - INFO - [VAL] Epoch: 7/15 | Batch: 6/65 (10.8%) | Loss: 3.2866 | Batch time: 0.15s
+2025-03-06 01:34:34,379 - INFO - [VAL] Epoch: 7/15 | Batch: 12/65 (20.0%) | Loss: 3.2593 | Batch time: 0.13s
+2025-03-06 01:34:35,209 - INFO - [VAL] Epoch: 7/15 | Batch: 18/65 (29.2%) | Loss: 3.2350 | Batch time: 0.13s
+2025-03-06 01:34:36,029 - INFO - [VAL] Epoch: 7/15 | Batch: 24/65 (38.5%) | Loss: 3.3165 | Batch time: 0.14s
+2025-03-06 01:34:36,856 - INFO - [VAL] Epoch: 7/15 | Batch: 30/65 (47.7%) | Loss: 3.2212 | Batch time: 0.14s
+2025-03-06 01:34:37,718 - INFO - [VAL] Epoch: 7/15 | Batch: 36/65 (56.9%) | Loss: 3.2091 | Batch time: 0.14s
+2025-03-06 01:34:38,558 - INFO - [VAL] Epoch: 7/15 | Batch: 42/65 (66.2%) | Loss: 3.2497 | Batch time: 0.14s
+2025-03-06 01:34:39,390 - INFO - [VAL] Epoch: 7/15 | Batch: 48/65 (75.4%) | Loss: 3.2608 | Batch time: 0.14s
+2025-03-06 01:34:40,232 - INFO - [VAL] Epoch: 7/15 | Batch: 54/65 (84.6%) | Loss: 3.2759 | Batch time: 0.14s
+2025-03-06 01:34:41,071 - INFO - [VAL] Epoch: 7/15 | Batch: 60/65 (93.8%) | Loss: 3.3012 | Batch time: 0.14s
+2025-03-06 01:34:41,643 - INFO - [VAL] Epoch: 7/15 | Batch: 64/65 (100.0%) | Loss: 3.2541 | Batch time: 0.14s
+2025-03-06 01:34:41,857 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 7)
+2025-03-06 01:34:41,861 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:34:41,861 - INFO - Epoch 7/15 completed in 205.75s
+2025-03-06 01:34:41,861 - INFO - Training   - Loss: 3.3414, Accuracy: 0.2528, F1: 0.2603
+2025-03-06 01:34:41,861 - INFO - Validation - Loss: 3.2626, Accuracy: 0.3852, F1: 0.3639
+2025-03-06 01:34:41,861 - INFO - Validation F1 improved from 0.3164 to 0.3639
+2025-03-06 01:34:41,861 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:34:41,861 - INFO - Epoch 8/15
+2025-03-06 01:34:41,861 - INFO - ----------------------------------------
+2025-03-06 01:34:43,994 - INFO - [TRAIN] Epoch: 8/15 | Batch: 0/304 (0.3%) | Loss: 3.3382 | Batch time: 0.95s
+2025-03-06 01:35:03,855 - INFO - [TRAIN] Epoch: 8/15 | Batch: 30/304 (10.2%) | Loss: 3.2929 | Batch time: 0.65s
+2025-03-06 01:35:23,833 - INFO - [TRAIN] Epoch: 8/15 | Batch: 60/304 (20.1%) | Loss: 3.2900 | Batch time: 0.66s
+2025-03-06 01:35:43,735 - INFO - [TRAIN] Epoch: 8/15 | Batch: 90/304 (29.9%) | Loss: 3.3432 | Batch time: 0.66s
+2025-03-06 01:36:03,566 - INFO - [TRAIN] Epoch: 8/15 | Batch: 120/304 (39.8%) | Loss: 3.2995 | Batch time: 0.64s
+2025-03-06 01:36:23,286 - INFO - [TRAIN] Epoch: 8/15 | Batch: 150/304 (49.7%) | Loss: 3.2573 | Batch time: 0.63s
+2025-03-06 01:36:43,243 - INFO - [TRAIN] Epoch: 8/15 | Batch: 180/304 (59.5%) | Loss: 3.2468 | Batch time: 0.66s
+2025-03-06 01:37:03,109 - INFO - [TRAIN] Epoch: 8/15 | Batch: 210/304 (69.4%) | Loss: 3.3148 | Batch time: 0.64s
+2025-03-06 01:37:23,170 - INFO - [TRAIN] Epoch: 8/15 | Batch: 240/304 (79.3%) | Loss: 3.3303 | Batch time: 0.66s
+2025-03-06 01:37:42,681 - INFO - [TRAIN] Epoch: 8/15 | Batch: 270/304 (89.1%) | Loss: 3.2588 | Batch time: 0.65s
+2025-03-06 01:38:02,004 - INFO - [TRAIN] Epoch: 8/15 | Batch: 300/304 (99.0%) | Loss: 3.2468 | Batch time: 0.64s
+2025-03-06 01:38:03,451 - INFO - [TRAIN] Epoch: 8/15 | Batch: 303/304 (100.0%) | Loss: 3.2898 | Batch time: 0.15s
+2025-03-06 01:38:03,906 - INFO - [VAL] Epoch: 8/15 | Batch: 0/65 (1.5%) | Loss: 3.2046 | Batch time: 0.16s
+2025-03-06 01:38:04,874 - INFO - [VAL] Epoch: 8/15 | Batch: 6/65 (10.8%) | Loss: 3.2506 | Batch time: 0.15s
+2025-03-06 01:38:05,711 - INFO - [VAL] Epoch: 8/15 | Batch: 12/65 (20.0%) | Loss: 3.2098 | Batch time: 0.14s
+2025-03-06 01:38:06,540 - INFO - [VAL] Epoch: 8/15 | Batch: 18/65 (29.2%) | Loss: 3.1853 | Batch time: 0.14s
+2025-03-06 01:38:07,361 - INFO - [VAL] Epoch: 8/15 | Batch: 24/65 (38.5%) | Loss: 3.2717 | Batch time: 0.14s
+2025-03-06 01:38:08,186 - INFO - [VAL] Epoch: 8/15 | Batch: 30/65 (47.7%) | Loss: 3.1698 | Batch time: 0.13s
+2025-03-06 01:38:09,012 - INFO - [VAL] Epoch: 8/15 | Batch: 36/65 (56.9%) | Loss: 3.1593 | Batch time: 0.14s
+2025-03-06 01:38:09,833 - INFO - [VAL] Epoch: 8/15 | Batch: 42/65 (66.2%) | Loss: 3.2027 | Batch time: 0.14s
+2025-03-06 01:38:10,662 - INFO - [VAL] Epoch: 8/15 | Batch: 48/65 (75.4%) | Loss: 3.2111 | Batch time: 0.14s
+2025-03-06 01:38:11,492 - INFO - [VAL] Epoch: 8/15 | Batch: 54/65 (84.6%) | Loss: 3.2352 | Batch time: 0.14s
+2025-03-06 01:38:12,316 - INFO - [VAL] Epoch: 8/15 | Batch: 60/65 (93.8%) | Loss: 3.2533 | Batch time: 0.14s
+2025-03-06 01:38:12,871 - INFO - [VAL] Epoch: 8/15 | Batch: 64/65 (100.0%) | Loss: 3.2075 | Batch time: 0.14s
+2025-03-06 01:38:13,071 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 8)
+2025-03-06 01:38:13,074 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:38:13,074 - INFO - Epoch 8/15 completed in 211.21s
+2025-03-06 01:38:13,074 - INFO - Training   - Loss: 3.3047, Accuracy: 0.2762, F1: 0.2825
+2025-03-06 01:38:13,074 - INFO - Validation - Loss: 3.2149, Accuracy: 0.4164, F1: 0.3950
+2025-03-06 01:38:13,074 - INFO - Validation F1 improved from 0.3639 to 0.3950
+2025-03-06 01:38:13,074 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:38:13,074 - INFO - Epoch 9/15
+2025-03-06 01:38:13,074 - INFO - ----------------------------------------
+2025-03-06 01:38:14,965 - INFO - [TRAIN] Epoch: 9/15 | Batch: 0/304 (0.3%) | Loss: 3.2543 | Batch time: 0.91s
+2025-03-06 01:38:34,579 - INFO - [TRAIN] Epoch: 9/15 | Batch: 30/304 (10.2%) | Loss: 3.2519 | Batch time: 0.65s
+2025-03-06 01:38:53,791 - INFO - [TRAIN] Epoch: 9/15 | Batch: 60/304 (20.1%) | Loss: 3.2743 | Batch time: 0.63s
+2025-03-06 01:39:12,837 - INFO - [TRAIN] Epoch: 9/15 | Batch: 90/304 (29.9%) | Loss: 3.2745 | Batch time: 0.63s
+2025-03-06 01:39:31,942 - INFO - [TRAIN] Epoch: 9/15 | Batch: 120/304 (39.8%) | Loss: 3.2347 | Batch time: 0.63s
+2025-03-06 01:39:51,097 - INFO - [TRAIN] Epoch: 9/15 | Batch: 150/304 (49.7%) | Loss: 3.2822 | Batch time: 0.64s
+2025-03-06 01:40:10,233 - INFO - [TRAIN] Epoch: 9/15 | Batch: 180/304 (59.5%) | Loss: 3.3145 | Batch time: 0.65s
+2025-03-06 01:40:29,380 - INFO - [TRAIN] Epoch: 9/15 | Batch: 210/304 (69.4%) | Loss: 3.2630 | Batch time: 0.64s
+2025-03-06 01:40:48,556 - INFO - [TRAIN] Epoch: 9/15 | Batch: 240/304 (79.3%) | Loss: 3.2127 | Batch time: 0.64s
+2025-03-06 01:41:07,752 - INFO - [TRAIN] Epoch: 9/15 | Batch: 270/304 (89.1%) | Loss: 3.2773 | Batch time: 0.64s
+2025-03-06 01:41:26,971 - INFO - [TRAIN] Epoch: 9/15 | Batch: 300/304 (99.0%) | Loss: 3.2462 | Batch time: 0.64s
+2025-03-06 01:41:28,401 - INFO - [TRAIN] Epoch: 9/15 | Batch: 303/304 (100.0%) | Loss: 3.2278 | Batch time: 0.15s
+2025-03-06 01:41:28,843 - INFO - [VAL] Epoch: 9/15 | Batch: 0/65 (1.5%) | Loss: 3.1658 | Batch time: 0.17s
+2025-03-06 01:41:29,825 - INFO - [VAL] Epoch: 9/15 | Batch: 6/65 (10.8%) | Loss: 3.1966 | Batch time: 0.14s
+2025-03-06 01:41:30,647 - INFO - [VAL] Epoch: 9/15 | Batch: 12/65 (20.0%) | Loss: 3.1812 | Batch time: 0.14s
+2025-03-06 01:41:31,473 - INFO - [VAL] Epoch: 9/15 | Batch: 18/65 (29.2%) | Loss: 3.1517 | Batch time: 0.14s
+2025-03-06 01:41:32,297 - INFO - [VAL] Epoch: 9/15 | Batch: 24/65 (38.5%) | Loss: 3.2312 | Batch time: 0.13s
+2025-03-06 01:41:33,117 - INFO - [VAL] Epoch: 9/15 | Batch: 30/65 (47.7%) | Loss: 3.1151 | Batch time: 0.14s
+2025-03-06 01:41:33,939 - INFO - [VAL] Epoch: 9/15 | Batch: 36/65 (56.9%) | Loss: 3.1087 | Batch time: 0.13s
+2025-03-06 01:41:34,765 - INFO - [VAL] Epoch: 9/15 | Batch: 42/65 (66.2%) | Loss: 3.1612 | Batch time: 0.14s
+2025-03-06 01:41:35,582 - INFO - [VAL] Epoch: 9/15 | Batch: 48/65 (75.4%) | Loss: 3.1747 | Batch time: 0.14s
+2025-03-06 01:41:36,405 - INFO - [VAL] Epoch: 9/15 | Batch: 54/65 (84.6%) | Loss: 3.1833 | Batch time: 0.13s
+2025-03-06 01:41:37,228 - INFO - [VAL] Epoch: 9/15 | Batch: 60/65 (93.8%) | Loss: 3.2006 | Batch time: 0.14s
+2025-03-06 01:41:37,772 - INFO - [VAL] Epoch: 9/15 | Batch: 64/65 (100.0%) | Loss: 3.1566 | Batch time: 0.13s
+2025-03-06 01:41:37,976 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 9)
+2025-03-06 01:41:37,983 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:41:37,983 - INFO - Epoch 9/15 completed in 204.91s
+2025-03-06 01:41:37,983 - INFO - Training   - Loss: 3.2605, Accuracy: 0.3049, F1: 0.3098
+2025-03-06 01:41:37,983 - INFO - Validation - Loss: 3.1743, Accuracy: 0.4365, F1: 0.4107
+2025-03-06 01:41:37,983 - INFO - Validation F1 improved from 0.3950 to 0.4107
+2025-03-06 01:41:37,983 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:41:37,983 - INFO - Epoch 10/15
+2025-03-06 01:41:37,983 - INFO - ----------------------------------------
+2025-03-06 01:41:39,845 - INFO - [TRAIN] Epoch: 10/15 | Batch: 0/304 (0.3%) | Loss: 3.1765 | Batch time: 0.90s
+2025-03-06 01:41:59,410 - INFO - [TRAIN] Epoch: 10/15 | Batch: 30/304 (10.2%) | Loss: 3.2489 | Batch time: 0.64s
+2025-03-06 01:42:18,604 - INFO - [TRAIN] Epoch: 10/15 | Batch: 60/304 (20.1%) | Loss: 3.2362 | Batch time: 0.64s
+2025-03-06 01:42:37,699 - INFO - [TRAIN] Epoch: 10/15 | Batch: 90/304 (29.9%) | Loss: 3.2536 | Batch time: 0.64s
+2025-03-06 01:42:56,822 - INFO - [TRAIN] Epoch: 10/15 | Batch: 120/304 (39.8%) | Loss: 3.3286 | Batch time: 0.64s
+2025-03-06 01:43:16,733 - INFO - [TRAIN] Epoch: 10/15 | Batch: 150/304 (49.7%) | Loss: 3.2596 | Batch time: 0.68s
+2025-03-06 01:43:37,384 - INFO - [TRAIN] Epoch: 10/15 | Batch: 180/304 (59.5%) | Loss: 3.2465 | Batch time: 0.69s
+2025-03-06 01:43:57,818 - INFO - [TRAIN] Epoch: 10/15 | Batch: 210/304 (69.4%) | Loss: 3.2170 | Batch time: 0.67s
+2025-03-06 01:44:18,268 - INFO - [TRAIN] Epoch: 10/15 | Batch: 240/304 (79.3%) | Loss: 3.2564 | Batch time: 0.68s
+2025-03-06 01:44:38,795 - INFO - [TRAIN] Epoch: 10/15 | Batch: 270/304 (89.1%) | Loss: 3.2593 | Batch time: 0.68s
+2025-03-06 01:44:59,248 - INFO - [TRAIN] Epoch: 10/15 | Batch: 300/304 (99.0%) | Loss: 3.2505 | Batch time: 0.68s
+2025-03-06 01:45:00,779 - INFO - [TRAIN] Epoch: 10/15 | Batch: 303/304 (100.0%) | Loss: 3.2623 | Batch time: 0.16s
+2025-03-06 01:45:01,216 - INFO - [VAL] Epoch: 10/15 | Batch: 0/65 (1.5%) | Loss: 3.1249 | Batch time: 0.17s
+2025-03-06 01:45:02,217 - INFO - [VAL] Epoch: 10/15 | Batch: 6/65 (10.8%) | Loss: 3.1752 | Batch time: 0.15s
+2025-03-06 01:45:03,094 - INFO - [VAL] Epoch: 10/15 | Batch: 12/65 (20.0%) | Loss: 3.1358 | Batch time: 0.15s
+2025-03-06 01:45:03,968 - INFO - [VAL] Epoch: 10/15 | Batch: 18/65 (29.2%) | Loss: 3.1120 | Batch time: 0.14s
+2025-03-06 01:45:04,843 - INFO - [VAL] Epoch: 10/15 | Batch: 24/65 (38.5%) | Loss: 3.2041 | Batch time: 0.14s
+2025-03-06 01:45:05,723 - INFO - [VAL] Epoch: 10/15 | Batch: 30/65 (47.7%) | Loss: 3.0902 | Batch time: 0.15s
+2025-03-06 01:45:06,594 - INFO - [VAL] Epoch: 10/15 | Batch: 36/65 (56.9%) | Loss: 3.0790 | Batch time: 0.14s
+2025-03-06 01:45:07,471 - INFO - [VAL] Epoch: 10/15 | Batch: 42/65 (66.2%) | Loss: 3.1303 | Batch time: 0.14s
+2025-03-06 01:45:08,349 - INFO - [VAL] Epoch: 10/15 | Batch: 48/65 (75.4%) | Loss: 3.1395 | Batch time: 0.14s
+2025-03-06 01:45:09,222 - INFO - [VAL] Epoch: 10/15 | Batch: 54/65 (84.6%) | Loss: 3.1544 | Batch time: 0.14s
+2025-03-06 01:45:10,104 - INFO - [VAL] Epoch: 10/15 | Batch: 60/65 (93.8%) | Loss: 3.1794 | Batch time: 0.14s
+2025-03-06 01:45:10,693 - INFO - [VAL] Epoch: 10/15 | Batch: 64/65 (100.0%) | Loss: 3.1326 | Batch time: 0.15s
+2025-03-06 01:45:10,903 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 10)
+2025-03-06 01:45:10,907 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:45:10,907 - INFO - Epoch 10/15 completed in 212.92s
+2025-03-06 01:45:10,907 - INFO - Training   - Loss: 3.2328, Accuracy: 0.3177, F1: 0.3195
+2025-03-06 01:45:10,907 - INFO - Validation - Loss: 3.1402, Accuracy: 0.4540, F1: 0.4301
+2025-03-06 01:45:10,907 - INFO - Validation F1 improved from 0.4107 to 0.4301
+2025-03-06 01:45:10,907 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:45:11,038 - INFO - Checkpoint saved: checkpoint_epoch_10.pth (Epoch 10)
+2025-03-06 01:45:11,038 - INFO - Epoch 11/15
+2025-03-06 01:45:11,038 - INFO - ----------------------------------------
+2025-03-06 01:45:12,993 - INFO - [TRAIN] Epoch: 11/15 | Batch: 0/304 (0.3%) | Loss: 3.2613 | Batch time: 0.94s
+2025-03-06 01:45:33,814 - INFO - [TRAIN] Epoch: 11/15 | Batch: 30/304 (10.2%) | Loss: 3.2474 | Batch time: 0.68s
+2025-03-06 01:45:54,308 - INFO - [TRAIN] Epoch: 11/15 | Batch: 60/304 (20.1%) | Loss: 3.2507 | Batch time: 0.69s
+2025-03-06 01:46:14,995 - INFO - [TRAIN] Epoch: 11/15 | Batch: 90/304 (29.9%) | Loss: 3.2933 | Batch time: 0.70s
+2025-03-06 01:46:35,402 - INFO - [TRAIN] Epoch: 11/15 | Batch: 120/304 (39.8%) | Loss: 3.1759 | Batch time: 0.68s
+2025-03-06 01:46:55,752 - INFO - [TRAIN] Epoch: 11/15 | Batch: 150/304 (49.7%) | Loss: 3.2098 | Batch time: 0.68s
+2025-03-06 01:47:16,196 - INFO - [TRAIN] Epoch: 11/15 | Batch: 180/304 (59.5%) | Loss: 3.1535 | Batch time: 0.68s
+2025-03-06 01:47:36,589 - INFO - [TRAIN] Epoch: 11/15 | Batch: 210/304 (69.4%) | Loss: 3.2209 | Batch time: 0.68s
+2025-03-06 01:47:57,012 - INFO - [TRAIN] Epoch: 11/15 | Batch: 240/304 (79.3%) | Loss: 3.2019 | Batch time: 0.68s
+2025-03-06 01:48:17,485 - INFO - [TRAIN] Epoch: 11/15 | Batch: 270/304 (89.1%) | Loss: 3.2096 | Batch time: 0.67s
+2025-03-06 01:48:36,955 - INFO - [TRAIN] Epoch: 11/15 | Batch: 300/304 (99.0%) | Loss: 3.2226 | Batch time: 0.65s
+2025-03-06 01:48:38,416 - INFO - [TRAIN] Epoch: 11/15 | Batch: 303/304 (100.0%) | Loss: 3.2320 | Batch time: 0.16s
+2025-03-06 01:48:38,843 - INFO - [VAL] Epoch: 11/15 | Batch: 0/65 (1.5%) | Loss: 3.0991 | Batch time: 0.16s
+2025-03-06 01:48:39,785 - INFO - [VAL] Epoch: 11/15 | Batch: 6/65 (10.8%) | Loss: 3.1536 | Batch time: 0.14s
+2025-03-06 01:48:40,604 - INFO - [VAL] Epoch: 11/15 | Batch: 12/65 (20.0%) | Loss: 3.1127 | Batch time: 0.13s
+2025-03-06 01:48:41,428 - INFO - [VAL] Epoch: 11/15 | Batch: 18/65 (29.2%) | Loss: 3.0884 | Batch time: 0.13s
+2025-03-06 01:48:42,236 - INFO - [VAL] Epoch: 11/15 | Batch: 24/65 (38.5%) | Loss: 3.1800 | Batch time: 0.14s
+2025-03-06 01:48:43,047 - INFO - [VAL] Epoch: 11/15 | Batch: 30/65 (47.7%) | Loss: 3.0643 | Batch time: 0.14s
+2025-03-06 01:48:43,869 - INFO - [VAL] Epoch: 11/15 | Batch: 36/65 (56.9%) | Loss: 3.0581 | Batch time: 0.13s
+2025-03-06 01:48:44,683 - INFO - [VAL] Epoch: 11/15 | Batch: 42/65 (66.2%) | Loss: 3.1046 | Batch time: 0.13s
+2025-03-06 01:48:45,510 - INFO - [VAL] Epoch: 11/15 | Batch: 48/65 (75.4%) | Loss: 3.1152 | Batch time: 0.14s
+2025-03-06 01:48:46,336 - INFO - [VAL] Epoch: 11/15 | Batch: 54/65 (84.6%) | Loss: 3.1335 | Batch time: 0.14s
+2025-03-06 01:48:47,150 - INFO - [VAL] Epoch: 11/15 | Batch: 60/65 (93.8%) | Loss: 3.1565 | Batch time: 0.13s
+2025-03-06 01:48:47,696 - INFO - [VAL] Epoch: 11/15 | Batch: 64/65 (100.0%) | Loss: 3.1103 | Batch time: 0.13s
+2025-03-06 01:48:47,898 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 11)
+2025-03-06 01:48:47,905 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:48:47,905 - INFO - Epoch 11/15 completed in 216.87s
+2025-03-06 01:48:47,905 - INFO - Training   - Loss: 3.2083, Accuracy: 0.3273, F1: 0.3286
+2025-03-06 01:48:47,905 - INFO - Validation - Loss: 3.1172, Accuracy: 0.4657, F1: 0.4390
+2025-03-06 01:48:47,905 - INFO - Validation F1 improved from 0.4301 to 0.4390
+2025-03-06 01:48:47,905 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:48:47,905 - INFO - Epoch 12/15
+2025-03-06 01:48:47,905 - INFO - ----------------------------------------
+2025-03-06 01:48:49,743 - INFO - [TRAIN] Epoch: 12/15 | Batch: 0/304 (0.3%) | Loss: 3.1645 | Batch time: 0.86s
+2025-03-06 01:49:09,296 - INFO - [TRAIN] Epoch: 12/15 | Batch: 30/304 (10.2%) | Loss: 3.1900 | Batch time: 0.64s
+2025-03-06 01:49:28,553 - INFO - [TRAIN] Epoch: 12/15 | Batch: 60/304 (20.1%) | Loss: 3.1901 | Batch time: 0.64s
+2025-03-06 01:49:47,770 - INFO - [TRAIN] Epoch: 12/15 | Batch: 90/304 (29.9%) | Loss: 3.2314 | Batch time: 0.64s
+2025-03-06 01:50:07,022 - INFO - [TRAIN] Epoch: 12/15 | Batch: 120/304 (39.8%) | Loss: 3.1425 | Batch time: 0.64s
+2025-03-06 01:50:26,305 - INFO - [TRAIN] Epoch: 12/15 | Batch: 150/304 (49.7%) | Loss: 3.2285 | Batch time: 0.64s
+2025-03-06 01:50:45,603 - INFO - [TRAIN] Epoch: 12/15 | Batch: 180/304 (59.5%) | Loss: 3.1803 | Batch time: 0.64s
+2025-03-06 01:51:04,891 - INFO - [TRAIN] Epoch: 12/15 | Batch: 210/304 (69.4%) | Loss: 3.1350 | Batch time: 0.64s
+2025-03-06 01:51:24,196 - INFO - [TRAIN] Epoch: 12/15 | Batch: 240/304 (79.3%) | Loss: 3.1678 | Batch time: 0.64s
+2025-03-06 01:51:43,586 - INFO - [TRAIN] Epoch: 12/15 | Batch: 270/304 (89.1%) | Loss: 3.2125 | Batch time: 0.64s
+2025-03-06 01:52:02,932 - INFO - [TRAIN] Epoch: 12/15 | Batch: 300/304 (99.0%) | Loss: 3.2071 | Batch time: 0.63s
+2025-03-06 01:52:04,381 - INFO - [TRAIN] Epoch: 12/15 | Batch: 303/304 (100.0%) | Loss: 3.2180 | Batch time: 0.16s
+2025-03-06 01:52:04,845 - INFO - [VAL] Epoch: 12/15 | Batch: 0/65 (1.5%) | Loss: 3.0837 | Batch time: 0.17s
+2025-03-06 01:52:05,780 - INFO - [VAL] Epoch: 12/15 | Batch: 6/65 (10.8%) | Loss: 3.1539 | Batch time: 0.14s
+2025-03-06 01:52:06,598 - INFO - [VAL] Epoch: 12/15 | Batch: 12/65 (20.0%) | Loss: 3.0991 | Batch time: 0.13s
+2025-03-06 01:52:07,422 - INFO - [VAL] Epoch: 12/15 | Batch: 18/65 (29.2%) | Loss: 3.0643 | Batch time: 0.13s
+2025-03-06 01:52:08,235 - INFO - [VAL] Epoch: 12/15 | Batch: 24/65 (38.5%) | Loss: 3.1701 | Batch time: 0.13s
+2025-03-06 01:52:09,048 - INFO - [VAL] Epoch: 12/15 | Batch: 30/65 (47.7%) | Loss: 3.0493 | Batch time: 0.13s
+2025-03-06 01:52:09,878 - INFO - [VAL] Epoch: 12/15 | Batch: 36/65 (56.9%) | Loss: 3.0330 | Batch time: 0.14s
+2025-03-06 01:52:10,694 - INFO - [VAL] Epoch: 12/15 | Batch: 42/65 (66.2%) | Loss: 3.0830 | Batch time: 0.13s
+2025-03-06 01:52:11,519 - INFO - [VAL] Epoch: 12/15 | Batch: 48/65 (75.4%) | Loss: 3.1036 | Batch time: 0.14s
+2025-03-06 01:52:12,344 - INFO - [VAL] Epoch: 12/15 | Batch: 54/65 (84.6%) | Loss: 3.1167 | Batch time: 0.14s
+2025-03-06 01:52:13,164 - INFO - [VAL] Epoch: 12/15 | Batch: 60/65 (93.8%) | Loss: 3.1476 | Batch time: 0.13s
+2025-03-06 01:52:13,709 - INFO - [VAL] Epoch: 12/15 | Batch: 64/65 (100.0%) | Loss: 3.0985 | Batch time: 0.14s
+2025-03-06 01:52:13,919 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 12)
+2025-03-06 01:52:13,922 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:52:13,922 - INFO - Epoch 12/15 completed in 206.02s
+2025-03-06 01:52:13,922 - INFO - Training   - Loss: 3.1938, Accuracy: 0.3381, F1: 0.3386
+2025-03-06 01:52:13,922 - INFO - Validation - Loss: 3.1021, Accuracy: 0.4717, F1: 0.4460
+2025-03-06 01:52:13,922 - INFO - Validation F1 improved from 0.4390 to 0.4460
+2025-03-06 01:52:13,922 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:52:13,922 - INFO - Epoch 13/15
+2025-03-06 01:52:13,922 - INFO - ----------------------------------------
+2025-03-06 01:52:15,766 - INFO - [TRAIN] Epoch: 13/15 | Batch: 0/304 (0.3%) | Loss: 3.0951 | Batch time: 0.88s
+2025-03-06 01:52:35,350 - INFO - [TRAIN] Epoch: 13/15 | Batch: 30/304 (10.2%) | Loss: 3.1117 | Batch time: 0.64s
+2025-03-06 01:52:54,619 - INFO - [TRAIN] Epoch: 13/15 | Batch: 60/304 (20.1%) | Loss: 3.2339 | Batch time: 0.64s
+2025-03-06 01:53:13,824 - INFO - [TRAIN] Epoch: 13/15 | Batch: 90/304 (29.9%) | Loss: 3.2547 | Batch time: 0.64s
+2025-03-06 01:53:33,061 - INFO - [TRAIN] Epoch: 13/15 | Batch: 120/304 (39.8%) | Loss: 3.2542 | Batch time: 0.65s
+2025-03-06 01:53:52,349 - INFO - [TRAIN] Epoch: 13/15 | Batch: 150/304 (49.7%) | Loss: 3.1242 | Batch time: 0.65s
+2025-03-06 01:54:11,704 - INFO - [TRAIN] Epoch: 13/15 | Batch: 180/304 (59.5%) | Loss: 3.2445 | Batch time: 0.65s
+2025-03-06 01:54:31,001 - INFO - [TRAIN] Epoch: 13/15 | Batch: 210/304 (69.4%) | Loss: 3.2070 | Batch time: 0.64s
+2025-03-06 01:54:50,288 - INFO - [TRAIN] Epoch: 13/15 | Batch: 240/304 (79.3%) | Loss: 3.1975 | Batch time: 0.65s
+2025-03-06 01:55:09,605 - INFO - [TRAIN] Epoch: 13/15 | Batch: 270/304 (89.1%) | Loss: 3.1504 | Batch time: 0.65s
+2025-03-06 01:55:28,958 - INFO - [TRAIN] Epoch: 13/15 | Batch: 300/304 (99.0%) | Loss: 3.1444 | Batch time: 0.64s
+2025-03-06 01:55:30,402 - INFO - [TRAIN] Epoch: 13/15 | Batch: 303/304 (100.0%) | Loss: 3.0683 | Batch time: 0.15s
+2025-03-06 01:55:30,838 - INFO - [VAL] Epoch: 13/15 | Batch: 0/65 (1.5%) | Loss: 3.0775 | Batch time: 0.17s
+2025-03-06 01:55:31,783 - INFO - [VAL] Epoch: 13/15 | Batch: 6/65 (10.8%) | Loss: 3.1352 | Batch time: 0.14s
+2025-03-06 01:55:32,598 - INFO - [VAL] Epoch: 13/15 | Batch: 12/65 (20.0%) | Loss: 3.0934 | Batch time: 0.14s
+2025-03-06 01:55:33,416 - INFO - [VAL] Epoch: 13/15 | Batch: 18/65 (29.2%) | Loss: 3.0634 | Batch time: 0.13s
+2025-03-06 01:55:34,239 - INFO - [VAL] Epoch: 13/15 | Batch: 24/65 (38.5%) | Loss: 3.1642 | Batch time: 0.14s
+2025-03-06 01:55:35,057 - INFO - [VAL] Epoch: 13/15 | Batch: 30/65 (47.7%) | Loss: 3.0432 | Batch time: 0.14s
+2025-03-06 01:55:35,883 - INFO - [VAL] Epoch: 13/15 | Batch: 36/65 (56.9%) | Loss: 3.0329 | Batch time: 0.13s
+2025-03-06 01:55:36,707 - INFO - [VAL] Epoch: 13/15 | Batch: 42/65 (66.2%) | Loss: 3.0839 | Batch time: 0.14s
+2025-03-06 01:55:37,525 - INFO - [VAL] Epoch: 13/15 | Batch: 48/65 (75.4%) | Loss: 3.0979 | Batch time: 0.13s
+2025-03-06 01:55:38,342 - INFO - [VAL] Epoch: 13/15 | Batch: 54/65 (84.6%) | Loss: 3.1043 | Batch time: 0.14s
+2025-03-06 01:55:39,164 - INFO - [VAL] Epoch: 13/15 | Batch: 60/65 (93.8%) | Loss: 3.1420 | Batch time: 0.14s
+2025-03-06 01:55:39,712 - INFO - [VAL] Epoch: 13/15 | Batch: 64/65 (100.0%) | Loss: 3.0889 | Batch time: 0.13s
+2025-03-06 01:55:39,932 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 13)
+2025-03-06 01:55:39,938 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:55:39,939 - INFO - Epoch 13/15 completed in 206.02s
+2025-03-06 01:55:39,939 - INFO - Training   - Loss: 3.1808, Accuracy: 0.3428, F1: 0.3421
+2025-03-06 01:55:39,939 - INFO - Validation - Loss: 3.0966, Accuracy: 0.4711, F1: 0.4470
+2025-03-06 01:55:39,939 - INFO - Validation F1 improved from 0.4460 to 0.4470
+2025-03-06 01:55:39,939 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:55:39,939 - INFO - Epoch 14/15
+2025-03-06 01:55:39,939 - INFO - ----------------------------------------
+2025-03-06 01:55:41,829 - INFO - [TRAIN] Epoch: 14/15 | Batch: 0/304 (0.3%) | Loss: 3.1757 | Batch time: 0.88s
+2025-03-06 01:56:01,432 - INFO - [TRAIN] Epoch: 14/15 | Batch: 30/304 (10.2%) | Loss: 3.1051 | Batch time: 0.65s
+2025-03-06 01:56:20,668 - INFO - [TRAIN] Epoch: 14/15 | Batch: 60/304 (20.1%) | Loss: 3.2154 | Batch time: 0.64s
+2025-03-06 01:56:39,897 - INFO - [TRAIN] Epoch: 14/15 | Batch: 90/304 (29.9%) | Loss: 3.1373 | Batch time: 0.64s
+2025-03-06 01:56:59,161 - INFO - [TRAIN] Epoch: 14/15 | Batch: 120/304 (39.8%) | Loss: 3.1670 | Batch time: 0.64s
+2025-03-06 01:57:18,381 - INFO - [TRAIN] Epoch: 14/15 | Batch: 150/304 (49.7%) | Loss: 3.0951 | Batch time: 0.64s
+2025-03-06 01:57:37,590 - INFO - [TRAIN] Epoch: 14/15 | Batch: 180/304 (59.5%) | Loss: 3.2243 | Batch time: 0.64s
+2025-03-06 01:57:56,803 - INFO - [TRAIN] Epoch: 14/15 | Batch: 210/304 (69.4%) | Loss: 3.1811 | Batch time: 0.64s
+2025-03-06 01:58:16,015 - INFO - [TRAIN] Epoch: 14/15 | Batch: 240/304 (79.3%) | Loss: 3.1828 | Batch time: 0.64s
+2025-03-06 01:58:35,292 - INFO - [TRAIN] Epoch: 14/15 | Batch: 270/304 (89.1%) | Loss: 3.0834 | Batch time: 0.64s
+2025-03-06 01:58:54,574 - INFO - [TRAIN] Epoch: 14/15 | Batch: 300/304 (99.0%) | Loss: 3.2089 | Batch time: 0.64s
+2025-03-06 01:58:56,021 - INFO - [TRAIN] Epoch: 14/15 | Batch: 303/304 (100.0%) | Loss: 3.1493 | Batch time: 0.16s
+2025-03-06 01:58:56,450 - INFO - [VAL] Epoch: 14/15 | Batch: 0/65 (1.5%) | Loss: 3.0732 | Batch time: 0.16s
+2025-03-06 01:58:57,401 - INFO - [VAL] Epoch: 14/15 | Batch: 6/65 (10.8%) | Loss: 3.1347 | Batch time: 0.15s
+2025-03-06 01:58:58,220 - INFO - [VAL] Epoch: 14/15 | Batch: 12/65 (20.0%) | Loss: 3.0905 | Batch time: 0.14s
+2025-03-06 01:58:59,044 - INFO - [VAL] Epoch: 14/15 | Batch: 18/65 (29.2%) | Loss: 3.0570 | Batch time: 0.13s
+2025-03-06 01:58:59,854 - INFO - [VAL] Epoch: 14/15 | Batch: 24/65 (38.5%) | Loss: 3.1591 | Batch time: 0.13s
+2025-03-06 01:59:00,667 - INFO - [VAL] Epoch: 14/15 | Batch: 30/65 (47.7%) | Loss: 3.0375 | Batch time: 0.13s
+2025-03-06 01:59:01,494 - INFO - [VAL] Epoch: 14/15 | Batch: 36/65 (56.9%) | Loss: 3.0192 | Batch time: 0.13s
+2025-03-06 01:59:02,314 - INFO - [VAL] Epoch: 14/15 | Batch: 42/65 (66.2%) | Loss: 3.0759 | Batch time: 0.14s
+2025-03-06 01:59:03,136 - INFO - [VAL] Epoch: 14/15 | Batch: 48/65 (75.4%) | Loss: 3.0916 | Batch time: 0.14s
+2025-03-06 01:59:03,961 - INFO - [VAL] Epoch: 14/15 | Batch: 54/65 (84.6%) | Loss: 3.1016 | Batch time: 0.14s
+2025-03-06 01:59:04,771 - INFO - [VAL] Epoch: 14/15 | Batch: 60/65 (93.8%) | Loss: 3.1402 | Batch time: 0.13s
+2025-03-06 01:59:05,323 - INFO - [VAL] Epoch: 14/15 | Batch: 64/65 (100.0%) | Loss: 3.0835 | Batch time: 0.13s
+2025-03-06 01:59:05,527 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 14)
+2025-03-06 01:59:05,530 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:59:05,530 - INFO - Epoch 14/15 completed in 205.59s
+2025-03-06 01:59:05,531 - INFO - Training   - Loss: 3.1696, Accuracy: 0.3497, F1: 0.3483
+2025-03-06 01:59:05,531 - INFO - Validation - Loss: 3.0924, Accuracy: 0.4769, F1: 0.4479
+2025-03-06 01:59:05,531 - INFO - Validation F1 improved from 0.4470 to 0.4479
+2025-03-06 01:59:05,531 - INFO - --------------------------------------------------------------------------------
+2025-03-06 01:59:05,531 - INFO - Epoch 15/15
+2025-03-06 01:59:05,531 - INFO - ----------------------------------------
+2025-03-06 01:59:07,348 - INFO - [TRAIN] Epoch: 15/15 | Batch: 0/304 (0.3%) | Loss: 3.1899 | Batch time: 0.84s
+2025-03-06 01:59:26,870 - INFO - [TRAIN] Epoch: 15/15 | Batch: 30/304 (10.2%) | Loss: 3.1896 | Batch time: 0.64s
+2025-03-06 01:59:46,045 - INFO - [TRAIN] Epoch: 15/15 | Batch: 60/304 (20.1%) | Loss: 3.0688 | Batch time: 0.64s
+2025-03-06 02:00:05,181 - INFO - [TRAIN] Epoch: 15/15 | Batch: 90/304 (29.9%) | Loss: 3.2545 | Batch time: 0.64s
+2025-03-06 02:00:24,390 - INFO - [TRAIN] Epoch: 15/15 | Batch: 120/304 (39.8%) | Loss: 3.1498 | Batch time: 0.64s
+2025-03-06 02:00:43,629 - INFO - [TRAIN] Epoch: 15/15 | Batch: 150/304 (49.7%) | Loss: 3.1598 | Batch time: 0.65s
+2025-03-06 02:01:02,950 - INFO - [TRAIN] Epoch: 15/15 | Batch: 180/304 (59.5%) | Loss: 3.1582 | Batch time: 0.72s
+2025-03-06 02:01:22,570 - INFO - [TRAIN] Epoch: 15/15 | Batch: 210/304 (69.4%) | Loss: 3.1541 | Batch time: 0.64s
+2025-03-06 02:01:41,690 - INFO - [TRAIN] Epoch: 15/15 | Batch: 240/304 (79.3%) | Loss: 3.1852 | Batch time: 0.64s
+2025-03-06 02:02:01,047 - INFO - [TRAIN] Epoch: 15/15 | Batch: 270/304 (89.1%) | Loss: 3.1370 | Batch time: 0.65s
+2025-03-06 02:02:20,207 - INFO - [TRAIN] Epoch: 15/15 | Batch: 300/304 (99.0%) | Loss: 3.2013 | Batch time: 0.64s
+2025-03-06 02:02:21,651 - INFO - [TRAIN] Epoch: 15/15 | Batch: 303/304 (100.0%) | Loss: 3.1657 | Batch time: 0.16s
+2025-03-06 02:02:22,084 - INFO - [VAL] Epoch: 15/15 | Batch: 0/65 (1.5%) | Loss: 3.0695 | Batch time: 0.16s
+2025-03-06 02:02:23,036 - INFO - [VAL] Epoch: 15/15 | Batch: 6/65 (10.8%) | Loss: 3.1277 | Batch time: 0.15s
+2025-03-06 02:02:23,855 - INFO - [VAL] Epoch: 15/15 | Batch: 12/65 (20.0%) | Loss: 3.0894 | Batch time: 0.14s
+2025-03-06 02:02:24,681 - INFO - [VAL] Epoch: 15/15 | Batch: 18/65 (29.2%) | Loss: 3.0553 | Batch time: 0.14s
+2025-03-06 02:02:25,503 - INFO - [VAL] Epoch: 15/15 | Batch: 24/65 (38.5%) | Loss: 3.1606 | Batch time: 0.14s
+2025-03-06 02:02:26,318 - INFO - [VAL] Epoch: 15/15 | Batch: 30/65 (47.7%) | Loss: 3.0379 | Batch time: 0.14s
+2025-03-06 02:02:27,143 - INFO - [VAL] Epoch: 15/15 | Batch: 36/65 (56.9%) | Loss: 3.0250 | Batch time: 0.13s
+2025-03-06 02:02:27,964 - INFO - [VAL] Epoch: 15/15 | Batch: 42/65 (66.2%) | Loss: 3.0781 | Batch time: 0.14s
+2025-03-06 02:02:28,794 - INFO - [VAL] Epoch: 15/15 | Batch: 48/65 (75.4%) | Loss: 3.0937 | Batch time: 0.14s
+2025-03-06 02:02:29,633 - INFO - [VAL] Epoch: 15/15 | Batch: 54/65 (84.6%) | Loss: 3.0971 | Batch time: 0.14s
+2025-03-06 02:02:30,464 - INFO - [VAL] Epoch: 15/15 | Batch: 60/65 (93.8%) | Loss: 3.1325 | Batch time: 0.14s
+2025-03-06 02:02:31,026 - INFO - [VAL] Epoch: 15/15 | Batch: 64/65 (100.0%) | Loss: 3.0804 | Batch time: 0.14s
+2025-03-06 02:02:31,234 - INFO - Checkpoint saved: efficientnet_b0_optuna_20250305_232525_trial_5_v1_best.pth (Epoch 15)
+2025-03-06 02:02:31,239 - INFO - --------------------------------------------------------------------------------
+2025-03-06 02:02:31,239 - INFO - Epoch 15/15 completed in 205.71s
+2025-03-06 02:02:31,239 - INFO - Training   - Loss: 3.1724, Accuracy: 0.3474, F1: 0.3467
+2025-03-06 02:02:31,239 - INFO - Validation - Loss: 3.0893, Accuracy: 0.4801, F1: 0.4559
+2025-03-06 02:02:31,239 - INFO - Validation F1 improved from 0.4479 to 0.4559
+2025-03-06 02:02:31,239 - INFO - --------------------------------------------------------------------------------
+2025-03-06 02:02:31,358 - INFO - Checkpoint saved: checkpoint_epoch_15.pth (Epoch 15)
+2025-03-06 02:02:31,358 - INFO - --------------------------------------------------------------------------------
+2025-03-06 02:02:31,358 - INFO - Training completed in 0h 53m 15.78s
+2025-03-06 02:02:31,358 - INFO - Best validation F1: 0.4559 (Epoch 15)
+2025-03-06 02:02:31,358 - INFO - --------------------------------------------------------------------------------
+2025-03-06 02:02:31,465 - INFO - Trial 5 completed with best val F1: 0.4559
