@@ -55,10 +55,14 @@ coverage.xml
 # Models
 *.pth
 
-# Code Markdown File
+# datbase files
+*.db
+
+# Large CSV files
+*.csv
+
 
 # MISC
-
 project_code.md
 
 # Uncomment the next line if you ever decide to ignore your large model files
