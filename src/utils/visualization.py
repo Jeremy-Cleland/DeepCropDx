@@ -11,6 +11,8 @@ from sklearn.metrics import confusion_matrix, classification_report
 import matplotlib.cm as cm
 import pandas as pd
 
+from src.data.dataset import get_data_transforms
+
 
 def visualize_batch(images, labels, predictions=None, class_names=None, max_images=16):
     """
@@ -889,6 +891,9 @@ def visualize_augmentations(
     dataset, class_names, num_samples=5, augmentation_params=None
 ):
     """Visualize the effect of data augmentations on a few samples"""
+    # Import get_transforms locally to avoid circular import
+    from src.training.evaluate import get_transforms
+
     # Get base transforms
     base_transform = get_transforms(224)["val"]  # Non-augmented transform
 

@@ -490,9 +490,13 @@ DeepCropDX includes a comprehensive web interface for easy diagnosis:
     --output_dir models \
     --report_dir reports \
     --run_optuna \
-    --optuna_trials 30 \
+    --epochs 50 \
+    --optuna_trials 10 \
     --optimize_augmentation \
-    --optimize_architecture
+    --optimize_architecture \
+    --mps_graph \
+    --optimize_for_m_series 
+
   ```
 
   <div align="center">

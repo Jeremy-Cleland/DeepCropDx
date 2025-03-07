@@ -1,0 +1,3 @@
+2025-03-07 02:38:29,471 - INFO - Starting Optuna study 'efficientnet_b0_optuna_20250307_023826_optuna_study' with 10 trials
+2025-03-07 02:38:29,471 - INFO - Using pruner: MedianPruner with percentile=75%
+2025-03-07 02:38:29,471 - INFO - Storage: sqlite:///models/optuna_study/efficientnet_b0_optuna_20250307_023826_study.db

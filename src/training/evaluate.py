@@ -30,14 +30,6 @@ from src.models.resnet import (
     create_resnet_with_attention,
 )
 from src.utils.metrics import calculate_metrics, print_metrics
-from src.utils.visualization import (
-    plot_confusion_matrix,
-    plot_classification_report,
-    visualize_model_predictions,
-    plot_examples_of_misclassifications,
-    get_target_layer_for_model,
-    GradCAM,
-)
 
 
 def find_best_model_version(model_dir, model_name):
@@ -140,7 +132,10 @@ def load_model(model_path, device="cpu"):
 
     # Use safe_torch_load utility
     from src.utils.model_utils import safe_torch_load
-    checkpoint = safe_torch_load(model_path, map_location=device, weights_only=True, fallback_to_unsafe=True)
+
+    checkpoint = safe_torch_load(
+        model_path, map_location=device, weights_only=True, fallback_to_unsafe=True
+    )
 
     # Extract metadata
     if isinstance(checkpoint, dict):
@@ -434,7 +429,13 @@ def predict_single_image(model, image_path, class_to_idx, img_size=224, device="
 
 
 def generate_visualizations(
-    evaluation_results, model, dataloader, class_names, device, output_dir, model_type=None
+    evaluation_results,
+    model,
+    dataloader,
+    class_names,
+    device,
+    output_dir,
+    model_type=None,
 ):
     """
     Generate and save visualizations
@@ -447,6 +448,16 @@ def generate_visualizations(
         output_dir (str): Directory to save visualizations
         model_type (str, optional): Model type for GradCAM layer selection
     """
+    # Import visualization functions here to avoid circular imports
+    from src.utils.visualization import (
+        plot_confusion_matrix,
+        plot_classification_report,
+        visualize_model_predictions,
+        plot_examples_of_misclassifications,
+        get_target_layer_for_model,
+        GradCAM,
+    )
+
     # Check if output_dir already contains the model name
     model_name = os.path.basename(os.path.dirname(output_dir))
     base_dir = os.path.basename(output_dir)
@@ -494,61 +505,63 @@ def generate_visualizations(
         bbox_inches="tight",
     )
     plt.close(fig)
-    
+
     # 5. GradCAM Visualizations
     try:
         # Create GradCAM directory
         gradcam_dir = os.path.join(output_dir, "gradcam")
         os.makedirs(gradcam_dir, exist_ok=True)
-        
+
         # Try to determine model type from model if not provided
         if model_type is None:
-            if hasattr(model, 'model_type'):
+            if hasattr(model, "model_type"):
                 model_type = model.model_type
-            elif hasattr(model, 'name'):
+            elif hasattr(model, "name"):
                 model_type = model.name
-        
+
         # Find appropriate target layer
         try:
-            target_layer = get_target_layer_for_model(model, model_type if model_type else "unknown")
+            target_layer = get_target_layer_for_model(
+                model, model_type if model_type else "unknown"
+            )
             print(f"Using target layer for GradCAM: {target_layer}")
         except Exception as e:
             print(f"Could not identify target layer for GradCAM: {str(e)}")
             target_layer = None
-        
+
         if target_layer is not None:
             # Initialize GradCAM
             grad_cam = GradCAM(model, target_layer)
-            
+
             # Get sample images for each class
             sample_images = {}
             sample_labels = {}
-            
+
             for inputs, labels in dataloader:
                 for i, (img, label) in enumerate(zip(inputs, labels)):
                     label_idx = label.item()
                     if label_idx not in sample_images:
                         sample_images[label_idx] = img
                         sample_labels[label_idx] = label_idx
-                    
+
                     if len(sample_images) == len(class_names):
                         break
-                
+
                 if len(sample_images) == len(class_names):
                     break
-            
+
             # Generate and save GradCAM visualizations for each class
             for label_idx, img in sample_images.items():
                 if label_idx >= len(class_names):
                     continue  # Skip if label index is out of bounds
-                    
+
                 class_name = class_names[label_idx]
                 img_tensor = img.unsqueeze(0).to(device)
-                
+
                 try:
                     # Generate GradCAM
                     cam = grad_cam.generate_cam(img_tensor, target_class=label_idx)
-                    
+
                     # Convert image for visualization
                     img_np = img.permute(1, 2, 0).cpu().numpy()
                     # Denormalize the image
@@ -556,41 +569,42 @@ def generate_visualizations(
                     std = np.array([0.229, 0.224, 0.225])
                     img_np = img_np * std + mean
                     img_np = np.clip(img_np, 0, 1)
-                    
+
                     # Create a figure with two side-by-side subplots
                     fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-                    
+
                     # Original image
                     axes[0].imshow(img_np)
                     axes[0].set_title(f"Original: {class_name}")
                     axes[0].axis("off")
-                    
+
                     # GradCAM overlay
                     axes[1].imshow(img_np)
-                    axes[1].imshow(cam, alpha=0.5, cmap='jet')
+                    axes[1].imshow(cam, alpha=0.5, cmap="jet")
                     axes[1].set_title(f"GradCAM: {class_name}")
                     axes[1].axis("off")
-                    
+
                     # Save the figure
-                    safe_class_name = class_name.replace('/', '_').replace(' ', '_')
+                    safe_class_name = class_name.replace("/", "_").replace(" ", "_")
                     plt.tight_layout()
                     plt.savefig(
                         os.path.join(gradcam_dir, f"gradcam_{safe_class_name}.png"),
                         dpi=300,
-                        bbox_inches="tight"
+                        bbox_inches="tight",
                     )
                     plt.close(fig)
-                    
+
                 except Exception as e:
                     print(f"Error generating GradCAM for class {class_name}: {str(e)}")
-            
+
             # Clean up hooks
             grad_cam.remove_hooks()
             print(f"GradCAM visualizations saved to {gradcam_dir}")
-            
+
     except Exception as e:
         print(f"Error generating GradCAM visualizations: {str(e)}")
         import traceback
+
         traceback.print_exc()
 
 
@@ -749,7 +763,7 @@ def main():
         if "_" in experiment_name:
             # Handle names like "efficientnet_b0"
             model_type = experiment_name
-        
+
         generate_visualizations(
             evaluation_results,
             model,
@@ -757,7 +771,7 @@ def main():
             class_names,
             device,
             os.path.join(output_dir, "visualizations"),
-            model_type=model_type
+            model_type=model_type,
         )
         print(f"Visualizations saved to {os.path.join(output_dir, 'visualizations')}")
 

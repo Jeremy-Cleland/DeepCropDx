@@ -8,7 +8,7 @@ import glob
 import logging
 
 # Apple Silicon optimization - prevent thread contention
-os.environ["OMP_NUM_THREADS"] = "14"
+os.environ["OMP_NUM_THREADS"] = "16"
 
 
 def parse_args():

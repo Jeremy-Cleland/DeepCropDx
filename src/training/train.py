@@ -278,10 +278,13 @@ def train_model(
 
     best_model_wts = None
     best_f1 = 0.0
+    best_prev_f1 = 0.0  # Initialize best_prev_f1 here
     counter = 0  # Counter for early stopping
     early_stop = False  # Flag for early stopping
     best_metrics = None  # Store best metrics
     best_model_path = None  # Path to best model
+    best_epoch = -1
+    best_model_state = None
 
     # Ensure all necessary directories exist
     os.makedirs(model_save_dir, exist_ok=True)
@@ -387,6 +390,7 @@ def train_model(
             if phase == "val":
                 if metrics["f1"] > best_f1:
                     counter = 0  # Reset counter
+                    best_prev_f1 = best_f1  # Store previous best before updating
                     best_f1 = metrics["f1"]
                     best_model_wts = model.state_dict().copy()
                     best_metrics = metrics.copy()
@@ -431,6 +435,19 @@ def train_model(
                     best_versioned_path = os.path.join(
                         model_save_dir, f"{versioned_model_name or model_name}_best.pth"
                     )
+                    # Create checkpoint data to save
+                    checkpoint = {
+                        "model_state_dict": model.state_dict(),
+                        "optimizer_state_dict": optimizer.state_dict(),
+                        "epoch": epoch,
+                        "metrics": metrics,
+                        "model_type": training_params.get("model_type"),
+                        "class_to_idx": (
+                            class_info.get("class_to_idx") if class_info else None
+                        ),
+                        "version": version,
+                        "created_at": datetime.now().isoformat(),
+                    }
                     torch.save(checkpoint, best_versioned_path)
                     best_model_path = best_versioned_path
 
@@ -1062,6 +1079,9 @@ def main():
         registry_dir = os.path.dirname(root_dir)
     else:
         registry_dir = root_dir
+
+    # Create the registry_path from registry_dir
+    registry_path = os.path.join(registry_dir, "model_registry.json")
 
     # Initialize the registry if it doesn't exist
     initialize_model_registry(registry_path)
